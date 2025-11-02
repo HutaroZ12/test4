@@ -32,7 +32,7 @@ jobs:
             buildArgs: "mac -arm64 -D HXCPP_ARM64"
             artifactName: macOSBuild-arm64
             artifactPath: export/release/macos/bin/*
-           - name: Android
+          - name: Android
             os: macos-15
             buildArgs: "android -final -D officialBuild"
             setupCommand: sh ./setup/unix.sh
