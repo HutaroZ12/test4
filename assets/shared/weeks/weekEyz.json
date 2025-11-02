@@ -1,0 +1,36 @@
+{
+	"songs": [
+		[
+			"Clouding",
+			"eyz",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"Radiant",
+			"face",
+			[
+				146,
+				113,
+				253
+			]
+		]
+	],
+	"hiddenUntilUnlocked": false,
+	"hideFreeplay": false,
+	"weekBackground": "sky",
+	"difficulties": "normal",
+	"weekCharacters": [
+		"eyz",
+		"",
+		""
+	],
+	"storyName": "WeekEyz",
+	"weekName": "Eyz",
+	"hideStoryMode": false,
+	"weekBefore": "tutorial",
+	"startUnlocked": true
+}
