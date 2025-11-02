@@ -110,6 +110,8 @@ class StageData {
 				return 'schoolEvil';
 			case 'ugh' | 'guns' | 'stress':
 				return 'tank';
+			case 'clouding' | 'radiant':
+				return 'sky';
 		}
 		return 'stage';
 	}
