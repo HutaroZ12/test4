@@ -100,7 +100,7 @@ class Clouds extends BaseStage
         casa = new FlxSprite(-500, -300);
 		casa.frames = Paths.getSparrowAtlas('stages/sky/Casa');
 		casa.animation.addByPrefix("idle", "Casa", 5, true);
-		casa.animation.play('Casa');
+		casa.animation.play('idle');
 		casa.scale.set(0.99, 0.99);
 		add(casa);
 		
@@ -111,15 +111,6 @@ class Clouds extends BaseStage
         layer2 = new BGSprite('stages/sky/layer2', -500, -300);
         layer2.scrollFactor.set(1, 1);
         add(layer2);
-
-		gfGroup.scrollFactor.set(1, 1);
-		add(gfGroup);
-		
-		boyfriendGroup.scrollFactor.set(1, 1);
-		add(boyfriendGroup);
-		
-		dadGroup.scrollFactor.set(1, 1);
-		add(dadGroup);
 		
         movieBars = new BGSprite('movieBars', 0, 0);
         movieBars.cameras = [camHUD];
@@ -220,11 +211,11 @@ class Clouds extends BaseStage
 override function createPost()
 {
 	layer4 = new BGSprite('stages/sky/layer4', -500, -300);
-    layer4.scrollFactor.set(1.1, 1.1);
+    layer4.scrollFactor.set(1, 1);
     add(layer4);
 
 	layer4b = new BGSprite('stages/sky/layer4', layer4.x + layer4.width, layer4.y);
-    layer4b.scrollFactor.set(1.1, 1.1);
+    layer4b.scrollFactor.set(1, 1);
     add(layer4b);
 	
     layer3 = new BGSprite('stages/sky/layer3', -500, -300);
@@ -334,6 +325,7 @@ override function createPost()
         }
     }
 }
+
 
 
 
