@@ -211,11 +211,11 @@ class Clouds extends BaseStage
 override function createPost()
 {
 	layer4 = new BGSprite('stages/sky/layer4', -500, -300);
-    layer4.scrollFactor.set(1, 1);
+    layer4.scrollFactor.set(0.95, 0.95);
     add(layer4);
 
 	layer4b = new BGSprite('stages/sky/layer4', layer4.x + layer4.width, layer4.y);
-    layer4b.scrollFactor.set(1, 1);
+    layer4b.scrollFactor.set(0.95, 0.95);
     add(layer4b);
 	
     layer3 = new BGSprite('stages/sky/layer3', -500, -300);
@@ -325,6 +325,7 @@ override function createPost()
         }
     }
 }
+
 
 
 
