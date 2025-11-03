@@ -13,7 +13,7 @@ class Clouds extends BaseStage
     var layer2:BGSprite;
     var layer3:BGSprite;
 	var layer5:BGSprite;
-    var casa:BGSprite;
+    var casa:FlxSprite;
     var nuvem0:BGSprite;
     var nuvem0b:BGSprite; // Segunda instância
     var nuvem1:BGSprite;
@@ -323,5 +323,6 @@ override function createPost()
         }
     }
 }
+
 
 
