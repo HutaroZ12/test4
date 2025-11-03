@@ -34,7 +34,7 @@ class Clouds extends BaseStage
     var songinfo:FlxSprite;
     var blackScreen:FlxSprite; // Declare blackScreen at the class level
     var songStarted:Bool = false; // Flag to check if the song has started
-
+	
     override function create()
     {       
         layer0 = new BGSprite('stages/sky/layer0', -500, -300);
@@ -112,6 +112,15 @@ class Clouds extends BaseStage
         layer2.scrollFactor.set(1, 1);
         add(layer2);
 
+		gfGroup.scrollFactor.set(1, 1);
+		add(gfGroup);
+		
+		boyfriendGroup.scrollFactor.set(1, 1);
+		add(boyfriendGroup);
+		
+		dadGroup.scrollFactor.set(1, 1);
+		add(dadGroup);
+		
         movieBars = new BGSprite('movieBars', 0, 0);
         movieBars.cameras = [camHUD];
         add(movieBars);
@@ -325,6 +334,7 @@ override function createPost()
         }
     }
 }
+
 
 
 
