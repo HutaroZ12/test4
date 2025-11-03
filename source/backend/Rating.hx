@@ -49,5 +49,6 @@ class Rating
 		rating.score = 50;
 		rating.noteSplash = false;
 		ratingsData.push(rating);
+		return ratingsData;
 	}
 }
