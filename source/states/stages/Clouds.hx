@@ -8,28 +8,28 @@ import openfl.display.BlendMode;
 
 class Clouds extends BaseStage
 {
-    var layer0:FlxSprite;
-    var layer1:FlxSprite;
-    var layer2:FlxSprite;
-    var layer3:FlxSprite;
-	var layer5:FlxSprite;
-    var casa:FlxSprite;
-    var nuvem0:FlxSprite;
-    var nuvem0b:FlxSprite; // Segunda instância
-    var nuvem1:FlxSprite;
-    var nuvem1b:FlxSprite; // Segunda instância
-    var nuvem2:FlxSprite;
-    var nuvem2b:FlxSprite; // Segunda instância
-    var nuvem3:FlxSprite;
-    var nuvem3b:FlxSprite; // Segunda instância
-    var nuvem4:FlxSprite;
-    var nuvem4b:FlxSprite; // Segunda instância
-    var nuvem5:FlxSprite;
-    var nuvem5b:FlxSprite; // Segunda instância
-    var nuvem6:FlxSprite;
-    var nuvem6b:FlxSprite; // Segunda instância
-	var layer4:FlxSprite;
-    var layer4b:FlxSprite; // Segunda instância
+    var layer0:BGSprite;
+    var layer1:BGSprite;
+    var layer2:BGSprite;
+    var layer3:BGSprite;
+	var layer5:BGSprite;
+    var casa:BGSprite;
+    var nuvem0:BGSprite;
+    var nuvem0b:BGSprite; // Segunda instância
+    var nuvem1:BGSprite;
+    var nuvem1b:BGSprite; // Segunda instância
+    var nuvem2:BGSprite;
+    var nuvem2b:BGSprite; // Segunda instância
+    var nuvem3:BGSprite;
+    var nuvem3b:BGSprite; // Segunda instância
+    var nuvem4:BGSprite;
+    var nuvem4b:BGSprite; // Segunda instância
+    var nuvem5:BGSprite;
+    var nuvem5b:BGSprite; // Segunda instância
+    var nuvem6:BGSprite;
+    var nuvem6b:BGSprite; // Segunda instância
+	var layer4:BGSprite;
+    var layer4b:BGSprite; // Segunda instância
     var movieBars:FlxSprite;
     var songinfo:FlxSprite;
     var blackScreen:FlxSprite; // Declare blackScreen at the class level
@@ -323,4 +323,5 @@ override function createPost()
         }
     }
 }
+
 
