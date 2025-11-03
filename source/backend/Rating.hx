@@ -6,11 +6,12 @@ class Rating
 {
 	public var name:String = '';
 	public var image:String = '';
-	public var hitWindow:Null<Float> = 0.0; //ms
+	public var hitWindow:Null<Int> = 0; // ms
 	public var ratingMod:Float = 1;
 	public var score:Int = 350;
 	public var noteSplash:Bool = true;
 	public var hits:Int = 0;
+	public var color:Int = 0xFFFFFFFF;
 
 	public function new(name:String)
 	{
@@ -23,21 +24,22 @@ class Rating
 		{
 			this.hitWindow = Reflect.field(ClientPrefs.data, window);
 		}
-		catch(e) FlxG.log.error(e);
+		catch (e)
+			FlxG.log.error(e);
 	}
 
 	public static function loadDefault():Array<Rating>
 	{
-		var ratingsData:Array<Rating> = [new Rating('sick')]; //highest rating goes first
+		var ratingsData:Array<Rating> = [new Rating('sick')]; // highest rating goes first
 
 		var rating:Rating = new Rating('good');
-		rating.ratingMod = 0.67;
+		rating.ratingMod = 0.75;
 		rating.score = 200;
 		rating.noteSplash = false;
 		ratingsData.push(rating);
 
 		var rating:Rating = new Rating('bad');
-		rating.ratingMod = 0.34;
+		rating.ratingMod = 0.5;
 		rating.score = 100;
 		rating.noteSplash = false;
 		ratingsData.push(rating);
@@ -47,6 +49,5 @@ class Rating
 		rating.score = 50;
 		rating.noteSplash = false;
 		ratingsData.push(rating);
-		return ratingsData;
 	}
 }
