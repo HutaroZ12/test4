@@ -146,11 +146,13 @@ class Clouds extends BaseStage
       	if (curStep == 1) {
 
 			layer4.alpha = 0;
+			layer4b.alpha = 0;
 		}
         if (curStep == 256) {
 
             FlxG.camera.flash(FlxColor.WHITE, 1);
 			layer4.alpha = 1;
+			layer4b.alpha = 1;
         }
         if (curStep == 260) {    
             FlxTween.tween(songinfo, {x: 0}, 2.6, {ease: FlxEase.expoOut});
@@ -323,6 +325,7 @@ override function createPost()
         }
     }
 }
+
 
 
 
