@@ -19,7 +19,7 @@ import states.TitleState;
 	public var popUpRating:Bool = true;
 	public var vsync:Bool = false;
 	public var gameOverVibration:Bool = false;
-	public var fpsRework:Bool = false;
+	public var fpsRework:Bool = true;
 	
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
