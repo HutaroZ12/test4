@@ -498,7 +498,8 @@ class TitleState extends MusicBeatState
 			
 			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.circOut, onComplete: function(twn:FlxTween)
 				}
-			});
+			}
+		});
 		}
 		
 		if(logoBl != null)
