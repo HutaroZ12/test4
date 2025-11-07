@@ -494,7 +494,14 @@ class TitleState extends MusicBeatState
 		super.beatHit();
 		
         if (curBeat % 4 == 2) {
-		FlxG.camera.zoom = 1.15;
+		FlxG.camera.zoom = 1.5;
+
+		if(zoomTween != null) zoomTween.cancel();
+			zoomTween = FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.circOut, onComplete: function(twn:FlxTween)
+				{
+					zoomTween = null;
+				}
+			});
 		}
 		
 		if(logoBl != null)
