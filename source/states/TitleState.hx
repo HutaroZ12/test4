@@ -493,8 +493,9 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 		
-        if (curStep % 4 == 2)
+        if (curStep % 4 == 2) {
 		FlxG.camera.zoom = 1.15;
+		}
 		
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
