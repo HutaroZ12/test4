@@ -491,6 +491,7 @@ class TitleState extends MusicBeatState
 	public static var closedState:Bool = false;
 	override function beatHit()
 	{
+	if (curStep % 4 == 0)
 		super.beatHit();
 
 		if(logoBl != null)
