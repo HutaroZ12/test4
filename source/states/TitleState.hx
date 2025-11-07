@@ -497,8 +497,6 @@ class TitleState extends MusicBeatState
 		FlxG.camera.zoom = 1.5;
 			
 			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.circOut});
-				}
-			}
 		}
 		
 		if(logoBl != null)
