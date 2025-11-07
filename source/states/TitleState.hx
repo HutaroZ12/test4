@@ -491,9 +491,11 @@ class TitleState extends MusicBeatState
 	public static var closedState:Bool = false;
 	override function beatHit()
 	{
-	if (curStep % 4 == 0)
 		super.beatHit();
-
+		
+        if (curStep % 4 == 2)
+		FlxG.camera.zoom = 1.15;
+		
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
 
