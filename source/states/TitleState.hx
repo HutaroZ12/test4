@@ -597,7 +597,7 @@ class TitleState extends MusicBeatState
 						remove(credGroup);
 						FlxG.camera.flash(FlxColor.WHITE, 2);
 						FlxG.camera.zoom = 1.4;			
-				FlxTween.tween(FlxG.camera, {zoom: 1}, 3.5, {ease: FlxEase.expoOut});
+				FlxTween.tween(FlxG.camera, {zoom: 1}, 2.5, {ease: FlxEase.expoOut});
 						skippedIntro = true;
 
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
@@ -637,7 +637,7 @@ class TitleState extends MusicBeatState
 				remove(credGroup);
 				FlxG.camera.flash(FlxColor.WHITE, 4);
 				FlxG.camera.zoom = 1.4;			
-				FlxTween.tween(FlxG.camera, {zoom: 1}, 3.5, {ease: FlxEase.expoOut});
+				FlxTween.tween(FlxG.camera, {zoom: 1}, 2.5, {ease: FlxEase.expoOut});
 		
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
