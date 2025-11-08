@@ -494,17 +494,6 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if(curBeat % 1 == 0)
-		{
-			FlxG.camera.zoom = 1.02;
-
-			if(zoomTween != null) zoomTween.cancel();
-			zoomTween = FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.circOut, onComplete: function(twn:FlxTween)
-				{
-					zoomTween = null;
-				}
-			});
-			
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
 
@@ -519,6 +508,17 @@ class TitleState extends MusicBeatState
 					gfDance.animation.play('danceLeft');
 			}
 			else if(curBeat % 2 == 0) gfDance.animation.play('idle', true);
+		}
+		if(curBeat % 1 == 0)
+		{
+			FlxG.camera.zoom = 1.02;
+
+			if(zoomTween != null) zoomTween.cancel();
+			zoomTween = FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.circOut, onComplete: function(twn:FlxTween)
+				{
+					zoomTween = null;
+				}
+			});
 		}
 
 		if(!closedState)
