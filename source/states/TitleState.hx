@@ -625,15 +625,15 @@ class TitleState extends MusicBeatState
 				FlxG.camera.zoom = 1.4;			
 				FlxTween.tween(FlxG.camera, {zoom: 1}, 3.5, {ease: FlxEase.expoOut});
 
-	override function beatHit()
-	{
+	override function beatHit() {
 		super.beatHit();
-
+ 
 		if (curBeat % 1 == 0) {
 		FlxG.camera.zoom = 1.03;
 			
 		FlxTween.tween(FlxG.camera, {zoom: 1}, 1.5, {ease: FlxEase.cubeOut});
 		}
+	}
 		
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
