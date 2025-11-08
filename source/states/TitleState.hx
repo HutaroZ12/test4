@@ -487,12 +487,24 @@ class TitleState extends MusicBeatState
 		}
 	}
 
+	var zoomTween:FlxTween;
 	private var sickBeats:Int = 0; //Basically curBeat but won't be skipped if you hold the tab or resize the screen
 	public static var closedState:Bool = false;
 	override function beatHit()
 	{
 		super.beatHit();
-		
+
+		if(curBeat % 1 == 0)
+		{
+			FlxG.camera.zoom = 1.02;
+
+			if(zoomTween != null) zoomTween.cancel();
+			zoomTween = FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.circOut, onComplete: function(twn:FlxTween)
+				{
+					zoomTween = null;
+				}
+			});
+			
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
 
@@ -624,16 +636,7 @@ class TitleState extends MusicBeatState
 				FlxG.camera.flash(FlxColor.WHITE, 4);
 				FlxG.camera.zoom = 1.4;			
 				FlxTween.tween(FlxG.camera, {zoom: 1}, 3.5, {ease: FlxEase.expoOut});
-
-	override function beatHit() {
-		super.beatHit();
- 
-		if (curBeat % 1 == 0) {
-		FlxG.camera.zoom = 1.03;
-			
-		FlxTween.tween(FlxG.camera, {zoom: 1}, 1.5, {ease: FlxEase.cubeOut});
-		}
-	}
+			}
 		
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
