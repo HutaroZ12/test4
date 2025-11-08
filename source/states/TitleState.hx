@@ -222,7 +222,7 @@ class TitleState extends MusicBeatState
 	var enterPosition:FlxPoint = FlxPoint.get(100, 576);
 	
 	var useIdle:Bool = false;
-	var musicBPM:Float = 102;
+	var musicBPM:Float = 112;
 	var danceLeftFrames:Array<Int> = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
 	var danceRightFrames:Array<Int> = [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
@@ -493,12 +493,6 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 		
-        if (curBeat % 1 == 0) {
-		FlxG.camera.zoom = 1.03;
-			
-			FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.expoOut});
-		}
-		
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
 
@@ -513,6 +507,12 @@ class TitleState extends MusicBeatState
 					gfDance.animation.play('danceLeft');
 			}
 			else if(curBeat % 2 == 0) gfDance.animation.play('idle', true);
+		}
+		if (curBeat % 1 == 0)
+		{
+		FlxG.camera.zoom = 1.03;
+			
+		FlxG.camera.zoom = FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.cubeOut});
 		}
 
 		if(!closedState)
