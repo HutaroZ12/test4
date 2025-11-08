@@ -601,6 +601,7 @@ class TitleState extends MusicBeatState
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 						FlxG.sound.music.fadeIn(4, 0, 0.7);
 						return;
+				}
 
 				transitioning = true;
 				if(easteregg == 'SHADOW')
@@ -635,7 +636,6 @@ class TitleState extends MusicBeatState
 				FlxG.camera.flash(FlxColor.WHITE, 4);
 				FlxG.camera.zoom = 1.4;			
 				FlxTween.tween(FlxG.camera, {zoom: 1}, 3.5, {ease: FlxEase.expoOut});
-			}
 		
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
