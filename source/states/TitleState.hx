@@ -211,17 +211,17 @@ class TitleState extends MusicBeatState
 		barU = new FlxSprite(0).loadGraphic(Paths.image('menutitle/barU'));
 		barU.y = -1200;
 		barU.antialiasing = ClientPrefs.data.antialiasing;
-		credGroup.add(barU)
+		credGroup.add(barU);
 			
 		barD = new FlxSprite(0).loadGraphic(Paths.image('menutitle/barD'));
 		barD.y = 1200;
 		barD.antialiasing = ClientPrefs.data.antialiasing;
-		credGroup.add(barD)
+		credGroup.add(barD);
 
 		blend = new FlxSprite(0).loadGraphic(Paths.image('menutitle/blend'));
 		blend.antialiasing = ClientPrefs.data.antialiasing;
 		blend.blend = ADD;
-		credGroup.add(blend)
+		credGroup.add(blend);
 		
 		credTextShit = new Alphabet(0, 0, "", true);
 		credTextShit.screenCenter();
