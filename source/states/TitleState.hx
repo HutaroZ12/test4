@@ -220,6 +220,7 @@ class TitleState extends MusicBeatState
 		credGroup.add(barD);
 
 		blend = new FlxSprite(0).loadGraphic(Paths.image('menutitle/blend'));
+		blend.alpha = 0.4;
 		blend.antialiasing = ClientPrefs.data.antialiasing;
 		blend.blend = ADD;
 		credGroup.add(blend);
@@ -259,7 +260,7 @@ class TitleState extends MusicBeatState
 	var animationName:String = 'gfDance';
 
 	var gfPosition:FlxPoint = FlxPoint.get(512, 40);
-	var logoPosition:FlxPoint = FlxPoint.get(145, 50);
+	var logoPosition:FlxPoint = FlxPoint.get(150, 55);
 	var enterPosition:FlxPoint = FlxPoint.get(100, 576);
 	
 	var useIdle:Bool = false;
@@ -674,12 +675,13 @@ class TitleState extends MusicBeatState
 			{
 				remove(ngSpr);
 				remove(credGroup);
-				FlxG.camera.flash(FlxColor.WHITE, 4);
+				FlxG.camera.flash(FlxColor.WHITE, 2);
 				bg.alpha = 1;
+				blend.alpha = 0.8;
 				FlxG.camera.zoom = 1.4;			
 				FlxTween.tween(FlxG.camera, {zoom: 1}, 2.5, {ease: FlxEase.expoOut});
-				FlxTween.tween(barU, {y: 0}, 0.5, {ease: FlxEase.expoOut});
-				FlxTween.tween(barD, {y: 0}, 0.5, {ease: FlxEase.expoOut});
+				FlxTween.tween(barU, {y: 0}, 2.5, {ease: FlxEase.expoOut});
+				FlxTween.tween(barD, {y: 0}, 2.5, {ease: FlxEase.expoOut});
 		
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
