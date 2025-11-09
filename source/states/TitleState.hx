@@ -260,8 +260,8 @@ class TitleState extends MusicBeatState
 	var animationName:String = 'gfDance';
 
 	var gfPosition:FlxPoint = FlxPoint.get(512, 40);
-	var logoPosition:FlxPoint = FlxPoint.get(144, 49);
-	var enterPosition:FlxPoint = FlxPoint.get(100, 576);
+	var logoPosition:FlxPoint = FlxPoint.get(22, 1200);
+	var enterPosition:FlxPoint = FlxPoint.get(0, 1200);
 	
 	var useIdle:Bool = false;
 	var musicBPM:Float = 112;
@@ -680,8 +680,10 @@ class TitleState extends MusicBeatState
 				blend.alpha = 0.8;
 				FlxG.camera.zoom = 1.4;			
 				FlxTween.tween(FlxG.camera, {zoom: 1}, 2.5, {ease: FlxEase.expoOut});
+				FlxTween.tween(logoBl, {y: -10}, 3.5, {ease: FlxEase.expoOut});
 				FlxTween.tween(barU, {y: 0}, 2.5, {ease: FlxEase.expoOut});
 				FlxTween.tween(barD, {y: 0}, 2.5, {ease: FlxEase.expoOut});
+				FlxTween.tween(titleText, {y: 0}, 2.5, {ease: FlxEase.expoOut});
 		
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
