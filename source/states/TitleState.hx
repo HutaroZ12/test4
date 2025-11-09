@@ -200,7 +200,7 @@ class TitleState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		credGroup.add(bg);
 
-		bgMove = new FlxBackdrop(Paths.image('backdrop'), XY, 0, 0)
+		bgMove = new FlxBackdrop(Paths.image('backdrop'), XY, 0, 0);
 		bgMove.alpha = 0.11;
 		bgMove.color = 0xAA2F3D;		
 		bgMove.velocity.set(FlxG.random.bool(30) ? 50 : -50, FlxG.random.bool(30) ? 50 : -50);
