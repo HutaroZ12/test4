@@ -617,7 +617,7 @@ class TitleState extends MusicBeatState
 						addMoreText('this guy', -40);
 				case 17:
 					    eyzpfp.visible = true;
-				case 18
+				case 18:
 					    addMoreText('@eyyzu', -40);
 				case 19:
 					deleteCoolText();
