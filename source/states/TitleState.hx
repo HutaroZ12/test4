@@ -236,6 +236,13 @@ class TitleState extends MusicBeatState
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = ClientPrefs.data.antialiasing;
 
+		eyzpfp = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('eyyzu'));
+		eyzpfp.visible = false;
+		eyzpfp.setGraphicSize(Std.int(ngSpr.width * 0.8));
+		eyzpfp.updateHitbox();
+		eyzpfp.screenCenter(X);
+		eyzpfp.antialiasing = ClientPrefs.data.antialiasing;
+
 		add(bg);
 		add(bgMove);
 		add(gfDance);
@@ -246,6 +253,7 @@ class TitleState extends MusicBeatState
 		add(blend);
 		add(credGroup);
 		add(ngSpr);
+		add(eyzpfp);
 
 		if (initialized)
 			skipIntro();
@@ -591,6 +599,18 @@ class TitleState extends MusicBeatState
 					addMoreText('Riveren', 15);
 				case 10:
 						deleteCoolText();
+						createCoolText(['the mod'], -40); 
+				case 11:
+						createCoolText(['is about'], -40);
+				case 12:
+						addMoreText('', -40);
+						addMoreText('this guy', -40);
+						eyzpfp.visible = true;
+				case 12:
+					    addMoreText('@eyyzu', -40);
+				case 13:
+					deleteCoolText();
+					eyzpfp.visible = false;
 						createCoolText(['Not associated'], -40);
 				case 11:
 						deleteCoolText();
