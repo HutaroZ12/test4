@@ -611,9 +611,9 @@ class TitleState extends MusicBeatState
 						deleteCoolText();
 						createCoolText(['the mod'], -40); 
 				case 15:
-						createCoolText('is about', -40);
+						addMoreText('is about', -40);
 				case 16:
-						addMoreText('', -40);
+					    addMoreText('', -40);
 						addMoreText('this guy', -40);
 				case 17:
 					    eyzpfp.visible = true;
@@ -622,42 +622,41 @@ class TitleState extends MusicBeatState
 				case 19:
 					deleteCoolText();
 					eyzpfp.visible = false;
-						createCoolText(['Not associated'], -40);
+						createCoolText(['Not'], -40);
 				case 20:
+						createCoolText(['Not associated'], -40);
+				case 21:
 						deleteCoolText();
 						createCoolText(['Not associated with'], -40);
-				case 21:
+				case 22:
 						addMoreText('', -40);
 						addMoreText('newgrounds', -40);
 						ngSpr.visible = true;
-				case 22:
+				case 23:
 					deleteCoolText();
 					ngSpr.visible = false;
 					createCoolText([curWacky[0]]);
-				case 23:
-					createCoolText(curWacky[1]);
 				case 24:
-					addMoreText(curWacky[2]);
+					addMoreText(curWacky[1]);
 				case 25:
 					deleteCoolText();
-				case 26:
 					addMoreText('Friday');
-				case 27:
+				case 26:
 					addMoreText('Night');
-				case 28:
+				case 27:
 					addMoreText('Funkin');
-				case 29:
+				case 28:
 					addMoreText('vs');
-				case 30:
+				case 29:
 					addMoreText('Eyz');
 
-				case 31:
+				case 30:
 						deleteCoolText();
 						addMoreText('yaaay', -40);
-				case 32:
+				case 31:
 					FlxTween.tween(FlxG.camera, {zoom: 1.4}, 2.5, {ease: FlxEase.expoOut});
 					
-				case 33:
+				case 32:
 					skipIntro();
 			}
 		}
