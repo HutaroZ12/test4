@@ -582,81 +582,44 @@ class TitleState extends MusicBeatState
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
-					createCoolText(['Vs Eyz Demo by'], 15);
+					createCoolText(['Vs Eyz Demo by'], 40);
 				case 3:
-					addMoreText('Hutaroz', 15);
+					addMoreText('Hutaroz', 40);
 				case 4:
-					addMoreText('Mike Nakimy', 15);
+					addMoreText('mike Nakimy', 40);
 				case 5:
-					addMoreText('Neverminds', 15);
+					addMoreText('Neverminds', 40);
 				case 6:
-					addMoreText('Mikki', 15);
+					addMoreText('synthary', 40);
 				case 7:
-					deleteCoolText();
-					createCoolText(['Psych Engine by'], 15);
+					addMoreText('Mikki', 40);
 				case 8:
-					addMoreText('Shadow Mario', 15);
+					deleteCoolText();
+				    createCoolText(['Psych Engine by'], 40);
 				case 9:
-					addMoreText('Riveren', 15);
+					addMoreText('Shadow Mario', 40);
+					addMoreText('Riveren', 40);
 				case 10:
 					deleteCoolText();
-					createCoolText(['Mobile Porting By'], 15);
+					createCoolText(['Not associated', 'with'], -40);
 				case 11:
-						addMoreText('HomuHomu833', 15);
+					addMoreText('newgrounds', -40);
+					ngSpr.visible = true;
 				case 12:
-						addMoreText('Karim Akra', 15);
-				case 13:
-						addMoreText('Moxie', 15);
-				case 14:
-						deleteCoolText();
-						createCoolText(['the mod'], -40); 
-				case 15:
-						addMoreText('is about', -40);
-				case 16:
-					    addMoreText('', -40);
-						addMoreText('this guy', -40);
-				case 17:
-					    eyzpfp.visible = true;
-				case 18:
-					    addMoreText('@eyyzu', -40);
-				case 19:
-					deleteCoolText();
-					eyzpfp.visible = false;
-						createCoolText(['Not'], -40);
-				case 20:
-						createCoolText(['Not associated'], -40);
-				case 21:
-						deleteCoolText();
-						createCoolText(['Not associated with'], -40);
-				case 22:
-						addMoreText('', -40);
-						addMoreText('newgrounds', -40);
-						ngSpr.visible = true;
-				case 23:
 					deleteCoolText();
 					ngSpr.visible = false;
 					createCoolText([curWacky[0]]);
-				case 24:
+				case 13:
 					addMoreText(curWacky[1]);
-				case 25:
+				case 14:
 					deleteCoolText();
-					addMoreText('Friday');
-				case 26:
-					addMoreText('Night');
-				case 27:
-					addMoreText('Funkin');
-				case 28:
-					addMoreText('vs');
-				case 29:
-					addMoreText('Eyz');
+					addMoreText('FNF');
+				case 15:
+					addMoreText('Vs');
+				case 16:
+					addMoreText('Eyz'); // credTextShit.text += '\nFunkin';
 
-				case 30:
-						deleteCoolText();
-						addMoreText('yaaay', -40);
-				case 31:
-					FlxTween.tween(FlxG.camera, {zoom: 1.4}, 2.5, {ease: FlxEase.expoOut});
-					
-				case 32:
+				case 17:
 					skipIntro();
 			}
 		}
