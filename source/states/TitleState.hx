@@ -141,8 +141,8 @@ class TitleState extends MusicBeatState
 
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 16, false);
 		logoBl.animation.play('bump');
-		logoBl.scale.x = 0.5;
-		logoBl.scale.y = 0.5;
+		logoBl.scale.x = 0.65;
+		logoBl.scale.y = 0.65;
 		logoBl.updateHitbox();
 
 		gfDance = new FlxSprite(gfPosition.x, gfPosition.y);
@@ -260,7 +260,7 @@ class TitleState extends MusicBeatState
 	var animationName:String = 'gfDance';
 
 	var gfPosition:FlxPoint = FlxPoint.get(512, 40);
-	var logoPosition:FlxPoint = FlxPoint.get(150, 55);
+	var logoPosition:FlxPoint = FlxPoint.get(144, 49);
 	var enterPosition:FlxPoint = FlxPoint.get(100, 576);
 	
 	var useIdle:Bool = false;
