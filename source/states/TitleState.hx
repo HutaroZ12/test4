@@ -573,34 +573,58 @@ class TitleState extends MusicBeatState
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
-					createCoolText(['Psych Engine by'], 40);
+					createCoolText(['Vs Eyz Demo by'], 15);
+				case 3:
+					addMoreText('Hutaroz', 15);
 				case 4:
-					addMoreText('Shadow Mario', 40);
-					addMoreText('Riveren', 40);
+					addMoreText('Mike Nakimy', 15);
 				case 5:
-					deleteCoolText();
+					addMoreText('Neverminds', 15);
 				case 6:
-					createCoolText(['Not associated', 'with'], -40);
-				case 8:
-					addMoreText('newgrounds', -40);
-					ngSpr.visible = true;
-				case 9:
+					addMoreText('Mikki', 15);
+				case 7:
 					deleteCoolText();
-					ngSpr.visible = false;
+					createCoolText(['Psych Engine by'], 15);
+				case 8:
+					addMoreText('Shadow Mario', 15);
+				case 9:
+					addMoreText('Riveren', 15);
 				case 10:
-					createCoolText([curWacky[0]]);
+						deleteCoolText();
+						createCoolText(['Not associated'], -40);
+				case 11:
+						deleteCoolText();
+						createCoolText(['Not associated with'], -40);
 				case 12:
-					addMoreText(curWacky[1]);
+						addMoreText('', -40);
+						addMoreText('newgrounds', -40);
+						ngSpr.visible = true;
 				case 13:
 					deleteCoolText();
+					ngSpr.visible = false;
+					createCoolText([curWacky[0]]);
 				case 14:
-					addMoreText('Friday');
+					createCoolText([curWacky[1]]);
 				case 15:
-					addMoreText('Night');
+					addMoreText(curWacky[2]);
 				case 16:
-					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
-
+					deleteCoolText();
 				case 17:
+					addMoreText('Friday');
+				case 18:
+					addMoreText('Night');
+				case 19:
+					addMoreText('Funkin');
+				case 20:
+					addMoreText('vs');
+				case 21:
+					addMoreText('Eyz');
+
+				case 22:
+						deleteCoolText();
+						addMoreText('yaaay', -40);
+
+				case 23:
 					skipIntro();
 			}
 		}
