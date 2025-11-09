@@ -203,7 +203,7 @@ class TitleState extends MusicBeatState
 		credGroup.add(bg);
 
 		bgMove = new FlxBackdrop(Paths.image('backdrop'), XY, 0, 0);
-		bgMove.alpha = 0.11;
+		bgMove.alpha = 0.05;
 		bgMove.color = 0xAA2F3D;		
 		bgMove.velocity.set(FlxG.random.bool(30) ? 50 : -50, FlxG.random.bool(30) ? 50 : -50);
 		bgMove.antialiasing = ClientPrefs.data.antialiasing;
@@ -221,7 +221,7 @@ class TitleState extends MusicBeatState
 		credGroup.add(barD);
 
 		blend = new FlxSprite(0).loadGraphic(Paths.image('menutitle/blend'));
-		blend.alpha = 0.1;
+		blend.alpha = 0;
 		blend.antialiasing = ClientPrefs.data.antialiasing;
 		blend.blend = ADD;
 		credGroup.add(blend);
@@ -613,7 +613,7 @@ class TitleState extends MusicBeatState
 					addMoreText(curWacky[1]);
 				case 14:
 					deleteCoolText();
-					addMoreText('FNF');
+					addMoreText('Friday Night Funkin');
 				case 15:
 					addMoreText('Vs');
 				case 16:
@@ -696,6 +696,7 @@ class TitleState extends MusicBeatState
 				remove(credGroup);
 				FlxG.camera.flash(FlxColor.WHITE, 2);
 				bg.alpha = 1;
+				bgMove.alpha = 0.11;
 				blend.alpha = 0.8;
 				FlxG.camera.zoom = 1.4;			
 				FlxTween.tween(FlxG.camera, {zoom: 1}, 2.5, {ease: FlxEase.expoOut});
