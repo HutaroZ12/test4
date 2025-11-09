@@ -599,53 +599,65 @@ class TitleState extends MusicBeatState
 				case 9:
 					addMoreText('Riveren', 15);
 				case 10:
+					deleteCoolText();
+					createCoolText(['Mobile Porting By'], 15);
+				case 11:
+						addMoreText('HomuHomu833', 15);
+				case 12:
+						addMoreText('Karim Akra', 15);
+				case 13:
+						addMoreText('Moxie', 15);
+				case 14:
 						deleteCoolText();
 						createCoolText(['the mod'], -40); 
-				case 11:
-						createCoolText(['is about'], -40);
-				case 12:
+				case 15:
+						createCoolText('is about', -40);
+				case 16:
 						addMoreText('', -40);
 						addMoreText('this guy', -40);
-						eyzpfp.visible = true;
-				case 13:
+				case 17:
+					    eyzpfp.visible = true;
+				case 18
 					    addMoreText('@eyyzu', -40);
-				case 14:
+				case 19:
 					deleteCoolText();
 					eyzpfp.visible = false;
 						createCoolText(['Not associated'], -40);
-				case 15:
+				case 20:
 						deleteCoolText();
 						createCoolText(['Not associated with'], -40);
-				case 16:
+				case 21:
 						addMoreText('', -40);
 						addMoreText('newgrounds', -40);
 						ngSpr.visible = true;
-				case 17:
+				case 22:
 					deleteCoolText();
 					ngSpr.visible = false;
 					createCoolText([curWacky[0]]);
-				case 18:
-					createCoolText([curWacky[1]]);
-				case 19:
-					addMoreText(curWacky[2]);
-				case 20:
-					deleteCoolText();
-				case 21:
-					addMoreText('Friday');
-				case 22:
-					addMoreText('Night');
 				case 23:
-					addMoreText('Funkin');
+					createCoolText(curWacky[1]);
 				case 24:
-					addMoreText('vs');
+					addMoreText(curWacky[2]);
 				case 25:
+					deleteCoolText();
+				case 26:
+					addMoreText('Friday');
+				case 27:
+					addMoreText('Night');
+				case 28:
+					addMoreText('Funkin');
+				case 29:
+					addMoreText('vs');
+				case 30:
 					addMoreText('Eyz');
 
-				case 26:
+				case 31:
 						deleteCoolText();
 						addMoreText('yaaay', -40);
-
-				case 27:
+				case 32:
+					FlxTween.tween(FlxG.camera, {zoom: 1.4}, 2.5, {ease: FlxEase.expoOut});
+					
+				case 33:
 					skipIntro();
 			}
 		}
