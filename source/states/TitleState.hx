@@ -114,6 +114,8 @@ class TitleState extends MusicBeatState
 	}
 
 	var logoBl:FlxSprite;
+	var barD:FlxSprite;
+	var barU:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
@@ -210,9 +212,12 @@ class TitleState extends MusicBeatState
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = ClientPrefs.data.antialiasing;
 
+		add(bg);
 		add(bgMove);
 		add(gfDance);
 		add(logoBl); //FNF Logo
+		add(barU);
+		add(barD);
 		add(titleText); //"Press Enter to Begin" text
 		add(credGroup);
 		add(ngSpr);
