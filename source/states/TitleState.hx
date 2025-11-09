@@ -118,6 +118,7 @@ class TitleState extends MusicBeatState
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
 	var swagShader:ColorSwap = null;
+	var bgMove:FlxBackdrop;
 
 	function startIntro()
 	{
@@ -190,6 +191,14 @@ class TitleState extends MusicBeatState
 		blackScreen.updateHitbox();
 		credGroup.add(blackScreen);
 
+		bgMove = new FlxBackdrop(Paths.image('backdrop'), XY, 0, 0)
+		bgMove.alpha = 0.11;
+		bgMove.color = 0xAA2F3D;		
+		bgMove.velocity.set(FlxG.random.bool(30) ? 50 : -50, FlxG.random.bool(30) ? 50 : -50);
+		bgMove.antialiasing = ClientPrefs.data.antialiasing;
+        bgMove.screenCenter(XY); 
+		credGroup.add(bgMove);
+		
 		credTextShit = new Alphabet(0, 0, "", true);
 		credTextShit.screenCenter();
 		credTextShit.visible = false;
@@ -201,6 +210,7 @@ class TitleState extends MusicBeatState
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = ClientPrefs.data.antialiasing;
 
+		add(bgMove);
 		add(gfDance);
 		add(logoBl); //FNF Logo
 		add(titleText); //"Press Enter to Begin" text
