@@ -606,45 +606,45 @@ class TitleState extends MusicBeatState
 						addMoreText('', -40);
 						addMoreText('this guy', -40);
 						eyzpfp.visible = true;
-				case 12:
-					    addMoreText('@eyyzu', -40);
 				case 13:
+					    addMoreText('@eyyzu', -40);
+				case 14:
 					deleteCoolText();
 					eyzpfp.visible = false;
 						createCoolText(['Not associated'], -40);
-				case 11:
+				case 15:
 						deleteCoolText();
 						createCoolText(['Not associated with'], -40);
-				case 12:
+				case 16:
 						addMoreText('', -40);
 						addMoreText('newgrounds', -40);
 						ngSpr.visible = true;
-				case 13:
+				case 17:
 					deleteCoolText();
 					ngSpr.visible = false;
 					createCoolText([curWacky[0]]);
-				case 14:
-					createCoolText([curWacky[1]]);
-				case 15:
-					addMoreText(curWacky[2]);
-				case 16:
-					deleteCoolText();
-				case 17:
-					addMoreText('Friday');
 				case 18:
-					addMoreText('Night');
+					createCoolText([curWacky[1]]);
 				case 19:
-					addMoreText('Funkin');
+					addMoreText(curWacky[2]);
 				case 20:
-					addMoreText('vs');
+					deleteCoolText();
 				case 21:
+					addMoreText('Friday');
+				case 22:
+					addMoreText('Night');
+				case 23:
+					addMoreText('Funkin');
+				case 24:
+					addMoreText('vs');
+				case 25:
 					addMoreText('Eyz');
 
-				case 22:
+				case 26:
 						deleteCoolText();
 						addMoreText('yaaay', -40);
 
-				case 23:
+				case 27:
 					skipIntro();
 			}
 		}
