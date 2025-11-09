@@ -116,11 +116,13 @@ class TitleState extends MusicBeatState
 	var logoBl:FlxSprite;
 	var barD:FlxSprite;
 	var barU:FlxSprite;
+	var blend:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
 	var swagShader:ColorSwap = null;
 	var bgMove:FlxBackdrop;
+	var bg:FlxSprite;
 
 	function startIntro()
 	{
@@ -193,6 +195,11 @@ class TitleState extends MusicBeatState
 		blackScreen.updateHitbox();
 		credGroup.add(blackScreen);
 
+		bg = new FlxSprite(0).loadGraphic(Paths.image('menutitle/bg'));
+		bg.alpha = 0;
+		bg.antialiasing = ClientPrefs.data.antialiasing;
+		credGroup.add(bg);
+
 		bgMove = new FlxBackdrop(Paths.image('backdrop'), XY, 0, 0)
 		bgMove.alpha = 0.11;
 		bgMove.color = 0xAA2F3D;		
@@ -200,6 +207,21 @@ class TitleState extends MusicBeatState
 		bgMove.antialiasing = ClientPrefs.data.antialiasing;
         bgMove.screenCenter(XY); 
 		credGroup.add(bgMove);
+
+		barU = new FlxSprite(0).loadGraphic(Paths.image('menutitle/barU'));
+		barU.y = -1200;
+		barU.antialiasing = ClientPrefs.data.antialiasing;
+		credGroup.add(barU)
+			
+		barD = new FlxSprite(0).loadGraphic(Paths.image('menutitle/barD'));
+		barD.y = 1200;
+		barD.antialiasing = ClientPrefs.data.antialiasing;
+		credGroup.add(barD)
+
+		blend = new FlxSprite(0).loadGraphic(Paths.image('menutitle/blend'));
+		blend.antialiasing = ClientPrefs.data.antialiasing;
+		blend.blend = ADD;
+		credGroup.add(blend)
 		
 		credTextShit = new Alphabet(0, 0, "", true);
 		credTextShit.screenCenter();
@@ -219,6 +241,7 @@ class TitleState extends MusicBeatState
 		add(barU);
 		add(barD);
 		add(titleText); //"Press Enter to Begin" text
+		add(blend);
 		add(credGroup);
 		add(ngSpr);
 
@@ -651,8 +674,11 @@ class TitleState extends MusicBeatState
 				remove(ngSpr);
 				remove(credGroup);
 				FlxG.camera.flash(FlxColor.WHITE, 4);
+				bg.alpha = 1;
 				FlxG.camera.zoom = 1.4;			
 				FlxTween.tween(FlxG.camera, {zoom: 1}, 2.5, {ease: FlxEase.expoOut});
+				FlxTween.tween(barU, {y: 0}, 0.5, {ease: FlxEase.expoOut});
+				FlxTween.tween(barD, {y: 0}, 0.5, {ease: FlxEase.expoOut});
 		
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
