@@ -49,6 +49,7 @@ class TitleState extends MusicBeatState
 	var blackScreen:FlxSprite;
 	var credTextShit:Alphabet;
 	var ngSpr:FlxSprite;
+	var eyzpfp:FlxSprite;
 	
 	//var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
 	var titleTextAlphas:Array<Float> = [1, .64];
@@ -220,7 +221,7 @@ class TitleState extends MusicBeatState
 		credGroup.add(barD);
 
 		blend = new FlxSprite(0).loadGraphic(Paths.image('menutitle/blend'));
-		blend.alpha = 0.4;
+		blend.alpha = 0.1;
 		blend.antialiasing = ClientPrefs.data.antialiasing;
 		blend.blend = ADD;
 		credGroup.add(blend);
@@ -410,7 +411,7 @@ class TitleState extends MusicBeatState
 				
 				timer = FlxEase.quadInOut(timer);
 				
-				titleText.color = FlxColor.interpolate(titleTextColors[0], titleTextColors[1], timer);
+				//titleText.color = FlxColor.interpolate(titleTextColors[0], titleTextColors[1], timer);
 				titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
 			}
 			
