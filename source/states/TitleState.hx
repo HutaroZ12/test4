@@ -419,11 +419,16 @@ class TitleState extends MusicBeatState
 			{
 				titleText.color = FlxColor.WHITE;
 				titleText.alpha = 1;
+				FlxTween.tween(barU, {y: -1200}, 3, {ease: FlxEase.expoOut});
+				FlxTween.tween(barD, {y: 1200}, 3, {ease: FlxEase.expoOut});
+				FlxTween.tween(titleText, {y: 1200}, 3, {ease: FlxEase.expoOut});
+				FlxTween.tween(logoBl, {y:2000}, 3.4, {ease: FlxEase.expoInOut});
+				FlxTween.tween(logoBl, {angle:180}, 3.8, {ease: FlxEase.expoInOut});
 				
 				if(titleText != null) titleText.animation.play('press');
 
 				FlxG.camera.flash(ClientPrefs.data.flashing ? FlxColor.WHITE : 0x4CFFFFFF, 1);
-				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
+         		FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);	
 
 				transitioning = true;
 				// FlxG.sound.music.stop();
