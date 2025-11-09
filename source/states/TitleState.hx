@@ -609,17 +609,17 @@ class TitleState extends MusicBeatState
 					deleteCoolText();
 					ngSpr.visible = false;
 					createCoolText([curWacky[0]]);
-				case 13:
 					addMoreText(curWacky[1]);
-				case 14:
+				case 13:
 					deleteCoolText();
-					addMoreText('Friday Night Funkin');
+					addMoreText('Friday Night');
+				case 14:
+					addMoreText('Funkin');
+					
 				case 15:
-					addMoreText('Vs');
-				case 16:
-					addMoreText('Eyz'); // credTextShit.text += '\nFunkin';
+					addMoreText('Vs Eyz'); // credTextShit.text += '\nFunkin';
 
-				case 17:
+				case 16:
 					skipIntro();
 			}
 		}
