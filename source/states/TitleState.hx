@@ -419,9 +419,9 @@ class TitleState extends MusicBeatState
 			{
 				titleText.color = FlxColor.WHITE;
 				titleText.alpha = 1;
-				FlxTween.tween(barU, {y: -1200}, 3, {ease: FlxEase.expoOut});
-				FlxTween.tween(barD, {y: 1200}, 3, {ease: FlxEase.expoOut});
-				FlxTween.tween(titleText, {y: 1200}, 3, {ease: FlxEase.expoOut});
+				FlxTween.tween(barU, {y: -1200}, 3.3, {ease: FlxEase.expoOut});
+				FlxTween.tween(barD, {y: 1200}, 3.3, {ease: FlxEase.expoOut});
+				FlxTween.tween(titleText, {y: 1200}, 3.3, {ease: FlxEase.expoOut});
 				FlxTween.tween(logoBl, {y:2000}, 3.4, {ease: FlxEase.expoInOut});
 				FlxTween.tween(logoBl, {angle:180}, 3.8, {ease: FlxEase.expoInOut});
 				
@@ -614,17 +614,19 @@ class TitleState extends MusicBeatState
 					deleteCoolText();
 					ngSpr.visible = false;
 					createCoolText([curWacky[0]]);
-					addMoreText(curWacky[1]);
+					
 				case 13:
+					addMoreText(curWacky[1]);
+				case 14:
 					deleteCoolText();
 					addMoreText('Friday Night');
-				case 14:
+				case 15:
 					addMoreText('Funkin');
 					
-				case 15:
+				case 16:
 					addMoreText('Vs Eyz'); // credTextShit.text += '\nFunkin';
 
-				case 16:
+				case 17:
 					skipIntro();
 			}
 		}
@@ -660,8 +662,6 @@ class TitleState extends MusicBeatState
 						remove(ngSpr);
 						remove(credGroup);
 						FlxG.camera.flash(FlxColor.WHITE, 2);
-						FlxG.camera.zoom = 1.4;			
-				FlxTween.tween(FlxG.camera, {zoom: 1}, 2.5, {ease: FlxEase.expoOut});
 						skippedIntro = true;
 
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
