@@ -13,6 +13,7 @@ class Clouds extends BaseStage
     var layer2:BGSprite;
     var layer3:BGSprite;
 	var layer5:BGSprite;
+	var layer6:BGSprite;
     var casa:FlxSprite;
     var nuvem0:BGSprite;
     var nuvem0b:BGSprite; // Segunda instância
@@ -42,59 +43,59 @@ class Clouds extends BaseStage
         add(layer0);
 
 		nuvem2 = new BGSprite('stages/sky/nuvem2', -500, -300);
-        nuvem2.scrollFactor.set(0.95, 1);
+        nuvem2.scrollFactor.set(0.85, 1);
         add(nuvem2);
 
         nuvem2b = new BGSprite('stages/sky/nuvem2', nuvem2.x + nuvem2.width, nuvem2.y);
-        nuvem2b.scrollFactor.set(0.95, 1);
+        nuvem2b.scrollFactor.set(0.85, 1);
         add(nuvem2b);
         
         nuvem3 = new BGSprite('stages/sky/nuvem3', -500, -300);
-        nuvem3.scrollFactor.set(0.95, 1);
+        nuvem3.scrollFactor.set(0.86, 1);
         add(nuvem3);
 
         nuvem3b = new BGSprite('stages/sky/nuvem3', nuvem3.x + nuvem3.width, nuvem3.y);
-        nuvem3b.scrollFactor.set(0.95, 1);
+        nuvem3b.scrollFactor.set(0.86, 1);
         add(nuvem3b);
         
         nuvem4 = new BGSprite('stages/sky/nuvem4', -500, -300);
-        nuvem4.scrollFactor.set(0.95, 1);
+        nuvem4.scrollFactor.set(0.87, 1);
         add(nuvem4);
 
         nuvem4b = new BGSprite('stages/sky/nuvem4', nuvem4.x + nuvem4.width, nuvem4.y);
-        nuvem4b.scrollFactor.set(0.95, 1);
+        nuvem4b.scrollFactor.set(0.87, 1);
         add(nuvem4b);
 		
         nuvem0 = new BGSprite('stages/sky/nuvem0', -500, -300);
-        nuvem0.scrollFactor.set(0.95, 1);
+        nuvem0.scrollFactor.set(0.88, 1);
         add(nuvem0);
 
         nuvem0b = new BGSprite('stages/sky/nuvem0', nuvem0.x + nuvem0.width, nuvem0.y);
-        nuvem0b.scrollFactor.set(0.95, 1);
+        nuvem0b.scrollFactor.set(0.88, 1);
         add(nuvem0b);
         
         nuvem1 = new BGSprite('stages/sky/nuvem1', -500, -300);
-        nuvem1.scrollFactor.set(0.95, 1);
+        nuvem1.scrollFactor.set(0.89, 1);
         add(nuvem1);
 
         nuvem1b = new BGSprite('stages/sky/nuvem1', nuvem1.x + nuvem1.width, nuvem1.y);
-        nuvem1b.scrollFactor.set(0.95, 1);
+        nuvem1b.scrollFactor.set(0.89, 1);
         add(nuvem1b);
              
         nuvem5 = new BGSprite('stages/sky/nuvem5', -500, -300);
-        nuvem5.scrollFactor.set(0.95, 1);
+        nuvem5.scrollFactor.set(0.91, 1);
         add(nuvem5);
 
         nuvem5b = new BGSprite('stages/sky/nuvem5', nuvem5.x + nuvem5.width, nuvem5.y);
-        nuvem5b.scrollFactor.set(0.95, 1);
+        nuvem5b.scrollFactor.set(0.91, 1);
         add(nuvem5b);
 
         nuvem6 = new BGSprite('stages/sky/nuvem6', -500, -300);
-        nuvem6.scrollFactor.set(0.95, 1);
+        nuvem6.scrollFactor.set(0.93, 1);
         add(nuvem6);
 
         nuvem6b = new BGSprite('stages/sky/nuvem6', nuvem6.x + nuvem6.width, nuvem6.y);
-        nuvem6b.scrollFactor.set(0.95, 1);
+        nuvem6b.scrollFactor.set(0.93, 1);
         add(nuvem6b);
         
         casa = new FlxSprite(-500, -300);
@@ -103,6 +104,12 @@ class Clouds extends BaseStage
 		casa.animation.play('idle');
 		casa.scale.set(0.99, 0.99);
 		add(casa);
+
+		layer6 = new BGSprite('stages/sky/layer6', -500, -300);
+        layer6.scrollFactor.set(0.84, 1);
+		layer6.alpha = 0.9;
+		layer6.blend = ADD;
+        add(layer6);
 		
         layer1 = new BGSprite('stages/sky/layer1', -500, -300);
         layer1.scrollFactor.set(0.99, 0.99);
@@ -325,6 +332,7 @@ override function createPost()
         }
     }
 }
+
 
 
 
