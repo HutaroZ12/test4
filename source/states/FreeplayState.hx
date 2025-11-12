@@ -571,6 +571,36 @@ class FreeplayState extends MusicBeatState
 		_updateSongLastDifficulty();
 	}
 
+	if (this.songDifficulties.length == 0)
+		{
+              	// Regrouping difficulties
+				if (diffNames.remove("."))
+					diffNames.insert(1, "normal");
+				if (diffNames.remove("easy"))
+					diffNames.insert(0, "easy");
+				if (diffNames.remove("hard"))
+					diffNames.insert(2, "hard");
+				this.songDifficulties = diffNames;
+			}
+			else
+			{
+				this.songDifficulties = ['normal'];
+				trace('Directory $sngDataPath does not exist! $songName has no charts (difficulties)!');
+				trace('Forcing "normal" difficulty. Expect issues!!');
+			}
+		}
+		if (allowErect && !hasErectSong())
+		{
+			//? nvm. it clutters logs a lot for no reason
+			//trace('$songName is missing variant in $sngDataPath');
+			this.songDifficulties.remove("erect");
+			this.songDifficulties.remove("nightmare");
+		}
+		if (!this.songDifficulties.contains(currentDifficulty))
+		{
+			currentDifficulty = songDifficulties[0]; // TODO
+		}
+
 	inline private function _updateSongLastDifficulty()
 		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 
