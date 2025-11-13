@@ -512,19 +512,16 @@ class FreeplayState extends MusicBeatState
 		
 // Filtrar músicas quando Erect estiver selecionado
 for (i in 0...songs.length) {
-    var song:SongMetadata = songs[i];
-    var visible:Bool = true;
+    var item:Alphabet = grpSongs.members[i];
+    var icon:HealthIcon = iconArray[i];
 
-    if(curDifficulty == 3) { // 3 = Erect
-        if(!songHasDifficulty(song, curDifficulty))
-            visible = false;
-    }
-
-    // Atualiza visibilidade no menu
-    grpSongs.members[i].visible = visible;
-    grpSongs.members[i].active = visible;
-    iconArray[i].visible = visible;
-    iconArray[i].active = visible;
+    if (Difficulty.getString(curDifficulty) == "Erect" && !songHasDifficulty(songs[i], curDifficulty)) {
+        item.visible = item.active = false;
+        icon.visible = icon.active = false;
+    } else {
+        item.visible = item.active = true;
+        icon.visible = icon.active = true;
+	}
 }
 		
 		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
