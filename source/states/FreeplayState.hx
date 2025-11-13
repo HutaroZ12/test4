@@ -500,6 +500,11 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
+	private function songHasDifficulty(song:SongMetadata, diff:Int):Bool {
+        var path:String = Paths.formatToSongPath(song.songName) + "-" + Difficulty.getString(diff).toLowerCase() + ".json";
+        return File.exists(Paths.getPath(path, TEXT));
+	}
+	
 	function changeDiff(change:Int = 0)
 	{
 		if (player.playingMusic)
@@ -538,13 +543,55 @@ for (i in 0...songs.length) {
 		positionHighscore();
 		missingText.visible = false;
 		missingTextBG.visible = false;
+
+		        for (i in 0...songs.length) {
+            var song:SongMetadata = songs[i];
+            var visible:Bool = true;
+
+            if(curDifficulty == 3) { // 3 = Erect
+                if(!songHasDifficulty(song, curDifficulty))
+                    visible = false;
+            }
+
+            grpSongs.members[i].visible = visible;
+            grpSongs.members[i].active = visible;
+            iconArray[i].visible = visible;
+            iconArray[i].active = visible;
+        }
 	}
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
-		if (player.playingMusic)
-			return;
-		}
+	    var anyVisible:Bool = false;
+        for (song in songs) if(grpSongs.members[songs.indexOf(song)].visible) anyVisible = true;
+        if(!anyVisible) {
+            curSelected = 0;
+            return;
+        }
+
+        curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
+        _updateSongLastDifficulty();
+        if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+        var newColor:Int = songs[curSelected].color;
+        if(newColor != intendedColor)
+        {
+            intendedColor = newColor;
+            FlxTween.cancelTweensOf(bg);
+            FlxTween.color(bg, 1, bg.color, intendedColor);
+        }
+
+        for (num => item in grpSongs.members)
+        {
+            var icon:HealthIcon = iconArray[num];
+            item.alpha = 0.6;
+            icon.alpha = 0.6;
+            if (item.targetY == curSelected)
+            {
+                item.alpha = 1;
+                icon.alpha = 1;
+            }
+        }
 		
 		Mods.currentModDirectory = songs[curSelected].folder;
 		PlayState.storyWeek = songs[curSelected].week;
