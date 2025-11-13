@@ -550,11 +550,11 @@ class FreeplayState extends MusicBeatState
 		}
 		else
 		{
-			trace('Nenhuma música tem a dificuldade "' + currentDiff + '". Revertendo para "hard".');
+			trace('Nenhuma música tem a dificuldade "' + currentDiff + '". Revertendo para "normal".');
 			curDifficulty = 2; // hard
-			lastDifficultyName = "hard";
-			diffText.text = "< HARD >";
-			currentDiff = "hard";
+			lastDifficultyName = "normal";
+			diffText.text = "< NORMAL >";
+			currentDiff = "normal";
 			changeSelection(0, false); // apenas reseta seleção, não chama changeDiff de novo
 		}
 	}
@@ -581,9 +581,6 @@ class FreeplayState extends MusicBeatState
 		changeSelection(0, false);
 	}
 
-	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-
-	// ======= Recarrega pontuação da música atual =======
 	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 
 	lastDifficultyName = Difficulty.getString(curDifficulty, false);
