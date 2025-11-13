@@ -505,6 +505,13 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
+	function changeDiff(change:Int = 0)
+	{
+		if (player.playingMusic)
+			return;
+
+		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
+
 	if (!baseDiffs.contains(currentDiff))
 {
 	var filteredSongs:Array<SongMetadata> = [];
