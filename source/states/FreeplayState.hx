@@ -506,44 +506,49 @@ class FreeplayState extends MusicBeatState
 	}
 
 	function changeDiff(change:Int = 0)
-	{
-		if (player.playingMusic)
-			return;
+{
+	if (player.playingMusic)
+		return;
 
-		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
+	curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
+
+	// ===== Atualiza músicas de acordo com a dificuldade =====
+	var baseDiffs:Array<String> = ["easy", "normal", "hard"];
+	var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
 
 	if (!baseDiffs.contains(currentDiff))
-{
-	var filteredSongs:Array<SongMetadata> = [];
-
-	for (song in songs)
 	{
-		var songPath:String = Paths.formatToSongPath(song.songName);
-		var chartPath:String = Paths.modsJson(songPath + '/' + songPath + '-' + currentDiff);
+		var filteredSongs:Array<SongMetadata> = [];
 
-		// Verifica se o arquivo existe de forma segura (sem tentar abrir ele)
-		var chartExists:Bool = Assets.exists(chartPath);
+		for (song in songs)
+		{
+			var songPath:String = Paths.formatToSongPath(song.songName);
+			var chartPath:String = Paths.modsJson(songPath + '/' + songPath + '-' + currentDiff);
 
-		if (chartExists)
-			filteredSongs.push(song);
+			// Verifica se o chart existe (seguro pra todas as plataformas)
+			var chartExists:Bool = Assets.exists(chartPath);
+
+			if (chartExists)
+				filteredSongs.push(song);
+			else
+				trace('Removendo: ' + song.songName + ' (sem dificuldade ' + currentDiff + ')');
+		}
+
+		if (filteredSongs.length > 0)
+		{
+			songs = filteredSongs;
+			curSelected = 0;
+			changeSelection();
+			trace('Músicas filtradas com dificuldade: ' + currentDiff);
+		}
 		else
-			trace('Removendo: ' + song.songName + ' (sem dificuldade ' + currentDiff + ')');
-	}
-
-	if (filteredSongs.length > 0)
-	{
-		songs = filteredSongs;
-		curSelected = 0;
-		changeSelection();
-		trace('Músicas filtradas com dificuldade: ' + currentDiff);
+		{
+			trace('Nenhuma música tem a dificuldade ' + currentDiff + ', mantendo lista atual.');
+		}
 	}
 	else
 	{
-		trace('Nenhuma música tem a dificuldade ' + currentDiff + ', mantendo lista atual.');
-	}
-}
-	else
-	{
+		// Recarrega músicas padrão
 		trace('Recarregando músicas padrão...');
 		songs = [];
 		for (i in 0...WeekData.weeksList.length)
