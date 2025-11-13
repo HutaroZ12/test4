@@ -617,37 +617,7 @@ class FreeplayState extends MusicBeatState
 		FlxG.autoPause = ClientPrefs.data.autoPause;
 		if (!FlxG.sound.music.playing && !stopMusicPlay)
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-	}
-
-	function changeDifficulty(change:Int = 0):Void
-	{
-		if (this.songDifficulties.length == 0)
-		{
-			if (difficultyName.remove("."))
-				difficultyName.insert(1, "normal");
-			if (difficultyName.remove("easy"))
-				difficultyName.insert(0, "easy");
-			if (difficultyName.remove("hard"))
-				difficultyName.insert(2, "hard");
-			this.songDifficulties = difficultyName;
-		}
-		else
-		{
-			this.songDifficulties = ['normal'];
-			trace('Directory $sngDataPath does not exist! $songName has no charts (difficulties)!');
-			trace('Forcing "normal" difficulty. Expect issues!!');
-		}
-
-		if (!hasErectSong(song.songName))
-        {
-        	songs.remove(song);
-        }
-
-		if (!this.songDifficulties.contains(currentDifficulty))
-		{
-			currentDifficulty = songDifficulties[0];
-		}
-	}
+	}	
 }
 
 class SongMetadata
