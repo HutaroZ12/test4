@@ -11,7 +11,7 @@
 		],
 		[
 			"Radiant",
-			"face",
+			"eyz",
 			[
 				146,
 				113,
@@ -22,7 +22,7 @@
 	"hiddenUntilUnlocked": false,
 	"hideFreeplay": false,
 	"weekBackground": "sky",
-	"difficulties": "normal",
+	"difficulties": "normal, erect"
 	"weekCharacters": [
 		"eyz",
 		"",
