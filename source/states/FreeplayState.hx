@@ -200,51 +200,6 @@ class FreeplayState extends MusicBeatState
 		changeSelection();
 		updateTexts();
 
-		// ===== FILTRAR MÚSICAS QUE NÃO POSSUEM A DIFICULDADE ATUAL =====
-		var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
-		var baseDiffs:Array<String> = ["easy", "normal", "hard"];
-
-		var originalSongs = songs.copy();
-
-		if (!baseDiffs.contains(currentDiff))
-		{
-			trace("Filtrando músicas que possuem a dificuldade: " + currentDiff);
-			var filteredSongs:Array<SongMetadata> = [];
-
-			for (song in songs)
-			{
-				var songPath:String = Paths.formatToSongPath(song.songName);
-
-				// Pega o caminho igual ao PsychEngine faz pros charts
-				var chartExists:Bool = false;
-
-				try
-				{
-					var fileText:String = Paths.getTextFromFile(Paths.json(songPath + '/' + songPath + '-' + currentDiff));
-					if (fileText != null && fileText.length > 0)
-						chartExists = true;
-				}
-				catch (e:Dynamic)
-				{
-					chartExists = false;
-				}
-
-				if (chartExists)
-					filteredSongs.push(song);
-				else
-					trace('Remove: ' + song.songName + ' (sem ' + currentDiff + ')');
-			}
-
-			songs = filteredSongs;
-
-			if (songs.length <= 0)
-			{
-				trace("Nenhuma música possui a dificuldade atual, voltando à lista completa.");
-				songs = originalSongs;
-				changeSelection(0);
-			}
-		}
-
 		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
 		super.create();
 	}
