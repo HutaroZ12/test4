@@ -243,6 +243,7 @@ class FreeplayState extends MusicBeatState
 			trace("No songs currently have a difficulty level, going back to the complete list.");
 			songs = originalSongs;	
 			changeSelection(0);
+			}
 		}
 
 		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
