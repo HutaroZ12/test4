@@ -511,51 +511,76 @@ class FreeplayState extends MusicBeatState
 		return;
 
 	curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
+	lastDifficultyName = Difficulty.getString(curDifficulty, false);
 
-	// ===== Atualiza músicas de acordo com a dificuldade =====
-	var baseDiffs:Array<String> = ["easy", "normal", "hard"];
+	var displayDiff:String = Difficulty.getString(curDifficulty);
+	if (Difficulty.list.length > 1)
+		diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+	else
+		diffText.text = displayDiff.toUpperCase();
+
+	positionHighscore();
+	missingText.visible = false;
+	missingTextBG.visible = false;
+
+	// ========== FILTRAGEM DE MÚSICAS SEM A DIFICULDADE ATUAL ==========
 	var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
+	var baseDiffs:Array<String> = ["easy", "normal", "hard"];
 
+	// Apenas filtrar se for uma dificuldade custom
 	if (!baseDiffs.contains(currentDiff))
 	{
+		trace("🔎 Filtrando músicas que possuem a dificuldade: " + currentDiff);
 		var filteredSongs:Array<SongMetadata> = [];
 
 		for (song in songs)
 		{
 			var songPath:String = Paths.formatToSongPath(song.songName);
-			var chartPath:String = Paths.modsJson(songPath + '/' + songPath + '-' + currentDiff);
+			var jsonPath:String = Paths.modsJson(songPath + '/' + songPath + '-' + currentDiff + '.json');
+			var chartExists:Bool = false;
 
-			// Verifica se o chart existe (seguro pra todas as plataformas)
-			var chartExists:Bool = Assets.exists(chartPath);
+			try
+			{
+				chartExists = openfl.utils.Assets.exists(jsonPath);
+			}
+			catch (e:Dynamic)
+			{
+				chartExists = false;
+			}
 
 			if (chartExists)
 				filteredSongs.push(song);
 			else
-				trace('Removendo: ' + song.songName + ' (sem dificuldade ' + currentDiff + ')');
+				trace(' Removendo: ' + song.songName + ' (sem ' + currentDiff + ')');
 		}
 
 		if (filteredSongs.length > 0)
 		{
 			songs = filteredSongs;
 			curSelected = 0;
-			changeSelection();
-			trace('Músicas filtradas com dificuldade: ' + currentDiff);
+			changeSelection(0, false);
+			trace(' Mantidas ' + songs.length + ' songs with the difficulty ' + currentDiff);
 		}
 		else
 		{
-			trace('Nenhuma música tem a dificuldade ' + currentDiff + ', mantendo lista atual.');
+			trace(' No song has the difficulty "' + currentDiff + '". Reverting to "hard".');
+			curDifficulty = 2; // 0 = easy, 1 = normal, 2 = hard
+			changeDiff(0);
+			return;
 		}
 	}
 	else
 	{
-		// Recarrega músicas padrão
-		trace('Recarregando músicas padrão...');
+		// Se voltou para easy/normal/hard, recarrega todas as músicas
+		trace(' Returning to standard difficulty: ' + currentDiff);
 		songs = [];
+		WeekData.reloadWeekFiles(false);
+
 		for (i in 0...WeekData.weeksList.length)
 		{
 			if (weekIsLocked(WeekData.weeksList[i])) continue;
-
 			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
+
 			for (song in leWeek.songs)
 			{
 				var colors:Array<Int> = song[2];
@@ -565,7 +590,8 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 		curSelected = 0;
-		changeSelection();
+		changeSelection(0, false);
+	     }
 	}
 
 	#if !switch
