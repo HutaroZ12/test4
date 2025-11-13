@@ -523,11 +523,10 @@ class FreeplayState extends MusicBeatState
 	missingText.visible = false;
 	missingTextBG.visible = false;
 
-	// ========== FILTRAGEM DE MÚSICAS SEM A DIFICULDADE ATUAL ==========
+	// ========= FILTRAGEM DE MÚSICAS =========
 	var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
 	var baseDiffs:Array<String> = ["easy", "normal", "hard"];
 
-	// Apenas filtrar se for uma dificuldade custom
 	if (!baseDiffs.contains(currentDiff))
 	{
 		trace("🔎 Filtrando músicas que possuem a dificuldade: " + currentDiff);
@@ -536,22 +535,18 @@ class FreeplayState extends MusicBeatState
 		for (song in songs)
 		{
 			var songPath:String = Paths.formatToSongPath(song.songName);
-			var jsonPath:String = Paths.modsJson(songPath + '/' + songPath + '-' + currentDiff + '.json');
+			var jsonPath:String = 'assets/data/' + songPath + '/' + songPath + '-' + currentDiff + '.json';
 			var chartExists:Bool = false;
 
-			try
+			if (sys.FileSystem.exists(jsonPath))
 			{
-				chartExists = openfl.utils.Assets.exists(jsonPath);
-			}
-			catch (e:Dynamic)
-			{
-				chartExists = false;
+				chartExists = true;
 			}
 
 			if (chartExists)
 				filteredSongs.push(song);
 			else
-				trace(' Removendo: ' + song.songName + ' (sem ' + currentDiff + ')');
+				trace('🚫 Removendo: ' + song.songName + ' (sem ' + currentDiff + ')');
 		}
 
 		if (filteredSongs.length > 0)
@@ -559,20 +554,19 @@ class FreeplayState extends MusicBeatState
 			songs = filteredSongs;
 			curSelected = 0;
 			changeSelection(0, false);
-			trace(' Mantidas ' + songs.length + ' songs with the difficulty ' + currentDiff);
+			trace('✅ Mantidas ' + songs.length + ' músicas com a dificuldade ' + currentDiff);
 		}
 		else
 		{
-			trace(' No song has the difficulty "' + currentDiff + '". Reverting to "hard".');
-			curDifficulty = 2; // 0 = easy, 1 = normal, 2 = hard
+			trace('⚠️ Nenhuma música tem a dificuldade "' + currentDiff + '". Revertendo para "hard".');
+			curDifficulty = 2;
 			changeDiff(0);
 			return;
 		}
 	}
 	else
 	{
-		// Se voltou para easy/normal/hard, recarrega todas as músicas
-		trace(' Returning to standard difficulty: ' + currentDiff);
+		trace('🔄 Voltando para dificuldade padrão: ' + currentDiff);
 		songs = [];
 		WeekData.reloadWeekFiles(false);
 
@@ -591,13 +585,10 @@ class FreeplayState extends MusicBeatState
 		}
 		curSelected = 0;
 		changeSelection(0, false);
-	     }
 	}
 
-	#if !switch
+	// ======= Recarrega pontuação da música atual =======
 	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-	intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-	#end
 
 	lastDifficultyName = Difficulty.getString(curDifficulty, false);
 	var displayDiff:String = Difficulty.getString(curDifficulty);
