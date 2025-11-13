@@ -510,6 +510,49 @@ class FreeplayState extends MusicBeatState
 			return;
 
 		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
+
+		// ===== Atualiza músicas de acordo com a dificuldade =====
+	var baseDiffs:Array<String> = ["easy", "normal", "hard"];
+	var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
+
+	if (!baseDiffs.contains(currentDiff))
+	{
+		var filteredSongs:Array<SongMetadata> = [];
+		for (song in songs)
+		{
+			var songPath:String = Paths.formatToSongPath(song.songName);
+			var jsonPath:String = Paths.json(songPath + '/' + songPath + '-' + currentDiff);
+			if (Paths.exists(jsonPath))
+				filteredSongs.push(song);
+		}
+
+		if (filteredSongs.length > 0)
+		{
+			songs = filteredSongs;
+			curSelected = 0;
+			changeSelection();
+		}
+	}
+	else
+	{
+		// Recarrega todas as músicas se voltou pra easy/normal/hard
+		songs = [];
+		for (i in 0...WeekData.weeksList.length)
+		{
+			if (weekIsLocked(WeekData.weeksList[i])) continue;
+			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
+			for (song in leWeek.songs)
+			{
+				var colors:Array<Int> = song[2];
+				if(colors == null || colors.length < 3)
+					colors = [146, 113, 253];
+				addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+			}
+		}
+		curSelected = 0;
+		changeSelection();
+	}
+		
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
