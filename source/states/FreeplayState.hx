@@ -570,7 +570,6 @@ class FreeplayState extends MusicBeatState
 		changeDiff();
 		_updateSongLastDifficulty();
 	}
-	}
 
 	if (this.songDifficulties.length == 0)
 		{
