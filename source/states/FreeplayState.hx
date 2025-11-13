@@ -206,10 +206,11 @@ class FreeplayState extends MusicBeatState
 		// Lista das dificuldades "básicas" que todo mod costuma ter
 		var baseDiffs:Array<String> = ["easy", "normal", "hard"];
 
+		var originalSongs = songs.copy();
 		// Se a dificuldade atual NÃO for uma dessas básicas, filtramos
 		if (!baseDiffs.contains(currentDiff))
 		{
-			trace("Filtrando músicas que possuem a dificuldade: " + currentDiff);
+			trace("Filtering songs that have the difficulty: " + currentDiff);
 			var filteredSongs:Array<SongMetadata> = [];
 
 			for (song in songs)
@@ -233,10 +234,16 @@ class FreeplayState extends MusicBeatState
 				if (hasDiff)
 					filteredSongs.push(song);
 				else
-					trace('Removendo: ' + song.songName + ' (sem ' + currentDiff + ')');
+					trace('Remove: ' + song.songName + ' (sem ' + currentDiff + ')');
 			}
 
 			songs = filteredSongs;
+			if (songs.legh <= 0)
+			{
+			trace("No songs currently have a difficulty level, going back to the complete list.")
+			songs = originalSongs;
+				
+			changeSelection(0);
 		}
 
 		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
