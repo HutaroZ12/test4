@@ -582,7 +582,6 @@ class FreeplayState extends MusicBeatState
 	}
 
 	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-}
 
 	// ======= Recarrega pontuação da música atual =======
 	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
