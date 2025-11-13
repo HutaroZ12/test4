@@ -619,17 +619,17 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 	}
 
-	function updateSongDifficulties():Void
+	function changeDifficulty(change:Int = 0):Void
 	{
 		if (this.songDifficulties.length == 0)
 		{
-			if (diffNames.remove("."))
-				diffNames.insert(1, "normal");
-			if (diffNames.remove("easy"))
-				diffNames.insert(0, "easy");
-			if (diffNames.remove("hard"))
-				diffNames.insert(2, "hard");
-			this.songDifficulties = diffNames;
+			if (difficultyName.remove("."))
+				difficultyName.insert(1, "normal");
+			if (difficultyName.remove("easy"))
+				difficultyName.insert(0, "easy");
+			if (difficultyName.remove("hard"))
+				difficultyName.insert(2, "hard");
+			this.songDifficulties = difficultyName;
 		}
 		else
 		{
@@ -638,11 +638,10 @@ class FreeplayState extends MusicBeatState
 			trace('Forcing "normal" difficulty. Expect issues!!');
 		}
 
-		if (allowErect && !hasErectSong())
-		{
-			this.songDifficulties.remove("erect");
-			this.songDifficulties.remove("nightmare");
-		}
+		if (!hasErectSong(song.songName))
+        {
+        	songs.remove(song);
+        }
 
 		if (!this.songDifficulties.contains(currentDifficulty))
 		{
