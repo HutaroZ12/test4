@@ -238,7 +238,7 @@ class FreeplayState extends MusicBeatState
 			}
 
 			songs = filteredSongs;
-			if (songs.legh <= 0)
+			if (songs.length <= 0)
 			{
 			trace("No songs currently have a difficulty level, going back to the complete list.");
 			songs = originalSongs;	
