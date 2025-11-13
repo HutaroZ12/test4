@@ -501,8 +501,8 @@ class FreeplayState extends MusicBeatState
 	}
 
 	private function songHasDifficulty(song:SongMetadata, diff:Int):Bool {
-        var path:String = Paths.formatToSongPath(song.songName) + "-" + Difficulty.getString(diff).toLowerCase() + ".json";
-        return File.exists(Paths.getPath(path, TEXT));
+    var path:String = Paths.formatToSongPath(song.songName) + "-" + Difficulty.getString(diff).toLowerCase() + ".json";
+    return Assets.exists(path, TEXT);
 	}
 	
 	function changeDiff(change:Int = 0)
