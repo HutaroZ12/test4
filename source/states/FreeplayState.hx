@@ -19,6 +19,7 @@ import sys.FileSystem;
 
 import openfl.utils.Assets;
 
+
 import haxe.Json;
 
 class FreeplayState extends MusicBeatState
@@ -504,51 +505,36 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-	function changeDiff(change:Int = 0)
-{
-	if (player.playingMusic)
-		return;
-
-	curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
-
-	var baseDiffs:Array<String> = ["easy", "normal", "hard"];
-	var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
-
 	if (!baseDiffs.contains(currentDiff))
+{
+	var filteredSongs:Array<SongMetadata> = [];
+
+	for (song in songs)
 	{
-		var filteredSongs:Array<SongMetadata> = [];
+		var songPath:String = Paths.formatToSongPath(song.songName);
+		var chartPath:String = Paths.modsJson(songPath + '/' + songPath + '-' + currentDiff);
 
-		for (song in songs)
-		{
-			var songPath:String = Paths.formatToSongPath(song.songName);
-			var chartPath:String = Paths.modsJson(songPath + '/' + songPath + '-' + currentDiff);
+		// Verifica se o arquivo existe de forma segura (sem tentar abrir ele)
+		var chartExists:Bool = Assets.exists(chartPath);
 
-			// Teste seguro: tenta carregar o JSON sem crashar
-			var chartData:Dynamic = null;
-			try {
-				chartData = Song.loadFromJson(songPath + '-' + currentDiff, songPath);
-			} catch (e:Dynamic) {
-				chartData = null;
-			}
-
-			if (chartData != null)
-				filteredSongs.push(song);
-			else
-				trace('Removendo: ' + song.songName + ' (sem dificuldade ' + currentDiff + ')');
-		}
-
-		if (filteredSongs.length > 0)
-		{
-			songs = filteredSongs;
-			curSelected = 0;
-			changeSelection();
-			trace('Músicas filtradas com dificuldade: ' + currentDiff);
-		}
+		if (chartExists)
+			filteredSongs.push(song);
 		else
-		{
-			trace('Nenhuma música tem a dificuldade ' + currentDiff + ', mantendo lista atual.');
-		}
+			trace('Removendo: ' + song.songName + ' (sem dificuldade ' + currentDiff + ')');
 	}
+
+	if (filteredSongs.length > 0)
+	{
+		songs = filteredSongs;
+		curSelected = 0;
+		changeSelection();
+		trace('Músicas filtradas com dificuldade: ' + currentDiff);
+	}
+	else
+	{
+		trace('Nenhuma música tem a dificuldade ' + currentDiff + ', mantendo lista atual.');
+	}
+}
 	else
 	{
 		trace('Recarregando músicas padrão...');
