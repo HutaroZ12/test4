@@ -13,6 +13,10 @@ import substates.ResetScoreSubState;
 import flixel.math.FlxMath;
 import flixel.util.FlxDestroyUtil;
 
+#if sys
+import sys.FileSystem;
+#end
+
 import openfl.utils.Assets;
 
 import haxe.Json;
@@ -618,6 +622,45 @@ class FreeplayState extends MusicBeatState
 		if (!FlxG.sound.music.playing && !stopMusicPlay)
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 	}	
+
+// ===== FILTRAR MÚSICAS QUE NÃO POSSUEM A DIFICULDADE ATUAL =====
+var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
+
+// Lista das dificuldades "básicas" que todo mod costuma ter
+var baseDiffs:Array<String> = ["easy", "normal", "hard"];
+
+// Se a dificuldade atual NÃO for uma dessas básicas, filtramos
+if (!baseDiffs.contains(currentDiff))
+{
+	trace("Filtrando músicas que possuem a dificuldade: " + currentDiff);
+	var filteredSongs:Array<SongMetadata> = [];
+
+	for (song in songs)
+	{
+		var songPath:String = Paths.formatToSongPath(song.songName);
+		var chartPath:String = Paths.json(songPath + "-" + currentDiff);
+
+		var hasDiff:Bool = false;
+
+		#if sys
+		hasDiff = FileSystem.exists(chartPath);
+		#else
+		try {
+			var test = Paths.getTextFromFile(chartPath);
+			hasDiff = (test != null && test.length > 0);
+		} catch (e:Dynamic) {
+			hasDiff = false;
+		}
+		#end
+
+		if (hasDiff)
+			filteredSongs.push(song);
+		else
+			trace('Removendo: ' + song.songName + ' (sem ' + currentDiff + ')');
+	}
+
+	songs = filteredSongs;
+}
 }
 
 class SongMetadata
