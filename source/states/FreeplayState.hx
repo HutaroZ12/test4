@@ -208,6 +208,4 @@ class FreeplayState extends MusicBeatState
 		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
 		super.create();
 	}
-
-	// (restante do seu código permanece igual)
-	// Nenhuma função foi modificada abaixo dessa linha!
+}
