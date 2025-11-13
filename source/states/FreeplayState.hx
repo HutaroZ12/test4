@@ -523,30 +523,22 @@ class FreeplayState extends MusicBeatState
 	missingText.visible = false;
 	missingTextBG.visible = false;
 
-	// ========= FILTRAGEM DE MÚSICAS =========
 	var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
 	var baseDiffs:Array<String> = ["easy", "normal", "hard"];
 
 	if (!baseDiffs.contains(currentDiff))
 	{
-		trace("🔎 Filtrando músicas que possuem a dificuldade: " + currentDiff);
+		trace("Filtrando músicas que possuem a dificuldade: " + currentDiff);
 		var filteredSongs:Array<SongMetadata> = [];
 
 		for (song in songs)
 		{
 			var songPath:String = Paths.formatToSongPath(song.songName);
 			var jsonPath:String = 'assets/data/' + songPath + '/' + songPath + '-' + currentDiff + '.json';
-			var chartExists:Bool = false;
-
 			if (sys.FileSystem.exists(jsonPath))
-			{
-				chartExists = true;
-			}
-
-			if (chartExists)
 				filteredSongs.push(song);
 			else
-				trace('🚫 Removendo: ' + song.songName + ' (sem ' + currentDiff + ')');
+				trace('Removendo: ' + song.songName + ' (sem ' + currentDiff + ')');
 		}
 
 		if (filteredSongs.length > 0)
@@ -554,19 +546,21 @@ class FreeplayState extends MusicBeatState
 			songs = filteredSongs;
 			curSelected = 0;
 			changeSelection(0, false);
-			trace('✅ Mantidas ' + songs.length + ' músicas com a dificuldade ' + currentDiff);
+			trace('Mantidas ' + songs.length + ' músicas com a dificuldade ' + currentDiff);
 		}
 		else
 		{
-			trace('⚠️ Nenhuma música tem a dificuldade "' + currentDiff + '". Revertendo para "hard".');
-			curDifficulty = 2;
-			changeDiff(0);
-			return;
+			trace('Nenhuma música tem a dificuldade "' + currentDiff + '". Revertendo para "hard".');
+			curDifficulty = 2; // hard
+			lastDifficultyName = "hard";
+			diffText.text = "< HARD >";
+			currentDiff = "hard";
+			changeSelection(0, false); // apenas reseta seleção, não chama changeDiff de novo
 		}
 	}
 	else
 	{
-		trace('🔄 Voltando para dificuldade padrão: ' + currentDiff);
+		trace('Voltando para dificuldade padrão: ' + currentDiff);
 		songs = [];
 		WeekData.reloadWeekFiles(false);
 
@@ -586,6 +580,9 @@ class FreeplayState extends MusicBeatState
 		curSelected = 0;
 		changeSelection(0, false);
 	}
+
+	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+}
 
 	// ======= Recarrega pontuação da música atual =======
 	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
