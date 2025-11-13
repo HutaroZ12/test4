@@ -624,6 +624,7 @@ class FreeplayState extends MusicBeatState
 	}	
 
 // ===== FILTRAR MÚSICAS QUE NÃO POSSUEM A DIFICULDADE ATUAL =====
+	{
 var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
 
 // Lista das dificuldades "básicas" que todo mod costuma ter
