@@ -599,7 +599,6 @@ class FreeplayState extends MusicBeatState
 		if (!this.songDifficulties.contains(currentDifficulty))
 		{
 			currentDifficulty = songDifficulties[0]; // TODO
-		}
 
 	inline private function _updateSongLastDifficulty()
 		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
