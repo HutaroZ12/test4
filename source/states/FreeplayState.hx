@@ -519,12 +519,17 @@ class FreeplayState extends MusicBeatState
 	{
 		var filteredSongs:Array<SongMetadata> = [];
 		for (song in songs)
-		{
-			var songPath:String = Paths.formatToSongPath(song.songName);
-			var jsonPath:String = Paths.json(songPath + '/' + songPath + '-' + currentDiff);
-			if (Paths.exists(jsonPath))
-				filteredSongs.push(song);
-		}
+{
+	var songPath:String = Paths.formatToSongPath(song.songName);
+	var chartPath:String = Paths.modsJson(songPath + '/' + songPath + '-' + currentDiff);
+	if (!FileSystem.exists(chartPath))
+		chartPath = Paths.json(songPath + '/' + songPath + '-' + currentDiff);
+
+	if (FileSystem.exists(chartPath))
+		filteredSongs.push(song);
+	else
+		trace('Removendo: ' + song.songName + ' (sem dificuldade ' + currentDiff + ')');
+}
 
 		if (filteredSongs.length > 0)
 		{
