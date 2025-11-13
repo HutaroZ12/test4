@@ -202,47 +202,46 @@ class FreeplayState extends MusicBeatState
 
 		// ===== FILTRAR MÚSICAS QUE NÃO POSSUEM A DIFICULDADE ATUAL =====
 		var currentDiff:String = Difficulty.getString(curDifficulty, false).toLowerCase();
-
-		// Lista das dificuldades "básicas" que todo mod costuma ter
 		var baseDiffs:Array<String> = ["easy", "normal", "hard"];
 
 		var originalSongs = songs.copy();
-		// Se a dificuldade atual NÃO for uma dessas básicas, filtramos
+
 		if (!baseDiffs.contains(currentDiff))
 		{
-			trace("Filtering songs that have the difficulty: " + currentDiff);
+			trace("Filtrando músicas que possuem a dificuldade: " + currentDiff);
 			var filteredSongs:Array<SongMetadata> = [];
 
 			for (song in songs)
 			{
 				var songPath:String = Paths.formatToSongPath(song.songName);
-				var chartPath:String = Paths.json(songPath + "-" + currentDiff);
 
-				var hasDiff:Bool = false;
+				// Pega o caminho igual ao PsychEngine faz pros charts
+				var chartExists:Bool = false;
 
-				#if sys
-				hasDiff = FileSystem.exists(chartPath);
-				#else
-				try {
-					var test = Paths.getTextFromFile(chartPath);
-					hasDiff = (test != null && test.length > 0);
-				} catch (e:Dynamic) {
-					hasDiff = false;
+				try
+				{
+					var fileText:String = Paths.getTextFromFile(Paths.json(songPath + '/' + songPath + '-' + currentDiff));
+					if (fileText != null && fileText.length > 0)
+						chartExists = true;
 				}
-				#end
+				catch (e:Dynamic)
+				{
+					chartExists = false;
+				}
 
-				if (hasDiff)
+				if (chartExists)
 					filteredSongs.push(song);
 				else
 					trace('Remove: ' + song.songName + ' (sem ' + currentDiff + ')');
 			}
 
 			songs = filteredSongs;
+
 			if (songs.length <= 0)
 			{
-			trace("No songs currently have a difficulty level, going back to the complete list.");
-			songs = originalSongs;	
-			changeSelection(0);
+				trace("Nenhuma música possui a dificuldade atual, voltando à lista completa.");
+				songs = originalSongs;
+				changeSelection(0);
 			}
 		}
 
