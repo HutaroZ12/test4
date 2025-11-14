@@ -95,14 +95,26 @@ class FreeplayState extends MusicBeatState
 
 			WeekData.setDirectoryFromWeek(leWeek);
 			for (song in leWeek.songs)
-			{
-				var colors:Array<Int> = song[2];
-				if(colors == null || colors.length < 3)
-				{
-					colors = [146, 113, 253];
-				}
-				addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
-			}
+{
+    var songName:String = song[0].toLowerCase();
+
+    // --- FILTRO: remover músicas que não têm dificuldade ERECT ---
+    if (curDifficulty == 3) // 3 = erect
+    {
+        var erectChart:String = 'assets/data/${songName}/${songName}-erect.json';
+
+        // Se não existir chart erect, pula a música
+        if (!sys.FileSystem.exists(erectChart))
+            continue;
+    }
+    // --------------------------------------------------------------
+
+    var colors:Array<Int> = song[2];
+    if (colors == null || colors.length < 3)
+        colors = [146, 113, 253];
+
+    addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+}
 		}
 		Mods.loadTopMod();
 
