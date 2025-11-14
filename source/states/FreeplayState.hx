@@ -505,23 +505,38 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-	function changeDiff(change:Int = 0):Void {
-    if (player.playingMusic) return;
+	private function getSongsForDifficulty(diff:String):Array<SongMetadata> {
+    return songs.filter(song -> song.lastDifficulty != null && song.lastDifficulty == diff);
+	}
+	
+	function changeDiff(change:Int = 0) {
+    if(player.playingMusic) return;
 
     curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
+    var diffName:String = Difficulty.getString(curDifficulty);
 
-    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
+    // Filtra músicas disponíveis para esta dificuldade
+    var filteredSongs = getSongsForDifficulty(diffName);
 
-    lastDifficultyName = Difficulty.getString(curDifficulty, false);
-    var displayDiff:String = Difficulty.getString(curDifficulty);
-    diffText.text = (Difficulty.list.length > 1) ? '< ' + displayDiff.toUpperCase() + ' >' : displayDiff.toUpperCase();
+    // Se não houver músicas na dificuldade, mostra aviso e não continua
+    if(filteredSongs.length == 0) {
+        missingText.text = 'No songs available for ' + diffName.toUpperCase();
+        missingText.visible = true;
+        missingTextBG.visible = true;
+        return;
+    } else {
+        missingText.visible = false;
+        missingTextBG.visible = false;
+    }
 
-    positionHighscore();
-    missingText.visible = false;
-    missingTextBG.visible = false;
-    // --- FILTRO DE DIFICULDADE ---
-    applyDifficultyFilter();
+    // Ajusta curSelected para não sair do array
+    if(curSelected >= filteredSongs.length) curSelected = 0;
+
+    // Atualiza diffText
+    diffText.text = '< ' + diffName.toUpperCase() + ' >';
+
+    // Atualiza seleção sem tocar som
+    changeSelection(0, false);
 }
 	// Verifica se existe chart para a dificuldade atual
 // Verifica se existe chart para a dificuldade atual
@@ -560,53 +575,48 @@ function applyDifficultyFilter()
 }
 	
 	
-	public function changeSelection(change:Int = 0, playSound:Bool = true):Void {
-    if (player.playingMusic) return;
+	function changeSelection(change:Int = 0, playSound:Bool = true) {
+    if(player.playingMusic) return;
 
-    // Ajusta índice dentro do range
-    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
+    // Obtém músicas disponíveis para a dificuldade atual
+    var diffName:String = Difficulty.getString(curDifficulty);
+    var filteredSongs = getSongsForDifficulty(diffName);
 
-    // Atualiza a dificuldade da música
-    _updateSongLastDifficulty();
+    if(filteredSongs.length == 0) return; // nada para mostrar
 
-    // Toca som de scroll se necessário
-    if (playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+    // Atualiza índice curSelected
+    curSelected = FlxMath.wrap(curSelected + change, 0, filteredSongs.length - 1);
 
-    // Muda a cor de fundo de acordo com a música selecionada
-    var newColor:Int = songs[curSelected].color;
-    if (newColor != intendedColor) {
+    // Atualiza cores do BG
+    var newColor:Int = filteredSongs[curSelected].color;
+    if(newColor != intendedColor) {
         intendedColor = newColor;
         FlxTween.cancelTweensOf(bg);
         FlxTween.color(bg, 1, bg.color, intendedColor);
     }
 
-    // Atualiza visibilidade e alpha dos itens da lista
-    for (num => item in grpSongs.members) {
+    // Atualiza icons e textos
+    for(num => item in grpSongs.members) {
         var icon:HealthIcon = iconArray[num];
         item.alpha = 0.6;
         icon.alpha = 0.6;
-        if (item.targetY == curSelected) {
+        if(item.targetY == curSelected) {
             item.alpha = 1;
             icon.alpha = 1;
         }
     }
 
-    Mods.currentModDirectory = songs[curSelected].folder;
-    PlayState.storyWeek = songs[curSelected].week;
-    Difficulty.loadFromWeek();
+    // Atualiza diretório do mod
+    Mods.currentModDirectory = filteredSongs[curSelected].folder;
+    PlayState.storyWeek = filteredSongs[curSelected].week;
 
-    // Define a dificuldade atual
-    var savedDiff:String = songs[curSelected].lastDifficulty;
-    var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
-    if(savedDiff != null && Difficulty.list.contains(savedDiff))
-        curDifficulty = Std.int(Math.max(0, Difficulty.list.indexOf(savedDiff)));
-    else if(lastDiff > -1)
-        curDifficulty = lastDiff;
-    else
-        curDifficulty = Std.int(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
+    // Toca som de scroll
+    if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-    changeDiff();
-    _updateSongLastDifficulty();
+    // Atualiza a última dificuldade da música
+    filteredSongs[curSelected].lastDifficulty = diffName;
+
+    updateTexts();
 }
 
 	inline private function _updateSongLastDifficulty():Void {
