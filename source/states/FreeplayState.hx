@@ -501,61 +501,27 @@ class FreeplayState extends MusicBeatState
 	}
 
 	function changeDiff(change:Int = 0)
-{
-	if (player.playingMusic)
-		return;
-
-	curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
-
-	#if !switch
-	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-	intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-	#end
-
-	lastDifficultyName = Difficulty.getString(curDifficulty, false);
-	var displayDiff:String = Difficulty.getString(curDifficulty);
-
-	if (Difficulty.list.length > 1)
-		diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
-	else
-		diffText.text = displayDiff.toUpperCase();
-
-	positionHighscore();
-	missingText.visible = false;
-	missingTextBG.visible = false;
-
-	// --------------------------------------------------------------
-	// 🔥 FILTRO DE MÚSICAS POR DIFICULDADE ATUAL (ERECT)
-	// --------------------------------------------------------------
-
-	var diffName:String = Difficulty.getString(curDifficulty, false).toLowerCase();
-
-	for (i in 0...songs.length)
 	{
-		var formatted:String = Paths.formatToSongPath(songs[i].songName);
+		if (player.playingMusic)
+			return;
 
-		var chartPath:String = 'data/' + formatted + '/' + formatted + '-' + diffName + '.json';
-
-		#if MODS_ALLOWED
-		var exists:Bool = sys.FileSystem.exists(chartPath);
-		#else
-		var exists:Bool = Assets.exists(chartPath);
+		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
+		#if !switch
+		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
 		#end
 
-		grpSongs.members[i].visible = exists;
-		iconArray[i].visible = exists;
-	}
+		lastDifficultyName = Difficulty.getString(curDifficulty, false);
+		var displayDiff:String = Difficulty.getString(curDifficulty);
+		if (Difficulty.list.length > 1)
+			diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+		else
+			diffText.text = displayDiff.toUpperCase();
 
-	// se a música atual sumiu, mover para a próxima visível
-	var attempts:Int = 0;
-	while (!grpSongs.members[curSelected].visible && attempts < songs.length)
-	{
-		curSelected = FlxMath.wrap(curSelected + 1, 0, songs.length - 1);
-		attempts++;
+		positionHighscore();
+		missingText.visible = false;
+		missingTextBG.visible = false;
 	}
-
-	updateTexts();
-}
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
