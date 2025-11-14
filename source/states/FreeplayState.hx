@@ -671,15 +671,16 @@ class FreeplayState extends MusicBeatState
 	Difficulty.loadFromWeek();
 
 	var savedDiff:String = songs[curSelected].lastDifficulty;
-	var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
-	if(savedDiff != null && !Difficulty.list.contains(savedDiff) && Difficulty.list.contains(savedDiff))
-		curDifficulty = Math.round(Math.max(0, Difficulty.list.indexOf(savedDiff)));
-	else if(lastDiff > -1)
-		curDifficulty = lastDiff;
-	else if(Difficulty.list.contains(Difficulty.getDefault()))
-		curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
-	else
-		curDifficulty = 0;
+var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
+
+if (savedDiff != null && Difficulty.list.contains(savedDiff))
+    curDifficulty = Math.round(Math.max(0, Difficulty.list.indexOf(savedDiff)));
+else if (lastDiff > -1)
+    curDifficulty = lastDiff;
+else if (Difficulty.list.contains(Difficulty.getDefault()))
+    curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
+else
+    curDifficulty = 0;
 }
 
         curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
