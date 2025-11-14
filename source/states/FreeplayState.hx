@@ -53,7 +53,11 @@ class FreeplayState extends MusicBeatState
 	var player:MusicPlayer;
 
 	override function create() {
-    ...
+	
+	persistentUpdate = true;
+		PlayState.isStoryMode = false;
+		WeekData.reloadWeekFiles(false);
+    
     // Depois de adicionar músicas ao array
     for (i in 0...songs.length) {
         var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
@@ -74,11 +78,7 @@ class FreeplayState extends MusicBeatState
         add(icon);
     }
     WeekData.setDirectoryFromWeek();
-}
-		
-		persistentUpdate = true;
-		PlayState.isStoryMode = false;
-		WeekData.reloadWeekFiles(false);
+
 
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("In the Menus", null);
