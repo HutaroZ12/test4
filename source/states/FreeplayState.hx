@@ -639,3 +639,35 @@ class SongMetadata
 		if(this.folder == null) this.folder = '';
 	}
 }
+
+// =============================
+// ADDED FUNCTIONS FOR DIFF FILTER
+// =============================
+
+function songHasDiff(songID:String, diff:String):Bool
+{
+    var songPath:String = Paths.json(songID + '/' + songID + '-' + diff);
+    return Assets.exists(songPath);
+}
+
+function reloadSongsForDifficulty()
+{
+    songs = [];
+
+    for (s in WeekData.songsList)
+    {
+        var id = s.songName.toLowerCase();
+        var diff = Difficulty.getString(curDifficulty, false);
+
+        if (songHasDiff(id, diff))
+        {
+            songs.push(s);
+        }
+    }
+
+    curSelected = 0;
+    changeSelection(0, false);
+}
+
+// NOTE: You must call reloadSongsForDifficulty() inside changeDiff()
+// Right after updating curDifficulty.
