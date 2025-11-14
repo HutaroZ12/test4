@@ -116,25 +116,19 @@ class FreeplayState extends MusicBeatState
 	}
 
 		// Função que filtra músicas Erect
-		class FreeplayState extends MusicBeatState {
-    var songs:Array<SongMetadata> = [];
-
-    // ... outras variáveis ...
-
-    override function create() {
-        // ... código do create ...
-    }
-
-    public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int) {
+	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
+    {
         songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
     }
 
-    // COLE AQUI addSongFiltered:
-    public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool) {
+    public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
+    {
+        // Se tiver Erect ou se não for Erect, adiciona a música
         if(hasErect || !allowErect) {
             songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
         }
 
+        // Se a dificuldade atual for Erect, verifica se a música possui versão Erect
         if(Difficulty.getString(curDifficulty) == "Erect") {
             var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
             #if MODS_ALLOWED
@@ -142,9 +136,23 @@ class FreeplayState extends MusicBeatState
             #else
             var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
             #end
-            if(!exists) return;
+            if(!exists) return; // Pula música que não tem versão Erect
         }
     }
+
+    // Função que checa se existe versão Erect da música
+    private function songExistsErect(songName:String):Bool
+    {
+        var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
+        #if MODS_ALLOWED
+        return FileSystem.exists(Paths.chart(erectPath + ".json"));
+        #else
+        return Assets.exists(Paths.chart(erectPath + ".json"));
+        #end
+    }
+
+    // Resto do código (update, changeSelection, etc.) continua normalmente...
+}
 			
 		for (i in 0...songs.length)
 		{
