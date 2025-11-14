@@ -501,28 +501,55 @@ class FreeplayState extends MusicBeatState
 	}
 
 	function changeDiff(change:Int = 0)
-	{
-		if (player.playingMusic)
-			return;
+{
+    if (player.playingMusic)
+        return;
 
-		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
-		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-		#end
+    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
 
-		lastDifficultyName = Difficulty.getString(curDifficulty, false);
-		var displayDiff:String = Difficulty.getString(curDifficulty);
-		if (Difficulty.list.length > 1)
-			diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
-		else
-			diffText.text = displayDiff.toUpperCase();
+    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
 
-		positionHighscore();
-		missingText.visible = false;
-		missingTextBG.visible = false;
-	}
+    lastDifficultyName = Difficulty.getString(curDifficulty, false);
+    var displayDiff:String = Difficulty.getString(curDifficulty);
+    if (Difficulty.list.length > 1)
+        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+    else
+        diffText.text = displayDiff.toUpperCase();
 
+    positionHighscore();
+    missingText.visible = false;
+    missingTextBG.visible = false;
+
+    // --- FILTRO DE DIFICULDADE ---
+    applyDifficultyFilter();
+}
+	// Verifica se existe chart para a dificuldade atual
+function songHasDiff(song:String, diff:String):Bool
+{
+    var songLower = Paths.formatToSongPath(song);
+    var chartPath = Paths.getPath('data/' + songName + '/' + songName + '-' + diff + '.json', TEXT);
+    return Assets.exists(chartPath);
+}
+
+// Filtra músicas pela dificuldade
+function applyDifficultyFilter()
+{
+    var diff = Difficulty.getString(curDifficulty, false);
+
+    var filtered = [];
+
+    for (s in songs)
+    {
+        if (songHasDiff(s.songName, diff))
+            filtered.push(s);
+    }
+
+    songs = filtered;
+    curSelected = FlxMath.wrap(curSelected, 0, songs.length - 1);
+    changeSelection(0, false);
+}
+	
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
 		if (player.playingMusic)
@@ -639,35 +666,3 @@ class SongMetadata
 		if(this.folder == null) this.folder = '';
 	}
 }
-
-// =============================
-// ADDED FUNCTIONS FOR DIFF FILTER
-// =============================
-
-function songHasDiff(songID:String, diff:String):Bool
-{
-    var songPath:String = Paths.json(songID + '/' + songID + '-' + diff);
-    return Assets.exists(songPath);
-}
-
-function reloadSongsForDifficulty()
-{
-    songs = [];
-
-    for (s in WeekData.songsList)
-    {
-        var id = s.songName.toLowerCase();
-        var diff = Difficulty.getString(curDifficulty, false);
-
-        if (songHasDiff(id, diff))
-        {
-            songs.push(s);
-        }
-    }
-
-    curSelected = 0;
-    changeSelection(0, false);
-}
-
-// NOTE: You must call reloadSongsForDifficulty() inside changeDiff()
-// Right after updating curDifficulty.
