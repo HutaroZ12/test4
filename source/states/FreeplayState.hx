@@ -202,24 +202,13 @@ class FreeplayState extends MusicBeatState
 		super.create();
 	}
 
-	override function closeSubState()
-	{
-		changeSelection(0, false);
-		persistentUpdate = true;
-		super.closeSubState();
-		removeTouchPad();
-		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
-	}
-
-	public function closeSubState():Void {
-    if (currentSubState != null) {
-        currentSubState.close();
-        currentSubState = null;
+	override public function closeSubState():Void {
+    if (subState != null) {
+        super.closeSubState();
     } else {
         trace("Aviso: tentou fechar substate, mas não havia nenhum ativo.");
     }
-	}
-
+}
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
 	{
 		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
@@ -571,84 +560,43 @@ function applyDifficultyFilter()
     changeSelection(0, false);
 }
 	
-	public function changeSelection():Void {
-    // Primeiro, filtramos apenas músicas que existem na dificuldade atual
-    var currentDiffStr:String = FreeplayState.difficultyString[FreeplayState.currentDifficulty];
-
-    var filteredSongs = songs.filter(function(song) {
-        return song.difficulties.exists(currentDiffStr);
-    });
-
-    if (filteredSongs.length == 0) {
-        trace("Erro: nenhuma música disponível para a dificuldade " + currentDiffStr);
-        return; // Sai da função, evitando crash
-    }
-
-    // Garantimos que o selector existe e está dentro do range
-    if (selector == null) selector = { index: 0 };
-
-    // Ajusta o index se estiver fora do range
-    if (selector.index >= filteredSongs.length) selector.index = 0;
-
-    // Pegamos a música selecionada de forma segura
-    var selectedSong = filteredSongs[selector.index];
-
-    if (selectedSong != null) {
-        // Aqui você faz o que precisa com a música, ex: tocar preview
-        playPreview(selectedSong);
-    } else {
-        trace("Erro: música selecionada é null");
-    }
-	}
 	
-	function changeSelection(change:Int = 0, playSound:Bool = true)
-	{
-		if (player.playingMusic)
-			return;
+	public function changeSelection():Void {
+    // 1️⃣ Pegamos a dificuldade atual (substitua pelo método que você usa)
+    var currentDiff:String = WeekData.getDifficultyName(WeekData.currentDifficulty);
 
-		curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
-		_updateSongLastDifficulty();
-		if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+    // 2️⃣ Filtramos apenas músicas que possuem a dificuldade atual
+    var filteredSongs:Array<SongMetadata> = [];
+    for (song in songs) {
+        if (song.hasDifficulty(currentDiff)) { // substitua por sua função real
+            filteredSongs.push(song);
+        }
+    }
 
-		var newColor:Int = songs[curSelected].color;
-		if(newColor != intendedColor)
-		{
-			intendedColor = newColor;
-			FlxTween.cancelTweensOf(bg);
-			FlxTween.color(bg, 1, bg.color, intendedColor);
-		}
+    // 3️⃣ Se não houver músicas disponíveis, sai da função
+    if (filteredSongs.length == 0) {
+        trace("Aviso: nenhuma música disponível para a dificuldade " + currentDiff);
+        return;
+    }
 
-		for (num => item in grpSongs.members)
-		{
-			var icon:HealthIcon = iconArray[num];
-			item.alpha = 0.6;
-			icon.alpha = 0.6;
-			if (item.targetY == curSelected)
-			{
-				item.alpha = 1;
-				icon.alpha = 1;
-			}
-		}
-		
-		Mods.currentModDirectory = songs[curSelected].folder;
-		PlayState.storyWeek = songs[curSelected].week;
-		Difficulty.loadFromWeek();
-		
-		var savedDiff:String = songs[curSelected].lastDifficulty;
-		var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
-		if(savedDiff != null && !Difficulty.list.contains(savedDiff) && Difficulty.list.contains(savedDiff))
-			curDifficulty = Math.round(Math.max(0, Difficulty.list.indexOf(savedDiff)));
-		else if(lastDiff > -1)
-			curDifficulty = lastDiff;
-		else if(Difficulty.list.contains(Difficulty.getDefault()))
-			curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
-		else
-			curDifficulty = 0;
+    // 4️⃣ Ajusta index do selector
+    if (selector.currentIndex >= filteredSongs.length) selector.currentIndex = 0;
+    if (selector.currentIndex < 0) selector.currentIndex = filteredSongs.length - 1;
 
-		changeDiff();
-		_updateSongLastDifficulty();
-	}
+    // 5️⃣ Seleciona música de forma segura
+    var selectedSong:SongMetadata = filteredSongs[selector.currentIndex];
+    if (selectedSong == null) {
+        trace("Aviso: música selecionada é null");
+        return;
+    }
 
+    // 6️⃣ Chama a função que você já usa para tocar preview
+    loadSongPreview(selectedSong); // substitua pelo método real
+
+    // 7️⃣ Atualiza UI ou outros elementos relacionados
+    updateSongUI(selectedSong); // substitua pelo método real
+}
+	
 	inline private function _updateSongLastDifficulty()
 		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 
