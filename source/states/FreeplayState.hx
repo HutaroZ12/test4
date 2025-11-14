@@ -52,10 +52,29 @@ class FreeplayState extends MusicBeatState
 
 	var player:MusicPlayer;
 
-	override function create()
-	{
-		//Paths.clearStoredMemory();
-		//Paths.clearUnusedMemory();
+	override function create() {
+    ...
+    // Depois de adicionar músicas ao array
+    for (i in 0...songs.length) {
+        var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
+        songText.targetY = i;
+        grpSongs.add(songText);
+
+        songText.scaleX = Math.min(1, 980 / songText.width);
+        songText.snapToPosition();
+
+        Mods.currentModDirectory = songs[i].folder;
+        var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+        icon.sprTracker = songText;
+
+        songText.visible = songText.active = songText.isMenuItem = false;
+        icon.visible = icon.active = false;
+
+        iconArray.push(icon);
+        add(icon);
+    }
+    WeekData.setDirectoryFromWeek();
+}
 		
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -153,27 +172,7 @@ class FreeplayState extends MusicBeatState
 
     // Resto do código (update, changeSelection, etc.) continua normalmente...
 }
-			
-		for (i in 0...songs.length)
-		{
-			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-			songText.targetY = i;
-			grpSongs.add(songText);
-
-			songText.scaleX = Math.min(1, 980 / songText.width);
-			songText.snapToPosition();
-
-			Mods.currentModDirectory = songs[i].folder;
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.sprTracker = songText;
-
-			songText.visible = songText.active = songText.isMenuItem = false;
-			icon.visible = icon.active = false;
-
-			iconArray.push(icon);
-			add(icon);
-		}
-		WeekData.setDirectoryFromWeek();
+	
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
