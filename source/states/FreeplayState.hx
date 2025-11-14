@@ -211,6 +211,15 @@ class FreeplayState extends MusicBeatState
 		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
 	}
 
+	public function closeSubState():Void {
+    if (currentSubState != null) {
+        currentSubState.close();
+        currentSubState = null;
+    } else {
+        trace("Aviso: tentou fechar substate, mas não havia nenhum ativo.");
+    }
+	}
+
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
 	{
 		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
@@ -561,6 +570,36 @@ function applyDifficultyFilter()
     curSelected = FlxMath.wrap(curSelected, 0, songs.length - 1);
     changeSelection(0, false);
 }
+	
+	public function changeSelection():Void {
+    // Primeiro, filtramos apenas músicas que existem na dificuldade atual
+    var currentDiffStr:String = FreeplayState.difficultyString[FreeplayState.currentDifficulty];
+
+    var filteredSongs = songs.filter(function(song) {
+        return song.difficulties.exists(currentDiffStr);
+    });
+
+    if (filteredSongs.length == 0) {
+        trace("Erro: nenhuma música disponível para a dificuldade " + currentDiffStr);
+        return; // Sai da função, evitando crash
+    }
+
+    // Garantimos que o selector existe e está dentro do range
+    if (selector == null) selector = { index: 0 };
+
+    // Ajusta o index se estiver fora do range
+    if (selector.index >= filteredSongs.length) selector.index = 0;
+
+    // Pegamos a música selecionada de forma segura
+    var selectedSong = filteredSongs[selector.index];
+
+    if (selectedSong != null) {
+        // Aqui você faz o que precisa com a música, ex: tocar preview
+        playPreview(selectedSong);
+    } else {
+        trace("Erro: música selecionada é null");
+    }
+	}
 	
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
