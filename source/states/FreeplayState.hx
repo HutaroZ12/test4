@@ -614,76 +614,94 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 {
-	if (player.playingMusic) return;
-	if (songs.length == 0) return;
+    if (player.playingMusic) return;
+    if (songs.length == 0) return;
 
-	// Se não houver mudanças, apenas garante que seleção esteja em item visível
-	if (change == 0)
-	{
-		if (!grpSongs.members[curSelected].visible)
-		{
-			var found0:Int = -1;
-			for (k in 0...songs.length)
-				if (grpSongs.members[k].visible) { found0 = k; break; }
-			if (found0 >= 0) curSelected = found0;
-		}
-	}
-	else
-	{
-		var dir:Int = (change > 0) ? 1 : -1;
-		var steps:Int = Math.abs(change);
-		for (s in 0...steps)
-		{
-			var tries:Int = 0;
-			do {
-				curSelected = FlxMath.wrap(curSelected + dir, 0, songs.length - 1);
-				tries++;
-			} while (!grpSongs.members[curSelected].visible && tries < songs.length);
-		}
-	}
+    // Se não houver mudança, garante seleção válida
+    if (change == 0)
+    {
+        if (!grpSongs.members[curSelected].visible)
+        {
+            for (i in 0...songs.length)
+            {
+                if (grpSongs.members[i].visible)
+                {
+                    curSelected = i;
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        var dir:Int = (change > 0) ? 1 : -1;
+        var steps:Int = Std.int(Math.abs(change)); // <-- CORRIGIDO!
 
-	_updateSongLastDifficulty();
-	if (playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+        for (s in 0...steps)
+        {
+            var tries:Int = 0;
+            do {
+                curSelected = FlxMath.wrap(curSelected + dir, 0, songs.length - 1);
+                tries++;
+            } while (!grpSongs.members[curSelected].visible && tries < songs.length);
+        }
+    }
 
-	var newColor:Int = songs[curSelected].color;
-	if (newColor != intendedColor)
-	{
-		intendedColor = newColor;
-		FlxTween.cancelTweensOf(bg);
-		FlxTween.color(bg, 1, bg.color, intendedColor);
-	}
+    // Atualiza dificuldade anterior
+    _updateSongLastDifficulty();
 
-	for (num => item in grpSongs.members)
-	{
-		var icon:HealthIcon = iconArray[num];
-		item.alpha = 0.6;
-		icon.alpha = 0.6;
+    // Som do scroll
+    if (playSound) 
+        FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-		if (num == curSelected)
-		{
-			item.alpha = 1;
-			icon.alpha = 1;
-		}
-	}
+    // Troca de cor do fundo
+    var newColor:Int = songs[curSelected].color;
+    if (newColor != intendedColor)
+    {
+        intendedColor = newColor;
+        FlxTween.cancelTweensOf(bg);
+        FlxTween.color(bg, 1, bg.color, intendedColor);
+    }
 
-	Mods.currentModDirectory = songs[curSelected].folder;
-	PlayState.storyWeek = songs[curSelected].week;
-	Difficulty.loadFromWeek();
+    // Atualiza alpha dos items
+    for (i => item in grpSongs.members)
+    {
+        var icon = iconArray[i];
+        item.alpha = 0.6;
+        icon.alpha = 0.6;
 
-	var savedDiff:String = songs[curSelected].lastDifficulty;
-	var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
+        if (i == curSelected)
+        {
+            item.alpha = 1;
+            icon.alpha = 1;
+        }
+    }
 
-	if (savedDiff != null && Difficulty.list.contains(savedDiff))
-		curDifficulty = Difficulty.list.indexOf(savedDiff);
-	else if (lastDiff > -1)
-		curDifficulty = lastDiff;
-	else if (Difficulty.list.contains(Difficulty.getDefault()))
-		curDifficulty = Difficulty.defaultList.indexOf(Difficulty.getDefault());
-	else
-		curDifficulty = 0;
+    // Atualiza diretórios e semana
+    Mods.currentModDirectory = songs[curSelected].folder;
+    PlayState.storyWeek = songs[curSelected].week;
 
-	changeDiff();
-	_updateSongLastDifficulty();
+    // Recarrega dificuldades da música
+    Difficulty.loadFromWeek();
+
+    // Pega dificuldade salva
+    var savedDiff:String = songs[curSelected].lastDifficulty;
+    var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
+
+    if (savedDiff != null && Difficulty.list.contains(savedDiff))
+        curDifficulty = Difficulty.list.indexOf(savedDiff);
+
+    else if (lastDiff > -1)
+        curDifficulty = lastDiff;
+
+    else if (Difficulty.list.contains(Difficulty.getDefault()))
+        curDifficulty = Difficulty.defaultList.indexOf(Difficulty.getDefault());
+
+    else
+        curDifficulty = 0;
+
+    changeDiff();
+    _updateSongLastDifficulty();
 	
         curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
         _updateSongLastDifficulty();
