@@ -113,6 +113,7 @@ class FreeplayState extends MusicBeatState
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
+	}
 
 		// Função que filtra músicas Erect
 		class FreeplayState extends MusicBeatState
