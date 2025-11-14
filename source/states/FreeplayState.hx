@@ -209,6 +209,7 @@ class FreeplayState extends MusicBeatState
         trace("Aviso: tentou fechar substate, mas não havia nenhum ativo.");
     }
 }
+	
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
 	{
 		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
@@ -562,39 +563,40 @@ function applyDifficultyFilter()
 	
 	
 	public function changeSelection():Void {
-    // 1️⃣ Pegamos a dificuldade atual (substitua pelo método que você usa)
-    var currentDiff:String = WeekData.getDifficultyName(WeekData.currentDifficulty);
+    // Pegamos a dificuldade atual
+    var currentDiff:String = difficultyString[difficulty]; 
 
-    // 2️⃣ Filtramos apenas músicas que possuem a dificuldade atual
+    // Filtra músicas que possuem a dificuldade atual
     var filteredSongs:Array<SongMetadata> = [];
     for (song in songs) {
-        if (song.hasDifficulty(currentDiff)) { // substitua por sua função real
+        // Usa lastDifficulty ou outro campo real do seu SongMetadata
+        if (song.lastDifficulty == currentDiff) {
             filteredSongs.push(song);
         }
     }
 
-    // 3️⃣ Se não houver músicas disponíveis, sai da função
+    // Se não houver músicas válidas, sai
     if (filteredSongs.length == 0) {
         trace("Aviso: nenhuma música disponível para a dificuldade " + currentDiff);
         return;
     }
 
-    // 4️⃣ Ajusta index do selector
-    if (selector.currentIndex >= filteredSongs.length) selector.currentIndex = 0;
-    if (selector.currentIndex < 0) selector.currentIndex = filteredSongs.length - 1;
+    // Ajusta o index do selector
+    if (curSelected >= filteredSongs.length) curSelected = 0;
+    if (curSelected < 0) curSelected = filteredSongs.length - 1;
 
-    // 5️⃣ Seleciona música de forma segura
-    var selectedSong:SongMetadata = filteredSongs[selector.currentIndex];
+    // Seleciona a música de forma segura
+    var selectedSong:SongMetadata = filteredSongs[curSelected];
     if (selectedSong == null) {
         trace("Aviso: música selecionada é null");
         return;
     }
 
-    // 6️⃣ Chama a função que você já usa para tocar preview
-    loadSongPreview(selectedSong); // substitua pelo método real
+    // Toca preview (substitua pela função real do seu projeto)
+    playPreview(selectedSong);
 
-    // 7️⃣ Atualiza UI ou outros elementos relacionados
-    updateSongUI(selectedSong); // substitua pelo método real
+    // Atualiza UI/texto da seleção (substitua pela função real do seu projeto)
+    updateSelectionDisplay(selectedSong);
 }
 	
 	inline private function _updateSongLastDifficulty()
