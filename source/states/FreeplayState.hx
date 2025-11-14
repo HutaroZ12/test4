@@ -54,9 +54,6 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		//Paths.clearStoredMemory();
-		//Paths.clearUnusedMemory();
-		
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
@@ -94,18 +91,17 @@ class FreeplayState extends MusicBeatState
 
 			WeekData.setDirectoryFromWeek(leWeek);
 			for (song in leWeek.songs)
-{
-    var colors:Array<Int> = song[2];
-    if(colors == null || colors.length < 3)
-        colors = [146, 113, 253];
-
-    // Supondo que você tenha alguma lógica pra Erect
-    var hasErect:Bool = true; // ou false dependendo do song
-    addSongFiltered(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), hasErect);
-}
-
+			{
+				var colors:Array<Int> = song[2];
+				if(colors == null || colors.length < 3)
+				{
+					colors = [146, 113, 253];
+				}
+				// Aqui chamamos a função filtrada
+				addSongFiltered(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song.length > 3 ? song[3] : false);
+			}
 		}
-		
+
 		Mods.loadTopMod();
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
@@ -115,7 +111,6 @@ class FreeplayState extends MusicBeatState
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
-
 
 // Fora de create():
 public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
