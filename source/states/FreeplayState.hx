@@ -505,10 +505,6 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-	private function getSongsForDifficulty(diff:String):Array<SongMetadata> {
-    return songs.filter(song -> song.lastDifficulty != null && song.lastDifficulty == diff);
-	}
-	
 	function changeDiff(change:Int = 0) {
     if(player.playingMusic) return;
 
