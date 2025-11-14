@@ -114,25 +114,30 @@ class FreeplayState extends MusicBeatState
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
-public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
-{
-    if(hasErect || !allowErect) {
+    public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
+    {
         songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
     }
 
-    // Se a dificuldade atual for Erect
-    if(Difficulty.getString(curDifficulty) == "Erect")
+    // Função addSongFiltered – deve estar **fora de outras funções**
+    public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
     {
-        var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
-        #if MODS_ALLOWED
-        var exists:Bool = FileSystem.exists(Paths.chart(erectPath + ".json"));
-        #else
-        var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
-        #end
-        if(!exists) return; // Pula música que não tem versão Erect
-    }
-} // ← CHAVE FINAL
+        if(hasErect || !allowErect) {
+            songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
+        }
 
+        if(Difficulty.getString(curDifficulty) == "Erect")
+        {
+            var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
+            #if MODS_ALLOWED
+            var exists:Bool = FileSystem.exists(Paths.chart(erectPath + ".json"));
+            #else
+            var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
+            #end
+            if(!exists) return; // Pula música que não tem versão Erect
+        }
+    }
+		
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
