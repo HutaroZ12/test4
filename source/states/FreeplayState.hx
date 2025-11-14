@@ -113,7 +113,6 @@ class FreeplayState extends MusicBeatState
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
-	}
 
 		// Função que filtra músicas Erect
 		public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
@@ -135,6 +134,7 @@ class FreeplayState extends MusicBeatState
 			}
 			// Adiciona normalmente
 			songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
+            }
 		}
 
 		for (i in 0...songs.length)
