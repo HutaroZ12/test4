@@ -612,17 +612,6 @@ class FreeplayState extends MusicBeatState
 	updateTexts();
 }
 
-		lastDifficultyName = Difficulty.getString(curDifficulty, false);
-		var displayDiff:String = Difficulty.getString(curDifficulty);
-		if (Difficulty.list.length > 1)
-			diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
-		else
-			diffText.text = displayDiff.toUpperCase();
-
-		positionHighscore();
-		missingText.visible = false;
-		missingTextBG.visible = false;
-
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 {
 	if (player.playingMusic) return;
