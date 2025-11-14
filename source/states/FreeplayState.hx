@@ -115,8 +115,12 @@ class FreeplayState extends MusicBeatState
 		add(grpSongs);
 
 		// Função que filtra músicas Erect
-		public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
-		{
+		public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
+{
+    // Se tiver Erect ou se não for Erect, adiciona a música
+    if(hasErect || !allowErect) {
+        songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
+	}
 			// Se a dificuldade atual for Erect
 			if(Difficulty.getString(curDifficulty) == "Erect")
 			{
