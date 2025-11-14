@@ -71,6 +71,79 @@ class FreeplayState extends MusicBeatState
 			persistentUpdate = false;
 			MusicBeatState.switchState(new states.ErrorState("NO WEEKS ADDED FOR FREEPLAY\n\nPress " + accept + " to go to the Week Editor Menu.\nPress " + reject + " to return to Main Menu.",
 				function() MusicBeatState.switchState(new states.editors.WeekEditorState()),
+package states;
+
+import backend.WeekData;
+import backend.Highscore;
+import backend.Song;
+
+import objects.HealthIcon;
+import objects.MusicPlayer;
+
+import options.GameplayChangersSubstate;
+import substates.ResetScoreSubState;
+
+import flixel.math.FlxMath;
+import flixel.util.FlxDestroyUtil;
+
+import openfl.utils.Assets;
+
+import haxe.Json;
+
+class FreeplayState extends MusicBeatState
+{
+	var songs:Array<SongMetadata> = [];
+
+	var selector:FlxText;
+	private static var curSelected:Int = 0;
+	var lerpSelected:Float = 0;
+	var curDifficulty:Int = -1;
+	private static var lastDifficultyName:String = Difficulty.getDefault();
+
+	var scoreBG:FlxSprite;
+	var scoreText:FlxText;
+	var diffText:FlxText;
+	var lerpScore:Int = 0;
+	var lerpRating:Float = 0;
+	var intendedScore:Int = 0;
+	var intendedRating:Float = 0;
+
+	private var grpSongs:FlxTypedGroup<Alphabet>;
+	private var curPlaying:Bool = false;
+
+	private var iconArray:Array<HealthIcon> = [];
+
+	var bg:FlxSprite;
+	var intendedColor:Int;
+
+	var missingTextBG:FlxSprite;
+	var missingText:FlxText;
+
+	var bottomString:String;
+	var bottomText:FlxText;
+	var bottomBG:FlxSprite;
+
+	var player:MusicPlayer;
+
+	override function create()
+	{
+		persistentUpdate = true;
+		PlayState.isStoryMode = false;
+		WeekData.reloadWeekFiles(false);
+
+		#if DISCORD_ALLOWED
+		DiscordClient.changePresence("In the Menus", null);
+		#end
+
+		final accept:String = (controls.mobileC) ? "A" : "ACCEPT";
+		final reject:String = (controls.mobileC) ? "B" : "BACK";
+
+		if(WeekData.weeksList.length < 1)
+		{
+			FlxTransitionableState.skipNextTransIn = true;
+			persistentUpdate = false;
+			MusicBeatState.switchState(new states.ErrorState("NO WEEKS ADDED FOR FREEPLAY\n\nPress " + accept + " to go to the Week Editor Menu.\nPress " + reject + " to return to Main Menu.",
+				function() MusicBeatState.switchState(new states.editors.WeekEditorState()),
 				function() MusicBeatState.switchState(new states.MainMenuState())));
 			return;
 		}
@@ -97,7 +170,7 @@ class FreeplayState extends MusicBeatState
 				{
 					colors = [146, 113, 253];
 				}
-				// Aqui chamamos a função filtrada
+				// Chamada da função filtrada
 				addSongFiltered(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song.length > 3 ? song[3] : false);
 			}
 		}
@@ -112,24 +185,68 @@ class FreeplayState extends MusicBeatState
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
-// Fora de create():
-public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
-{
-    if(hasErect || !allowErect) 
-    {
-        songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
-    }
+		for (i in 0...songs.length)
+		{
+			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
+			songText.targetY = i;
+			grpSongs.add(songText);
 
-    if(Difficulty.getString(curDifficulty) == "Erect")
-    {
-        var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
-        #if MODS_ALLOWED
-        var exists:Bool = FileSystem.exists(Paths.chart(erectPath + ".json"));
-        #else
-        var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
-        #end
-        if(!exists) return; // Pula música que não tem versão Erect
-    }
+			songText.scaleX = Math.min(1, 980 / songText.width);
+			songText.snapToPosition();
+
+			Mods.currentModDirectory = songs[i].folder;
+			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			icon.sprTracker = songText;
+
+			songText.visible = songText.active = songText.isMenuItem = false;
+			icon.visible = icon.active = false;
+
+			iconArray.push(icon);
+			add(icon);
+		}
+		WeekData.setDirectoryFromWeek();
+
+		// ... restante do create() continua normalmente
+		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
+		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
+		scoreBG.alpha = 0.6;
+		add(scoreBG);
+		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		diffText.font = scoreText.font;
+		add(diffText);
+		add(scoreText);
+
+		// ... todo o resto do create() continua
+	}
+
+	// Função filtrada – agora está corretamente fora de create()
+	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
+	{
+		if(hasErect || !allowErect)
+		{
+			songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
+		}
+
+		if(Difficulty.getString(curDifficulty) == "Erect")
+		{
+			var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
+			#if MODS_ALLOWED
+			var exists:Bool = FileSystem.exists(Paths.chart(erectPath + ".json"));
+			#else
+			var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
+			#end
+			if(!exists) return; // Pula música que não tem versão Erect
+		}
+	}
+
+	// Função normal de adicionar música
+	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
+	{
+		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
+	}
+
+	// ... o restante do código (update, destroy, changeSelection, etc.) permanece igual
 }
         
 		for (i in 0...songs.length)
