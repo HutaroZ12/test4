@@ -615,7 +615,7 @@ class FreeplayState extends MusicBeatState
 		//#if !switch
 		//intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		//intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-	//	#end
+	/*#end
 
 		lastDifficultyName = Difficulty.getString(curDifficulty, false);
 		var displayDiff:String = Difficulty.getString(curDifficulty);
@@ -627,7 +627,7 @@ class FreeplayState extends MusicBeatState
 		positionHighscore();
 		missingText.visible = false;
 		missingTextBG.visible = false;
-
+*
 		        for (i in 0...songs.length) {
             var song:SongMetadata = songs[i];
             var visible:Bool = true;
@@ -643,7 +643,7 @@ class FreeplayState extends MusicBeatState
             iconArray[i].active = visible;
         }
 	}
-
+*/
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 {
 	if (player.playingMusic) return;
