@@ -567,36 +567,34 @@ function applyDifficultyFilter()
     curSelected += change;
 
     // 2️⃣ Filtra músicas válidas para a dificuldade atual
-    // Substitua 'weekName' pela variável que você já usa para dificuldade atual
-    var currentDiff:String = weekName; 
-
+    // Substitua 'curDifficulty' pelo campo real do seu FreeplayState
     var filteredSongs:Array<SongMetadata> = [];
     for (song in songs) {
-        // 'lastDifficulty' indica se a música tem a dificuldade
-        if (song.lastDifficulty == currentDiff) {
+        // Substitua 'lastDifficulty' pelo campo real que indica a dificuldade da música
+        if (song.lastDifficulty == curDifficulty) {
             filteredSongs.push(song);
         }
     }
 
     // 3️⃣ Se não houver músicas válidas
     if (filteredSongs.length == 0) {
-        trace("Nenhuma música disponível para a dificuldade " + currentDiff);
+        trace("Nenhuma música disponível para a dificuldade " + curDifficulty);
         curSelected = 0;
         return;
     }
 
-    // 4️⃣ Garante que o índice está dentro do range
+    // 4️⃣ Ajusta curSelected dentro do range
     if (curSelected >= filteredSongs.length) curSelected = 0;
     if (curSelected < 0) curSelected = filteredSongs.length - 1;
 
-    // 5️⃣ Música selecionada
+    // 5️⃣ Seleciona música
     var selectedSong:SongMetadata = filteredSongs[curSelected];
 
-    // 6️⃣ Atualiza UI / selector
-    selector.text = selectedSong.song; // Atualiza texto do selector
+    // 6️⃣ Atualiza selector UI
+    selector.text = selectedSong.songName; // Substitua 'songName' pelo campo correto da música
 
-    // 7️⃣ Toca preview usando função existente no FreeplayState
-    if (playSound) MusicPlayer.playSongPreview(selectedSong); 
+    // 7️⃣ Toca preview usando a função existente
+    if (playSound) MusicPlayer.loadSong(selectedSong); // Substitua pelo método real que você já usa
 }
 	
 	inline private function _updateSongLastDifficulty()
