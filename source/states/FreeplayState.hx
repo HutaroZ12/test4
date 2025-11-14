@@ -94,14 +94,16 @@ class FreeplayState extends MusicBeatState
 
 			WeekData.setDirectoryFromWeek(leWeek);
 			for (song in leWeek.songs)
-			{
-				var colors:Array<Int> = song[2];
-				if(colors == null || colors.length < 3)
-				{
-					colors = [146, 113, 253];
-				}
-				addSongFiltered(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
-			}
+{
+    var colors:Array<Int> = song[2];
+    if(colors == null || colors.length < 3)
+        colors = [146, 113, 253];
+
+    // Supondo que você tenha alguma lógica pra Erect
+    var hasErect:Bool = true; // ou false dependendo do song
+    addSongFiltered(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), hasErect);
+}
+
 		}
 		
 		Mods.loadTopMod();
@@ -114,27 +116,26 @@ class FreeplayState extends MusicBeatState
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
-    public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
+
+// Fora de create():
+public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
+{
+    if(hasErect || !allowErect) 
     {
         songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
     }
 
-    // Função addSongFiltered – deve estar **fora de outras funções**
-    public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
+    if(Difficulty.getString(curDifficulty) == "Erect")
     {
-        if(hasErect || !allowErect) {
-            songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
-        }
-
-        if(Difficulty.getString(curDifficulty) == "Erect")
-        {
-            var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
-            #if MODS_ALLOWED
-            var exists:Bool = FileSystem.exists(Paths.chart(erectPath + ".json"));
-            #else
-            var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
-            #end
-            if(!exists) return; // Pula música que não tem versão Erect
+        var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
+        #if MODS_ALLOWED
+        var exists:Bool = FileSystem.exists(Paths.chart(erectPath + ".json"));
+        #else
+        var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
+        #end
+        if(!exists) return; // Pula música que não tem versão Erect
+    }
+}
         
 		for (i in 0...songs.length)
 		{
