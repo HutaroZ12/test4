@@ -684,7 +684,6 @@ class FreeplayState extends MusicBeatState
 
 	changeDiff();
 	_updateSongLastDifficulty();
-}
 	
         curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
         _updateSongLastDifficulty();
