@@ -208,6 +208,10 @@ class FreeplayState extends MusicBeatState
     } else {
         trace("Aviso: tentou fechar substate, mas não havia nenhum ativo.");
     }
+    // Mantém a funcionalidade de touchpad
+    removeTouchPad();
+    addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
+    persistentUpdate = true;
 }
 	
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
@@ -501,27 +505,21 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-	function changeDiff(change:Int = 0)
-{
-    if (player.playingMusic)
-        return;
+	function changeDiff(change:Int = 0):Void {
+    if (player.playingMusic) return;
 
-    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
+    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
 
     intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
     intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
 
     lastDifficultyName = Difficulty.getString(curDifficulty, false);
     var displayDiff:String = Difficulty.getString(curDifficulty);
-    if (Difficulty.list.length > 1)
-        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
-    else
-        diffText.text = displayDiff.toUpperCase();
+    diffText.text = (Difficulty.list.length > 1) ? '< ' + displayDiff.toUpperCase() + ' >' : displayDiff.toUpperCase();
 
     positionHighscore();
     missingText.visible = false;
     missingTextBG.visible = false;
-
     // --- FILTRO DE DIFICULDADE ---
     applyDifficultyFilter();
 }
@@ -562,44 +560,58 @@ function applyDifficultyFilter()
 }
 	
 	
-	function changeSelection(change:Int = 0, playSound:Bool = true):Void {
-    // 1️⃣ Ajusta índice do selector
-    curSelected += change;
+	public function changeSelection(change:Int = 0, playSound:Bool = true):Void {
+    if (player.playingMusic) return;
 
-    // 2️⃣ Filtra músicas válidas para a dificuldade atual
-    // Substitua 'curDifficulty' pelo campo real do seu FreeplayState
-    var filteredSongs:Array<SongMetadata> = [];
-    for (song in songs) {
-        // Substitua 'lastDifficulty' pelo campo real que indica a dificuldade da música
-        if (song.lastDifficulty == curDifficulty) {
-            filteredSongs.push(song);
+    // Ajusta índice dentro do range
+    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
+
+    // Atualiza a dificuldade da música
+    _updateSongLastDifficulty();
+
+    // Toca som de scroll se necessário
+    if (playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+    // Muda a cor de fundo de acordo com a música selecionada
+    var newColor:Int = songs[curSelected].color;
+    if (newColor != intendedColor) {
+        intendedColor = newColor;
+        FlxTween.cancelTweensOf(bg);
+        FlxTween.color(bg, 1, bg.color, intendedColor);
+    }
+
+    // Atualiza visibilidade e alpha dos itens da lista
+    for (num => item in grpSongs.members) {
+        var icon:HealthIcon = iconArray[num];
+        item.alpha = 0.6;
+        icon.alpha = 0.6;
+        if (item.targetY == curSelected) {
+            item.alpha = 1;
+            icon.alpha = 1;
         }
     }
 
-    // 3️⃣ Se não houver músicas válidas
-    if (filteredSongs.length == 0) {
-        trace("Nenhuma música disponível para a dificuldade " + curDifficulty);
-        curSelected = 0;
-        return;
-    }
+    Mods.currentModDirectory = songs[curSelected].folder;
+    PlayState.storyWeek = songs[curSelected].week;
+    Difficulty.loadFromWeek();
 
-    // 4️⃣ Ajusta curSelected dentro do range
-    if (curSelected >= filteredSongs.length) curSelected = 0;
-    if (curSelected < 0) curSelected = filteredSongs.length - 1;
+    // Define a dificuldade atual
+    var savedDiff:String = songs[curSelected].lastDifficulty;
+    var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
+    if(savedDiff != null && Difficulty.list.contains(savedDiff))
+        curDifficulty = Math.max(0, Difficulty.list.indexOf(savedDiff));
+    else if(lastDiff > -1)
+        curDifficulty = lastDiff;
+    else
+        curDifficulty = Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault()));
 
-    // 5️⃣ Seleciona música
-    var selectedSong:SongMetadata = filteredSongs[curSelected];
-
-    // 6️⃣ Atualiza selector UI
-    selector.text = selectedSong.songName; // Substitua 'songName' pelo campo correto da música
-
-    // 7️⃣ Toca preview usando a função existente
-    if (playSound) MusicPlayer.loadSong(selectedSong); // Substitua pelo método real que você já usa
+    changeDiff();
+    _updateSongLastDifficulty();
 }
 	
-	inline private function _updateSongLastDifficulty()
-		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
-
+	inline private function _updateSongLastDifficulty():Void {
+    songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
+	}
 
 	private function positionHighscore()
 	{
@@ -612,30 +624,29 @@ function applyDifficultyFilter()
 
 	var _drawDistance:Int = 4;
 	var _lastVisibles:Array<Int> = [];
-	public function updateTexts(elapsed:Float = 0.0)
-	{
-		lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));
-		for (i in _lastVisibles)
-		{
-			grpSongs.members[i].visible = grpSongs.members[i].active = false;
-			iconArray[i].visible = iconArray[i].active = false;
-		}
-		_lastVisibles = [];
+	public function updateTexts(elapsed:Float = 0.0):Void {
+    lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));
 
-		var min:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected - _drawDistance)));
-		var max:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected + _drawDistance)));
-		for (i in min...max)
-		{
-			var item:Alphabet = grpSongs.members[i];
-			item.visible = item.active = true;
-			item.x = ((item.targetY - lerpSelected) * item.distancePerItem.x) + item.startPosition.x;
-			item.y = ((item.targetY - lerpSelected) * 1.3 * item.distancePerItem.y) + item.startPosition.y;
+    for (i in _lastVisibles) {
+        grpSongs.members[i].visible = grpSongs.members[i].active = false;
+        iconArray[i].visible = iconArray[i].active = false;
+    }
+    _lastVisibles = [];
 
-			var icon:HealthIcon = iconArray[i];
-			icon.visible = icon.active = true;
-			_lastVisibles.push(i);
-		}
-	}
+    var min:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected - _drawDistance)));
+    var max:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected + _drawDistance)));
+
+    for (i in min...max) {
+        var item:Alphabet = grpSongs.members[i];
+        item.visible = item.active = true;
+        item.x = ((item.targetY - lerpSelected) * item.distancePerItem.x) + item.startPosition.x;
+        item.y = ((item.targetY - lerpSelected) * 1.3 * item.distancePerItem.y) + item.startPosition.y;
+
+        var icon:HealthIcon = iconArray[i];
+        icon.visible = icon.active = true;
+        _lastVisibles.push(i);
+    }
+}
 
 	override function destroy():Void
 	{
