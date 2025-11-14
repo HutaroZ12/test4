@@ -30,6 +30,7 @@ class FreeplayState extends MusicBeatState
 	var scoreBG:FlxSprite;
 	var scoreText:FlxText;
 	var diffText:FlxText;
+	var freeplayLoaded:Bool = false;
 	var lerpScore:Int = 0;
 	var lerpRating:Float = 0;
 	var intendedScore:Int = 0;
@@ -197,6 +198,7 @@ class FreeplayState extends MusicBeatState
 		updateTexts();
 
 		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
+		freeplayLoaded = true;
 		super.create();
 	}
 
@@ -536,14 +538,23 @@ function songHasDiff(song:String, diff:String):Bool
 // Filtra músicas pela dificuldade
 function applyDifficultyFilter()
 {
-    var diff = Difficulty.getString(curDifficulty, false);
+    if (!freeplayLoaded) return; // <- evita crash
 
+    var diff = Difficulty.getString(curDifficulty, false);
     var filtered = [];
 
     for (s in songs)
     {
         if (songHasDiff(s.songName, diff))
             filtered.push(s);
+    }
+
+    // Evita wrap crashando quando filtered fica vazio
+    if (filtered.length == 0)
+    {
+        songs = [];
+        curSelected = 0;
+        return;
     }
 
     songs = filtered;
