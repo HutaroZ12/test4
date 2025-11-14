@@ -594,16 +594,30 @@ class FreeplayState extends MusicBeatState
 	if (!grpSongs.members[curSelected].visible)
 	{
 		// procura primeiro visível a partir do curSelected
-		var found:Int = -1;
-		for (j in 0...songs.length)
-		{
-			var idx = (curSelected + 1 + j) % songs.length;
-			if (grpSongs.members[idx].visible) { found = idx; break; }
-		}
-		if (found == -1)
-		{
-			// nenhum visível — segura seleção no 0
-			curSelected = 0;
+		// --- Se todas as músicas ficaram invisíveis, volta tudo ao normal ---
+var anyVisible:Bool = false;
+for (i in 0...songs.length)
+{
+    if (grpSongs.members[i].visible)
+    {
+        anyVisible = true;
+        break;
+    }
+}
+
+if (!anyVisible)
+{
+    // Se nada foi encontrado, mostra tudo de volta
+    for (i in 0...songs.length)
+    {
+        grpSongs.members[i].visible = true;
+        grpSongs.members[i].active = true;
+        iconArray[i].visible = true;
+        iconArray[i].active = true;
+    }
+
+    // E reseta curSelected pro primeiro item valido
+    curSelected = 0;
 		}
 		else curSelected = found;
 	}
