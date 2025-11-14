@@ -525,10 +525,11 @@ class FreeplayState extends MusicBeatState
     applyDifficultyFilter();
 }
 	// Verifica se existe chart para a dificuldade atual
+// Verifica se existe chart para a dificuldade atual
 function songHasDiff(song:String, diff:String):Bool
 {
     var songLower = Paths.formatToSongPath(song);
-    var chartPath = Paths.getPath('data/' + songName + '/' + songName + '-' + diff + '.json', TEXT);
+    var chartPath = Paths.getPath('data/' + songLower + '/' + songLower + '-' + diff + '.json', TEXT);
     return Assets.exists(chartPath);
 }
 
