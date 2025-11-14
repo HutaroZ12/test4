@@ -513,27 +513,102 @@ class FreeplayState extends MusicBeatState
 	}
 
 	private function songHasDifficulty(song:SongMetadata, diff:Int):Bool {
-    var path:String = Paths.formatToSongPath(song.songName) + "-" + Difficulty.getString(diff).toLowerCase() + ".json";
-    return Assets.exists(path, TEXT);
+	// Normaliza o nome da pasta com Paths.formatToSongPath
+	var folderName:String = Paths.formatToSongPath(song.songName).toLowerCase();
+	var diffName:String = Difficulty.getString(diff).toLowerCase();
+
+	// Monta possíveis caminhos que seu projeto pode usar
+	var p1:String = 'assets/data/' + folderName + '/' + folderName + '-' + diffName + '.json'; // common
+	var p2:String = folderName + '/' + folderName + '-' + diffName + '.json'; // alt for Assets
+	var p3:String = Paths.getPath(folderName + '/' + folderName + '-' + diffName + '.json', TEXT); // via Paths.getPath (may return null)
+
+	// Testa com Assets.exists (funciona na maioria das targets)
+	try {
+		if (Assets.exists(p1, TEXT)) return true;
+	} catch(e:Dynamic) {}
+
+	try {
+		if (Assets.exists(p2, TEXT)) return true;
+	} catch(e:Dynamic) {}
+
+	// Se Paths.getPath forneceu um caminho, tenta checar se existe (Assets pode aceitar esse retorno)
+	if (p3 != null) {
+		try {
+			if (Assets.exists(p3, TEXT)) return true;
+		} catch(e:Dynamic) {}
 	}
+
+	// fallback: se nada detectou, considera que não existe
+	return false;
+}
 	
 	function changeDiff(change:Int = 0)
-	{
-		if (player.playingMusic)
-			return;
-		
-// Filtrar músicas quando Erect estiver selecionado
-for (i in 0...songs.length) {
-    var item:Alphabet = grpSongs.members[i];
-    var icon:HealthIcon = iconArray[i];
+{
+	if (player.playingMusic) return;
 
-    if (Difficulty.getString(curDifficulty) == "Erect" && !songHasDifficulty(songs[i], curDifficulty)) {
-        item.visible = item.active = false;
-        icon.visible = icon.active = false;
-    } else {
-        item.visible = item.active = true;
-        icon.visible = icon.active = true;
+	// atualiza dificuldade primeiro
+	curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
+
+	// atualiza textos/score normalmente
+	#if !switch
+	intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+	intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
+	#end
+
+	lastDifficultyName = Difficulty.getString(curDifficulty, false);
+	var displayDiff:String = Difficulty.getString(curDifficulty);
+	if (Difficulty.list.length > 1)
+		diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+	else
+		diffText.text = displayDiff.toUpperCase();
+
+	positionHighscore();
+	missingText.visible = false;
+	missingTextBG.visible = false;
+
+	// Aplica filtro: esconde itens que não têm o chart da dificuldade atual
+	var diffName:String = Difficulty.getString(curDifficulty).toLowerCase();
+	for (i in 0...songs.length)
+	{
+		var item:Alphabet = grpSongs.members[i];
+		var icon:HealthIcon = iconArray[i];
+
+		var hasChart:Bool = songHasDifficulty(songs[i], curDifficulty);
+		if (diffName == "erect")
+		{
+			if (!hasChart)
+			{
+				item.visible = item.active = false;
+				icon.visible = icon.active = false;
+				continue;
+			}
+		}
+
+		// se não for erect ou tem chart, garantir visível
+		item.visible = item.active = true;
+		icon.visible = icon.active = true;
 	}
+
+	// Ajusta seleção atual: se o item selecionado atual ficou invisível, pula pro próximo visível
+	if (!grpSongs.members[curSelected].visible)
+	{
+		// procura primeiro visível a partir do curSelected
+		var found:Int = -1;
+		for (j in 0...songs.length)
+		{
+			var idx = (curSelected + 1 + j) % songs.length;
+			if (grpSongs.members[idx].visible) { found = idx; break; }
+		}
+		if (found == -1)
+		{
+			// nenhum visível — segura seleção no 0
+			curSelected = 0;
+		}
+		else curSelected = found;
+	}
+
+	// atualiza UI/posições
+	updateTexts();
 }
 		
 		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
@@ -570,13 +645,74 @@ for (i in 0...songs.length) {
 	}
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
+{
+	if (player.playingMusic) return;
+	if (songs.length == 0) return;
+
+	// Se não houver mudanças, apenas garante que seleção esteja em item visível
+	if (change == 0)
 	{
-	    var anyVisible:Bool = false;
-        for (song in songs) if(grpSongs.members[songs.indexOf(song)].visible) anyVisible = true;
-        if(!anyVisible) {
-            curSelected = 0;
-            return;
-        }
+		// move para o primeiro visível se atual invisível
+		if (!grpSongs.members[curSelected].visible)
+		{
+			var found0:Int = -1;
+			for (k in 0...songs.length) if (grpSongs.members[k].visible) { found0 = k; break; }
+			if (found0 >= 0) curSelected = found0;
+		}
+	}
+	else
+	{
+		// procura próxima/prev visível
+		var dir:Int = (change > 0) ? 1 : -1;
+		var steps:Int = Math.abs(change);
+		for (s in 0...steps)
+		{
+			var tries:Int = 0;
+			do {
+				curSelected = FlxMath.wrap(curSelected + dir, 0, songs.length - 1);
+				tries++;
+			} while(!grpSongs.members[curSelected].visible && tries < songs.length);
+		}
+	}
+
+	_updateSongLastDifficulty();
+	if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+	var newColor:Int = songs[curSelected].color;
+	if(newColor != intendedColor)
+	{
+		intendedColor = newColor;
+		FlxTween.cancelTweensOf(bg);
+		FlxTween.color(bg, 1, bg.color, intendedColor);
+	}
+
+	for (num => item in grpSongs.members)
+	{
+		var icon:HealthIcon = iconArray[num];
+		item.alpha = 0.6;
+		icon.alpha = 0.6;
+		if (num == curSelected)
+		{
+			item.alpha = 1;
+			icon.alpha = 1;
+		}
+	}
+
+	Mods.currentModDirectory = songs[curSelected].folder;
+	PlayState.storyWeek = songs[curSelected].week;
+	Difficulty.loadFromWeek();
+
+	var savedDiff:String = songs[curSelected].lastDifficulty;
+	var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
+	if(savedDiff != null && !Difficulty.list.contains(savedDiff) && Difficulty.list.contains(savedDiff))
+		curDifficulty = Math.round(Math.max(0, Difficulty.list.indexOf(savedDiff)));
+	else if(lastDiff > -1)
+		curDifficulty = lastDiff;
+	else if(Difficulty.list.contains(Difficulty.getDefault()))
+		curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
+	else
+		curDifficulty = 0;
+}
 
         curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
         _updateSongLastDifficulty();
@@ -636,29 +772,35 @@ for (i in 0...songs.length) {
 	var _drawDistance:Int = 4;
 	var _lastVisibles:Array<Int> = [];
 	public function updateTexts(elapsed:Float = 0.0)
+{
+	lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));
+
+	// limpa visíveis anteriores
+	for (i in _lastVisibles)
 	{
-		lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));
-		for (i in _lastVisibles)
-		{
-			grpSongs.members[i].visible = grpSongs.members[i].active = false;
-			iconArray[i].visible = iconArray[i].active = false;
-		}
-		_lastVisibles = [];
-
-		var min:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected - _drawDistance)));
-		var max:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected + _drawDistance)));
-		for (i in min...max)
-		{
-			var item:Alphabet = grpSongs.members[i];
-			item.visible = item.active = true;
-			item.x = ((item.targetY - lerpSelected) * item.distancePerItem.x) + item.startPosition.x;
-			item.y = ((item.targetY - lerpSelected) * 1.3 * item.distancePerItem.y) + item.startPosition.y;
-
-			var icon:HealthIcon = iconArray[i];
-			icon.visible = icon.active = true;
-			_lastVisibles.push(i);
-		}
+		grpSongs.members[i].visible = grpSongs.members[i].active = false;
+		iconArray[i].visible = iconArray[i].active = false;
 	}
+	_lastVisibles = [];
+
+	// decide range pra desenhar (mantive sua lógica)
+	var min:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected - _drawDistance)));
+	var max:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected + _drawDistance)));
+	for (i in min...max)
+	{
+		// só ativa se o item for visível (filtro aplicado em changeDiff)
+		var item:Alphabet = grpSongs.members[i];
+		var icon:HealthIcon = iconArray[i];
+		if (!item.visible) continue;
+
+		item.visible = item.active = true;
+		item.x = ((item.targetY - lerpSelected) * item.distancePerItem.x) + item.startPosition.x;
+		item.y = ((item.targetY - lerpSelected) * 1.3 * item.distancePerItem.y) + item.startPosition.y;
+
+		icon.visible = icon.active = true;
+		_lastVisibles.push(i);
+	}
+}
 
 	override function destroy():Void
 	{
