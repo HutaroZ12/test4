@@ -599,16 +599,16 @@ function applyDifficultyFilter()
     var savedDiff:String = songs[curSelected].lastDifficulty;
     var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
     if(savedDiff != null && Difficulty.list.contains(savedDiff))
-        curDifficulty = Std.int(Math.max(0, Difficulty.list.indexOf(savedDiff));
+        curDifficulty = Std.int(Math.max(0, Difficulty.list.indexOf(savedDiff)));
     else if(lastDiff > -1)
         curDifficulty = lastDiff;
     else
-        curDifficulty = Std.int(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault()));
+        curDifficulty = Std.int(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
 
     changeDiff();
     _updateSongLastDifficulty();
 }
-	
+
 	inline private function _updateSongLastDifficulty():Void {
     songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 	}
