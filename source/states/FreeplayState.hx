@@ -135,9 +135,7 @@ class FreeplayState extends MusicBeatState
             var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
             #end
             if(!exists) return; // Pula música que não tem versão Erect
-        }
-    }
-		
+        
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
