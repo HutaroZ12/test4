@@ -610,7 +610,7 @@ class FreeplayState extends MusicBeatState
 
 	// atualiza UI/posições
 	updateTexts();
-}
+
 
 		//#if !switch
 		//intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
