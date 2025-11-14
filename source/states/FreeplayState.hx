@@ -52,33 +52,14 @@ class FreeplayState extends MusicBeatState
 
 	var player:MusicPlayer;
 
-	override function create() {
-	
-	persistentUpdate = true;
+	override function create()
+	{
+		//Paths.clearStoredMemory();
+		//Paths.clearUnusedMemory();
+		
+		persistentUpdate = true;
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
-    
-    // Depois de adicionar músicas ao array
-    for (i in 0...songs.length) {
-        var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-        songText.targetY = i;
-        grpSongs.add(songText);
-
-        songText.scaleX = Math.min(1, 980 / songText.width);
-        songText.snapToPosition();
-
-        Mods.currentModDirectory = songs[i].folder;
-        var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-        icon.sprTracker = songText;
-
-        songText.visible = songText.active = songText.isMenuItem = false;
-        icon.visible = icon.active = false;
-
-        iconArray.push(icon);
-        add(icon);
-    }
-    WeekData.setDirectoryFromWeek();
-
 
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("In the Menus", null);
@@ -132,47 +113,46 @@ class FreeplayState extends MusicBeatState
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
-	}
 
-		// Função que filtra músicas Erect
-	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
-    {
+public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
+{
+    if(hasErect || !allowErect) {
         songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
     }
 
-    public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int, hasErect:Bool)
-    {
-        // Se tiver Erect ou se não for Erect, adiciona a música
-        if(hasErect || !allowErect) {
-            songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
-        }
-
-        // Se a dificuldade atual for Erect, verifica se a música possui versão Erect
-        if(Difficulty.getString(curDifficulty) == "Erect") {
-            var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
-            #if MODS_ALLOWED
-            var exists:Bool = FileSystem.exists(Paths.chart(erectPath + ".json"));
-            #else
-            var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
-            #end
-            if(!exists) return; // Pula música que não tem versão Erect
-        }
-    }
-
-    // Função que checa se existe versão Erect da música
-    private function songExistsErect(songName:String):Bool
+    // Se a dificuldade atual for Erect
+    if(Difficulty.getString(curDifficulty) == "Erect")
     {
         var erectPath:String = Paths.formatToSongPath(songName) + "-erect";
         #if MODS_ALLOWED
-        return FileSystem.exists(Paths.chart(erectPath + ".json"));
+        var exists:Bool = FileSystem.exists(Paths.chart(erectPath + ".json"));
         #else
-        return Assets.exists(Paths.chart(erectPath + ".json"));
+        var exists:Bool = Assets.exists(Paths.chart(erectPath + ".json"));
         #end
+        if(!exists) return; // Pula música que não tem versão Erect
     }
+} // ← CHAVE FINAL
 
-    // Resto do código (update, changeSelection, etc.) continua normalmente...
-}
-	
+		for (i in 0...songs.length)
+		{
+			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
+			songText.targetY = i;
+			grpSongs.add(songText);
+
+			songText.scaleX = Math.min(1, 980 / songText.width);
+			songText.snapToPosition();
+
+			Mods.currentModDirectory = songs[i].folder;
+			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			icon.sprTracker = songText;
+
+			songText.visible = songText.active = songText.isMenuItem = false;
+			icon.visible = icon.active = false;
+
+			iconArray.push(icon);
+			add(icon);
+		}
+		WeekData.setDirectoryFromWeek();
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
