@@ -557,6 +557,7 @@ class FreeplayState extends MusicBeatState
 
 	lastDifficultyName = Difficulty.getString(curDifficulty, false);
 	var displayDiff:String = Difficulty.getString(curDifficulty);
+	
 	if (Difficulty.list.length > 1)
 		diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
 	else
@@ -609,10 +610,6 @@ class FreeplayState extends MusicBeatState
 
 	// atualiza UI/posições
 	updateTexts();
-}
-
-		
-		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
 }
 
 		#if !switch
