@@ -612,11 +612,6 @@ class FreeplayState extends MusicBeatState
 	updateTexts();
 }
 
-		//#if !switch
-		//intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		//intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-	//end
-
 		lastDifficultyName = Difficulty.getString(curDifficulty, false);
 		var displayDiff:String = Difficulty.getString(curDifficulty);
 		if (Difficulty.list.length > 1)
