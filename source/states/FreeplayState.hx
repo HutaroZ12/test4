@@ -55,25 +55,27 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    // Se estiver na dificuldade Erect
+    // Se estiver na dificuldade Erect → filtrar
     if (Difficulty.getString(curDifficulty) == "Erect")
     {
+        // Nome da pasta da música
         var folder:String = songName.toLowerCase();
 
-        // Caminho correto para assets/shared/data/<pasta>/<pasta>-erect.json
+        // Caminho EXATO do arquivo erect
         var erectPath:String = 'assets/shared/data/$folder/${folder}-erect.json';
 
+        var exists:Bool = false;
+
         #if sys
-        var exists:Bool = sys.FileSystem.exists(erectPath);
-        #else
-        var exists:Bool = Assets.exists(erectPath);
+        exists = sys.FileSystem.exists(erectPath);
         #end
 
+        // Música NÃO tem erect → NÃO adicionar
         if (!exists)
-            return; // Música não tem dificuldade Erect → esconder
+            return;
     }
 
-    // Música válida → adiciona
+    // Música tem erect OU não estamos na dificuldade erect → adicionar
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
@@ -514,49 +516,41 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-	function reloadFreeplaySongs()
+    public function reloadFreeplaySongs()
 {
-    // Limpa dados antigos
+    // Limpa lista de músicas
     songs = [];
 
-    // Limpa grupos visuais antigos
-    if (grpSongs != null) {
-        grpSongs.clear();
-    } else {
-        grpSongs = new FlxTypedGroup<Alphabet>();
-        add(grpSongs);
-    }
+    WeekData.reloadWeekFiles(false);
 
-    // Remove ícones antigos da cena e limpa o array
-    for (icon in iconArray) {
-        FlxDestroyUtil.destroy(icon);
-    }
-    iconArray = [];
-
-    // Recria songs aplicando filtro (igual lógica do create)
+    // --- Recarrega músicas da week ---
     for (i in 0...WeekData.weeksList.length)
     {
-        var weekName:String = WeekData.weeksList[i];
-        if(weekIsLocked(weekName)) continue;
+        if (weekIsLocked(WeekData.weeksList[i])) continue;
 
-        var leWeek:WeekData = WeekData.weeksLoaded.get(weekName);
-        if (leWeek == null) continue;
-
+        var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
         WeekData.setDirectoryFromWeek(leWeek);
 
         for (song in leWeek.songs)
         {
             var colors:Array<Int> = song[2];
-            if(colors == null || colors.length < 3)
+            if (colors == null || colors.length < 3)
                 colors = [146, 113, 253];
 
-            // Aplica filtro Erect ao adicionar
-            // Usa sua addSongFiltered (que checa se existe <song>-erect.json)
-            addSongFiltered(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+            addSongFiltered(
+                song[0],
+                i,
+                song[1],
+                FlxColor.fromRGB(colors[0], colors[1], colors[2])
+            );
         }
     }
 
-    // Agora recria os itens visuais a partir de songs[]
+    // --- RECONSTRUIR LISTA VISUAL ---
+
+    grpSongs.clear();
+    iconArray = [];
+
     for (i in 0...songs.length)
     {
         var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
@@ -567,58 +561,57 @@ class FreeplayState extends MusicBeatState
         songText.snapToPosition();
 
         Mods.currentModDirectory = songs[i].folder;
+
         var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
         icon.sprTracker = songText;
-
-        // inicialmente escondemos; updateTexts mostrará os visíveis
-        songText.visible = songText.active = songText.isMenuItem = false;
-        icon.visible = icon.active = false;
+        icon.visible = true;
 
         iconArray.push(icon);
         add(icon);
     }
 
-    WeekData.setDirectoryFromWeek();
-
-    // Ajustes de UI/seleção
+    // --- Ajustar seleção ---
     if (curSelected >= songs.length) curSelected = 0;
-    if (songs.length > 0) {
+
+    if (songs.length > 0)
+    {
         bg.color = songs[curSelected].color;
         intendedColor = bg.color;
     }
 
     lerpSelected = curSelected;
 
-    // Reposiciona score/highscore etc.
-    positionHighscore();
     updateTexts(0);
-
-    // Garantir que seleção inicial exiba corretamente
     changeSelection(0, false);
 }
 	
-	function changeDiff(change:Int = 0)  
-{  
-    if (player.playingMusic)  
-        return;  
+	function changeDiff(change:Int = 0)
+{
+    if (player.playingMusic)
+        return;
 
-    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);  
-    lastDifficultyName = Difficulty.getString(curDifficulty, false);  
-  
-    reloadFreeplaySongs();  
-  
-    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);  
-    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);  
-  
-    var displayDiff:String = Difficulty.getString(curDifficulty);  
-    if (Difficulty.list.length > 1)  
-        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';  
-    else  
-        diffText.text = displayDiff.toUpperCase();  
-  
-    positionHighscore();  
-    missingText.visible = false;  
-    missingTextBG.visible = false;  
+    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
+
+    // --- ESSENCIAL PARA FILTRAR AS MÚSICAS ---
+    reloadFreeplaySongs();
+
+    if (songs.length <= 0)
+        return;
+
+    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
+
+    lastDifficultyName = Difficulty.getString(curDifficulty, false);
+    var displayDiff:String = Difficulty.getString(curDifficulty);
+
+    if (Difficulty.list.length > 1)
+        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+    else
+        diffText.text = displayDiff.toUpperCase();
+
+    positionHighscore();
+    missingText.visible = false;
+    missingTextBG.visible = false;
 }
 	
 	function changeSelection(change:Int = 0, playSound:Bool = true)
