@@ -570,18 +570,22 @@ class FreeplayState extends MusicBeatState
     }
 
     // --- Ajustar seleção ---
+if (songs.length > 0)
+{
     if (curSelected >= songs.length) curSelected = 0;
 
-    if (songs.length > 0)
-    {
-        bg.color = songs[curSelected].color;
-        intendedColor = bg.color;
-    }
+    bg.color = songs[curSelected].color;
+    intendedColor = bg.color;
 
     lerpSelected = curSelected;
 
     updateTexts(0);
     changeSelection(0, false);
+}
+else
+{
+    curSelected = 0;
+    lerpSelected = 0;
 }
 	
 	function changeDiff(change:Int = 0)
