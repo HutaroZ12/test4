@@ -54,34 +54,33 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    // Se a dificuldade atual for Erect
-    if (Difficulty.getString(curDifficulty).toLowerCase() == "erect")
+    var erectMode:Bool = (Difficulty.getString(curDifficulty).toLowerCase() == "erect");
+
+    if (erectMode)
     {
-        // Caminho correto com subpasta:
-        // assets/shared/data/<song>/<song>-erect.json
-        var erectPath:String = "assets/shared/data/" 
-            + Paths.formatToSongPath(songName) + "/" 
-            + Paths.formatToSongPath(songName) + "-erect.json";
+        // Usa o sistema natural do Psych para achar charts:
+        // Ele automaticamente procura em:
+        // - mods/data/<song>/
+        // - assets/data/<song>/
+        // - mods/<modname>/data/<song>/
+        var erectChart:String = Paths.chart(songName + "-erect");
 
         #if MODS_ALLOWED
-        var exists:Bool =
-            FileSystem.exists(erectPath) ||
-            FileSystem.exists(Paths.modFolders(
-                "data/" + Paths.formatToSongPath(songName) + "/" +
-                Paths.formatToSongPath(songName) + "-erect.json"
-            ));
+        var exists:Bool = FileSystem.exists(erectChart);
         #else
-        var exists:Bool = Assets.exists(erectPath);
+        var exists:Bool = Assets.exists(erectChart);
         #end
 
-        // Se NÃO existe chart erect → NÃO aparece no Freeplay
-        if (!exists) return;
+        if (!exists)
+        {
+            return; // Não adiciona a música na dificuldade Erect
+        }
     }
 
-    // Adiciona a música normalmente
+    // Se não estiver no modo erect OU o chart erect existe → adiciona
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
-
+	
 	override function create()
 	{
 		//Paths.clearStoredMemory();
