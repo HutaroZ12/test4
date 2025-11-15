@@ -584,7 +584,7 @@ public function reloadFreeplaySongs(updateSelection:Bool = true)
 // --- Atualiza a dificuldade da música atual ---
 inline private function _updateSongLastDifficulty()
 {
-    if(songs.length == 0) return;
+    if(songs.length == 0 || curSelected >= songs.length) return;
     songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 }
 
