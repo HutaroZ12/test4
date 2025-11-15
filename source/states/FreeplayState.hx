@@ -55,12 +55,13 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    // Se a dificuldade atual for Erect
+    // Se estiver na dificuldade Erect
     if (Difficulty.getString(curDifficulty) == "Erect")
     {
-        // Exemplo:
-        //   assets/shared/data/clouding/clouding-erect.json
-        var folder:String = Paths.formatToSongPath(songName);
+        // Nome da pasta SEM regex
+        var folder:String = songName.toLowerCase();
+
+        // Caminho EXATO conforme sua engine
         var erectPath:String = 'data/$folder/${folder}-erect.json';
 
         #if MODS_ALLOWED
@@ -69,12 +70,11 @@ class FreeplayState extends MusicBeatState
         var exists:Bool = Assets.exists(erectPath);
         #end
 
-        // Se NÃO existir chart erect → NÃO adiciona a música
         if (!exists)
-            return;
+            return; // Música NÃO tem dificuldade erect → não adiciona
     }
 
-    // Adiciona normalmente
+    // Se chegou aqui, música é válida
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
