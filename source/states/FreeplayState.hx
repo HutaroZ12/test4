@@ -55,28 +55,22 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    // Se estivermos na dificuldade Erect → filtrar
     if (Difficulty.getString(curDifficulty) == "Erect")
     {
         var folder:String = songName.toLowerCase();
-
-        // Caminho EXATO do chart erect da sua engine:
         var erectPath:String = 'assets/shared/data/$folder/${folder}-erect.json';
 
         var exists:Bool = false;
-
         #if sys
         exists = sys.FileSystem.exists(erectPath);
         #else
         exists = Assets.exists(erectPath);
         #end
 
-        // Música NÃO tem erect → NÃO adicionar
         if (!exists)
             return;
     }
 
-    // Música válida → adicionar à lista
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
@@ -517,6 +511,7 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
+// --- Atualiza a lista de músicas do Freeplay, aplicando filtro Erect ---
 public function reloadFreeplaySongs()
 {
     songs = [];
@@ -534,6 +529,7 @@ public function reloadFreeplaySongs()
             if (colors == null || colors.length < 3)
                 colors = [146,113,253];
 
+            // --- Adiciona música filtrando dificuldade Erect ---
             addSongFiltered(
                 song[0],
                 i,
@@ -543,7 +539,7 @@ public function reloadFreeplaySongs()
         }
     }
 
-    // --- RECONSTRUIR LISTA VISUAL ---
+    // --- Reconstruir lista visual ---
     grpSongs.clear();
     iconArray = [];
 
@@ -595,7 +591,7 @@ inline private function _updateSongLastDifficulty()
 // --- Muda seleção de música ---
 function changeSelection(change:Int = 0, playSound:Bool = true)
 {
-    if (player.playingMusic)
+    if (player.playingMusic || songs.length == 0)
         return;
 
     curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
@@ -643,6 +639,36 @@ function changeSelection(change:Int = 0, playSound:Bool = true)
 
     changeDiff();
     _updateSongLastDifficulty();
+}
+
+// --- Muda dificuldade de música ---
+function changeDiff(change:Int = 0)
+{
+    if (player.playingMusic || songs.length == 0)
+        return;
+
+    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
+
+    // Atualiza lista filtrando músicas que têm essa dificuldade
+    reloadFreeplaySongs();
+
+    if (songs.length == 0)
+        return;
+
+    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
+
+    lastDifficultyName = Difficulty.getString(curDifficulty, false);
+    var displayDiff:String = Difficulty.getString(curDifficulty);
+
+    if (Difficulty.list.length > 1)
+        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+    else
+        diffText.text = displayDiff.toUpperCase();
+
+    positionHighscore();
+    missingText.visible = false;
+    missingTextBG.visible = false;
 }
 	
 	private function positionHighscore()
