@@ -547,7 +547,6 @@ class FreeplayState extends MusicBeatState
     }
 
     updateSongList();
-}
 
     // --- RECONSTRUIR LISTA VISUAL ---
 
