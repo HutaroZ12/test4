@@ -60,8 +60,8 @@ class FreeplayState extends MusicBeatState
     {
         var folder:String = songName.toLowerCase();
 
-        // ------ CAMINHO CORRETO PRO SEU JOGO ------
-        var erectPath:String = Paths.getSharedPath("data/$songName/" + $songName + '-erect' + '.json');
+        // Caminho correto para assets/shared/data/<pasta>/<pasta>-erect.json
+        var erectPath:String = 'assets/shared/data/$folder/${folder}-erect.json';
 
         #if sys
         var exists:Bool = sys.FileSystem.exists(erectPath);
@@ -69,12 +69,11 @@ class FreeplayState extends MusicBeatState
         var exists:Bool = Assets.exists(erectPath);
         #end
 
-        // Se NÃO existir difficulty erect, não adiciona a música
         if (!exists)
-            return;
+            return; // Música não tem dificuldade Erect → esconder
     }
 
-    // Música válida → adiciona no freeplay
+    // Música válida → adiciona
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
