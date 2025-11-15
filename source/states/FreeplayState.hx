@@ -59,7 +59,7 @@ class FreeplayState extends MusicBeatState
     if (Difficulty.getString(curDifficulty).toLowerCase() == "erect")
     {
         var songName = Paths.formatToSongPath(songName);
-        var erectFile = Paths.getSharedPath("data/$songName/" + songName + "-erect.json";
+        var erectFile = Paths.getSharedPath("data/$songName/" + songName + "-erect.json");
 
         #if MODS_ALLOWED
         var modErectFile = Paths.modFolders("data/$songName/" + songName + "-erect.json");
