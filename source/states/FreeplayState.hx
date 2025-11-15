@@ -14,6 +14,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxDestroyUtil;
 
 import openfl.utils.Assets;
+import sys.FileSystem;
 
 import haxe.Json;
 
@@ -54,26 +55,28 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    // Se estamos na dificuldade Erect
+    // Se a dificuldade atual for Erect
     if (Difficulty.getString(curDifficulty).toLowerCase() == "erect")
     {
-        // Formata o nome para lowercase: "Clouding" -> "clouding"
+        // Caminho do chart erect
         var base:String = Paths.formatToSongPath(songName);
+        var erectPath:String = "data/" + base + "/" + base + "-erect.json";
 
-        // Caminho real dos charts na sua estrutura:
-        var erectPath:String = 'assets/shared/data/$base/${base}-erect.json';
+        var exists:Bool = false;
 
         #if MODS_ALLOWED
-        var exists:Bool = FileSystem.exists(erectPath);
-        #else
-        var exists:Bool = Assets.exists(erectPath);
+        exists = FileSystem.exists(Paths.modFolders(erectPath));
         #end
 
-        // Não tem chart erect → não adiciona no Freeplay
+        // Arquivo base (assets/shared)
+        if (!exists)
+            exists = FileSystem.exists("assets/shared/" + erectPath);
+
+        // Se não existe chart erect → NÃO adiciona
         if (!exists) return;
     }
 
-    // Adiciona a música normalmente
+    // Caso contrário, adiciona normal
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
