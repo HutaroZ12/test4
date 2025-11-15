@@ -54,15 +54,14 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    var erectMode:Bool = (Difficulty.getString(curDifficulty).toLowerCase() == "erect");
-
-    if (erectMode)
+    // Se estamos na dificuldade Erect
+    if (Difficulty.getString(curDifficulty).toLowerCase() == "erect")
     {
-        // Caminho correto baseado no que você me mostrou:
-        // assets/shared/data/<song>/<song>-erect.json
-        var erectPath:String = "assets/shared/data/" 
-            + Paths.formatToSongPath(songName) + "/" 
-            + Paths.formatToSongPath(songName) + "-erect.json";
+        // Formata o nome para lowercase: "Clouding" -> "clouding"
+        var base:String = Paths.formatToSongPath(songName);
+
+        // Caminho real dos charts na sua estrutura:
+        var erectPath:String = 'assets/shared/data/$base/${base}-erect.json';
 
         #if MODS_ALLOWED
         var exists:Bool = FileSystem.exists(erectPath);
@@ -70,11 +69,11 @@ class FreeplayState extends MusicBeatState
         var exists:Bool = Assets.exists(erectPath);
         #end
 
-        if (!exists)
-            return; // NÃO adiciona Clouding no modo Erect
+        // Não tem chart erect → não adiciona no Freeplay
+        if (!exists) return;
     }
 
-    // Adiciona normalmente
+    // Adiciona a música normalmente
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
