@@ -58,23 +58,23 @@ class FreeplayState extends MusicBeatState
     // Se estiver na dificuldade Erect
     if (Difficulty.getString(curDifficulty) == "Erect")
     {
-        // Nome da pasta SEM regex
         var folder:String = songName.toLowerCase();
 
-        // Caminho EXATO conforme sua engine
-        var erectPath:String = 'data/$folder/${folder}-erect.json';
+        // ------ CAMINHO CORRETO PRO SEU JOGO ------
+        var erectPath:String = Paths.getSharedPath('data/$folder/${folder}-erect.json';
 
-        #if MODS_ALLOWED
-        var exists:Bool = FileSystem.exists(Paths.modFolders(erectPath));
+        #if sys
+        var exists:Bool = sys.FileSystem.exists(erectPath);
         #else
         var exists:Bool = Assets.exists(erectPath);
         #end
 
+        // Se NÃO existir difficulty erect, não adiciona a música
         if (!exists)
-            return; // Música NÃO tem dificuldade erect → não adiciona
+            return;
     }
 
-    // Se chegou aqui, música é válida
+    // Música válida → adiciona no freeplay
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
