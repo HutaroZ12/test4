@@ -512,7 +512,7 @@ class FreeplayState extends MusicBeatState
 	}
 
 // --- Atualiza a lista de músicas do Freeplay, aplicando filtro Erect ---
-public function reloadFreeplaySongs()
+public function reloadFreeplaySongs(updateSelection:Bool = true)
 {
     songs = [];
 
@@ -529,7 +529,6 @@ public function reloadFreeplaySongs()
             if (colors == null || colors.length < 3)
                 colors = [146,113,253];
 
-            // --- Adiciona música filtrando dificuldade Erect ---
             addSongFiltered(
                 song[0],
                 i,
@@ -539,7 +538,6 @@ public function reloadFreeplaySongs()
         }
     }
 
-    // --- Reconstruir lista visual ---
     grpSongs.clear();
     iconArray = [];
 
@@ -562,7 +560,6 @@ public function reloadFreeplaySongs()
         add(icon);
     }
 
-    // --- Ajustar seleção ---
     if (songs.length > 0)
     {
         if (curSelected >= songs.length) curSelected = 0;
@@ -573,7 +570,9 @@ public function reloadFreeplaySongs()
         lerpSelected = curSelected;
 
         updateTexts(0);
-        changeSelection(0, false);
+
+        if (updateSelection)
+            changeSelection(0, false); // só chama se updateSelection=true
     }
     else
     {
@@ -581,7 +580,7 @@ public function reloadFreeplaySongs()
         lerpSelected = 0;
     }
 }
-
+	
 // --- Atualiza a dificuldade da música atual ---
 inline private function _updateSongLastDifficulty()
 {
@@ -650,7 +649,7 @@ function changeDiff(change:Int = 0)
     curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
 
     // Atualiza lista filtrando músicas que têm essa dificuldade
-    reloadFreeplaySongs();
+    reloadFreeplaySongs(false); // ⚠️ NÃO atualizar a seleção aqui
 
     if (songs.length == 0)
         return;
