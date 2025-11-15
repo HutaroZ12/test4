@@ -665,6 +665,21 @@ public function changeDiff(change:Int = 0)
     missingText.visible = false;
     missingTextBG.visible = false;
 }
+
+	private function updateDiffText():Void
+{
+    if(songs.length == 0 || Difficulty.list.length == 0)
+    {
+        diffText.text = "---";
+        return;
+    }
+
+    var displayDiff:String = Difficulty.getString(curDifficulty);
+    if(Difficulty.list.length > 1)
+        diffText.text = "< " + displayDiff.toUpperCase() + " >";
+    else
+        diffText.text = displayDiff.toUpperCase();
+}
 	
 	private function positionHighscore()
 	{
