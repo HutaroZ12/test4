@@ -58,11 +58,11 @@ class FreeplayState extends MusicBeatState
     // Se estiver na dificuldade Erect
     if (Difficulty.getString(curDifficulty).toLowerCase() == "erect")
     {
-        var songName = Paths.formatToSongPath(songName);
-        var erectFile = Paths.getSharedPath("data/$songName/" + songName + "-erect.json");
+        var songFolder = Paths.formatToSongPath(songName);
+        var erectFile = "assets/shared/data/" + songFolder + "/" + songFolder + "-erect.json";
 
         #if MODS_ALLOWED
-        var modErectFile = Paths.modFolders("data/$songName/" + songName + "-erect.json");
+        var modErectFile = Paths.modFolders("data/" + songFolder + "/" + songFolder + "-erect.json");
         var exists:Bool = FileSystem.exists(modErectFile) || FileSystem.exists(erectFile);
         #else
         var exists:Bool = Assets.exists(erectFile);
@@ -532,11 +532,53 @@ class FreeplayState extends MusicBeatState
 		else
 			diffText.text = displayDiff.toUpperCase();
 
+		reloadSongs();
 		positionHighscore();
 		missingText.visible = false;
 		missingTextBG.visible = false;
 	}
 
+	function reloadSongs()
+{
+    songs = [];
+
+    for (i in 0...WeekData.weeksList.length)
+    {
+        var leWeek = WeekData.weeksList[i];
+        WeekData.setDirectoryFromWeek(leWeek);
+
+        for (song in leWeek.songs)
+        {
+            var songName = song[0];
+            var songChar = song[1];
+            var colors:Array<Int> = song[2];
+
+            if (colors == null || colors.length < 3)
+                colors = [146, 113, 253];
+
+            if (Difficulty.getString(curDifficulty).toLowerCase() == "erect")
+            {
+                var songFolder = Paths.formatToSongPath(songName);
+                var erectFile = "assets/shared/data/" + songFolder + "/" + songFolder + "-erect.json";
+
+                #if MODS_ALLOWED
+                var modErect = Paths.modFolders("data/" + songFolder + "/" + songFolder + "-erect.json");
+                var exists:Bool = FileSystem.exists(modErect) || FileSystem.exists(erectFile);
+                #else
+                var exists:Bool = Assets.exists(erectFile);
+                #end
+
+                if (!exists)
+                    continue; // NÃO adiciona músicas sem erect
+            }
+
+            songs.push(new SongMetadata(songName, i, songChar, FlxColor.fromRGB(colors[0], colors[1], colors[2])));
+        }
+    }
+
+    curSelected = 0;
+}
+	
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
 		if (player.playingMusic)
