@@ -666,8 +666,10 @@ else
 	}
 
 	inline private function _updateSongLastDifficulty()
-		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
-
+{
+    songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
+}
+	
 	private function positionHighscore()
 	{
 		scoreText.x = FlxG.width - scoreText.width - 6;
