@@ -61,7 +61,7 @@ class FreeplayState extends MusicBeatState
         var folder:String = songName.toLowerCase();
 
         // ------ CAMINHO CORRETO PRO SEU JOGO ------
-        var erectPath:String = Paths.getSharedPath('data/$songName/$songName' + '-erect' + '.json');
+        var erectPath:String = Paths.getSharedPath('data/$songName/$songName' + '-erect' + '.json'));
 
         #if sys
         var exists:Bool = sys.FileSystem.exists(erectPath);
