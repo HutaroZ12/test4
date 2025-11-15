@@ -543,12 +543,10 @@ class FreeplayState extends MusicBeatState
                 song[1],
                 FlxColor.fromRGB(colors[0],colors[1],colors[2])
             );	
-		}
-    updateSongList();
-	}
+        }
+    }
 
     // --- RECONSTRUIR LISTA VISUAL ---
-
     grpSongs.clear();
     iconArray = [];
 
