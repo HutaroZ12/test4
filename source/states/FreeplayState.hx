@@ -517,13 +517,32 @@ class FreeplayState extends MusicBeatState
 
 	function reloadFreeplaySongs()
 {
-    songs = []; // limpa
+    // Limpa dados antigos
+    songs = [];
 
+    // Limpa grupos visuais antigos
+    if (grpSongs != null) {
+        grpSongs.clear();
+    } else {
+        grpSongs = new FlxTypedGroup<Alphabet>();
+        add(grpSongs);
+    }
+
+    // Remove ícones antigos da cena e limpa o array
+    for (icon in iconArray) {
+        FlxDestroyUtil.destroy(icon);
+    }
+    iconArray = [];
+
+    // Recria songs aplicando filtro (igual lógica do create)
     for (i in 0...WeekData.weeksList.length)
     {
-        if(weekIsLocked(WeekData.weeksList[i])) continue;
+        var weekName:String = WeekData.weeksList[i];
+        if(weekIsLocked(weekName)) continue;
 
-        var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
+        var leWeek:WeekData = WeekData.weeksLoaded.get(weekName);
+        if (leWeek == null) continue;
+
         WeekData.setDirectoryFromWeek(leWeek);
 
         for (song in leWeek.songs)
@@ -532,12 +551,51 @@ class FreeplayState extends MusicBeatState
             if(colors == null || colors.length < 3)
                 colors = [146, 113, 253];
 
-            addSongFiltered(song[0], i, song[1],
-                FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+            // Aplica filtro Erect ao adicionar
+            // Usa sua addSongFiltered (que checa se existe <song>-erect.json)
+            addSongFiltered(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
         }
     }
 
-    curSelected = 0;
+    // Agora recria os itens visuais a partir de songs[]
+    for (i in 0...songs.length)
+    {
+        var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
+        songText.targetY = i;
+        grpSongs.add(songText);
+
+        songText.scaleX = Math.min(1, 980 / songText.width);
+        songText.snapToPosition();
+
+        Mods.currentModDirectory = songs[i].folder;
+        var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+        icon.sprTracker = songText;
+
+        // inicialmente escondemos; updateTexts mostrará os visíveis
+        songText.visible = songText.active = songText.isMenuItem = false;
+        icon.visible = icon.active = false;
+
+        iconArray.push(icon);
+        add(icon);
+    }
+
+    WeekData.setDirectoryFromWeek();
+
+    // Ajustes de UI/seleção
+    if (curSelected >= songs.length) curSelected = 0;
+    if (songs.length > 0) {
+        bg.color = songs[curSelected].color;
+        intendedColor = bg.color;
+    }
+
+    lerpSelected = curSelected;
+
+    // Reposiciona score/highscore etc.
+    positionHighscore();
+    updateTexts(0);
+
+    // Garantir que seleção inicial exiba corretamente
+    changeSelection(0, false);
 }
 	
 	function changeDiff(change:Int = 0)  
