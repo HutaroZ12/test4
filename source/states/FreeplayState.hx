@@ -55,24 +55,23 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    // Se estiver na dificuldade Erect
-    if (Difficulty.getString(curDifficulty).toLowerCase() == "erect")
+    // Se a dificuldade atual for Erect
+    if (Difficulty.getString(curDifficulty) == "Erect")
     {
-        var songFolder = Paths.formatToSongPath(songName);
-        var erectFile = "assets/shared/data/" + songFolder + "/" + songFolder + "-erect.json";
+        // Exemplo:
+        //   assets/shared/data/clouding/clouding-erect.json
+        var folder:String = Paths.formatToSongPath(songName);
+        var erectPath:String = 'data/$folder/${folder}-erect.json';
 
         #if MODS_ALLOWED
-        var modErectFile = Paths.modFolders("data/" + songFolder + "/" + songFolder + "-erect.json");
-        var exists:Bool = FileSystem.exists(modErectFile) || FileSystem.exists(erectFile);
+        var exists:Bool = FileSystem.exists(Paths.modFolders(erectPath));
         #else
-        var exists:Bool = Assets.exists(erectFile);
+        var exists:Bool = Assets.exists(erectPath);
         #end
 
+        // Se NÃO existir chart erect → NÃO adiciona a música
         if (!exists)
-        {
-            trace("REMOVIDO DO ERECT: " + songName);
-            return; // NÃO adiciona músicas sem difficulty erect
-        }
+            return;
     }
 
     // Adiciona normalmente
@@ -516,67 +515,53 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-	function changeDiff(change:Int = 0)
-	{
-		if (player.playingMusic)
-			return;
-
-		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-
-		lastDifficultyName = Difficulty.getString(curDifficulty, false);
-		var displayDiff:String = Difficulty.getString(curDifficulty);
-		if (Difficulty.list.length > 1)
-			diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
-		else
-			diffText.text = displayDiff.toUpperCase();
-
-		reloadSongs();
-		positionHighscore();
-		missingText.visible = false;
-		missingTextBG.visible = false;
-	}
-
-	function reloadSongs()
+	function reloadFreeplaySongs()
 {
-    songs = [];
+    songs = []; // limpa
 
     for (i in 0...WeekData.weeksList.length)
     {
-        var leWeek = WeekData.weeksList[i];
+        if(weekIsLocked(WeekData.weeksList[i])) continue;
+
+        var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
         WeekData.setDirectoryFromWeek(leWeek);
 
         for (song in leWeek.songs)
         {
-            var songName = song[0];
-            var songChar = song[1];
             var colors:Array<Int> = song[2];
-
-            if (colors == null || colors.length < 3)
+            if(colors == null || colors.length < 3)
                 colors = [146, 113, 253];
 
-            if (Difficulty.getString(curDifficulty).toLowerCase() == "erect")
-            {
-                var songFolder = Paths.formatToSongPath(songName);
-                var erectFile = "assets/shared/data/" + songFolder + "/" + songFolder + "-erect.json";
-
-                #if MODS_ALLOWED
-                var modErect = Paths.modFolders("data/" + songFolder + "/" + songFolder + "-erect.json");
-                var exists:Bool = FileSystem.exists(modErect) || FileSystem.exists(erectFile);
-                #else
-                var exists:Bool = Assets.exists(erectFile);
-                #end
-
-                if (!exists)
-                    continue; // NÃO adiciona músicas sem erect
-            }
-
-            songs.push(new SongMetadata(songName, i, songChar, FlxColor.fromRGB(colors[0], colors[1], colors[2])));
+            addSongFiltered(song[0], i, song[1],
+                FlxColor.fromRGB(colors[0], colors[1], colors[2]));
         }
     }
 
     curSelected = 0;
+}
+	
+	function changeDiff(change:Int = 0)  
+{  
+    if (player.playingMusic)  
+        return;  
+
+    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);  
+    lastDifficultyName = Difficulty.getString(curDifficulty, false);  
+  
+    reloadFreeplaySongs();  
+  
+    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);  
+    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);  
+  
+    var displayDiff:String = Difficulty.getString(curDifficulty);  
+    if (Difficulty.list.length > 1)  
+        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';  
+    else  
+        diffText.text = displayDiff.toUpperCase();  
+  
+    positionHighscore();  
+    missingText.visible = false;  
+    missingTextBG.visible = false;  
 }
 	
 	function changeSelection(change:Int = 0, playSound:Bool = true)
