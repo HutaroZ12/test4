@@ -626,15 +626,29 @@ public function changeSelection(change:Int = 0, playSound:Bool = true)
 // --- Muda dificuldade de música ---
 public function changeDiff(change:Int = 0)
 {
-    if(songs.length == 0) return;
+    if(songs.length == 0) return; // Se não tem música, sai
 
-    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
+    // Muda a dificuldade
+    var newDifficulty:Int = curDifficulty + change;
+
+    if(Difficulty.list.length == 0) 
+    {
+        curDifficulty = 0;
+        return;
+    }
+
+    // Usa wrap com segurança
+    curDifficulty = FlxMath.wrap(newDifficulty, 0, Difficulty.list.length - 1);
 
     // Atualiza lista filtrando músicas que têm essa dificuldade
-    reloadFreeplaySongs(false); // ⚠️ NÃO atualizar a seleção aqui
+    reloadFreeplaySongs(false);
 
-    if (songs.length == 0)
+    if(songs.length == 0)
+    {
+        // Não tem música nessa dificuldade, apenas mostra default ou esconde o diffText
+        diffText.text = "---";
         return;
+    }
 
     intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
     intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
