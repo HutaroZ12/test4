@@ -54,10 +54,11 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    // Se estiver na dificuldade Erect
+    // Se a dificuldade atual for Erect
     if (Difficulty.getString(curDifficulty) == "Erect")
     {
-        var erectPath:String = "data/" + Paths.formatToSongPath(songName) + "/" + Paths.formatToSongPath(songName) + "-erect.json";
+        var songPath:String = Paths.formatToSongPath(songName);
+        var erectPath:String = 'assets/shared/data/' + songPath + '-erect.json';
 
         // Verifica se o chart erect existe
         #if MODS_ALLOWED
@@ -66,7 +67,8 @@ class FreeplayState extends MusicBeatState
         var exists:Bool = Assets.exists(erectPath);
         #end
 
-        if (!exists) return; // não adiciona música SEM erect
+        if (!exists)
+            return; // NÃO adiciona músicas sem versão Erect
     }
 
     // Adiciona a música normalmente
