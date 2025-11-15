@@ -517,12 +517,9 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-    public function reloadFreeplaySongs()
+public function reloadFreeplaySongs()
 {
     songs = [];
-
-    // REMOVER:
-    // WeekData.reloadWeekFiles(false);
 
     for (i in 0...WeekData.weeksList.length)
     {
@@ -570,104 +567,82 @@ class FreeplayState extends MusicBeatState
     }
 
     // --- Ajustar seleção ---
-if (songs.length > 0)
-{
-    if (curSelected >= songs.length) curSelected = 0;
+    if (songs.length > 0)
+    {
+        if (curSelected >= songs.length) curSelected = 0;
 
-    bg.color = songs[curSelected].color;
-    intendedColor = bg.color;
+        bg.color = songs[curSelected].color;
+        intendedColor = bg.color;
 
-    lerpSelected = curSelected;
+        lerpSelected = curSelected;
 
-    updateTexts(0);
-    changeSelection(0, false);
+        updateTexts(0);
+        changeSelection(0, false);
+    }
+    else
+    {
+        curSelected = 0;
+        lerpSelected = 0;
+    }
 }
-else
+
+// --- Atualiza a dificuldade da música atual ---
+inline private function _updateSongLastDifficulty()
 {
-    curSelected = 0;
-    lerpSelected = 0;
+    songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 }
-	
-	function changeDiff(change:Int = 0)
+
+// --- Muda seleção de música ---
+function changeSelection(change:Int = 0, playSound:Bool = true)
 {
     if (player.playingMusic)
         return;
 
-    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
+    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
 
-    // --- ESSENCIAL PARA FILTRAR AS MÚSICAS ---
-    reloadFreeplaySongs();
+    _updateSongLastDifficulty();
 
-    if (songs.length <= 0)
-        return;
+    if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
+    var newColor:Int = songs[curSelected].color;
+    if(newColor != intendedColor)
+    {
+        intendedColor = newColor;
+        FlxTween.cancelTweensOf(bg);
+        FlxTween.color(bg, 1, bg.color, intendedColor);
+    }
 
-    lastDifficultyName = Difficulty.getString(curDifficulty, false);
-    var displayDiff:String = Difficulty.getString(curDifficulty);
+    // Atualiza visibilidade dos ícones e nomes
+    for (num => item in grpSongs.members)
+    {
+        var icon:HealthIcon = iconArray[num];
+        item.alpha = 0.6;
+        icon.alpha = 0.6;
+        if (item.targetY == curSelected)
+        {
+            item.alpha = 1;
+            icon.alpha = 1;
+        }
+    }
 
-    if (Difficulty.list.length > 1)
-        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+    Mods.currentModDirectory = songs[curSelected].folder;
+    PlayState.storyWeek = songs[curSelected].week;
+    Difficulty.loadFromWeek();
+
+    // Determina dificuldade da música
+    var savedDiff:String = songs[curSelected].lastDifficulty;
+    var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
+    if(savedDiff != null && Difficulty.list.contains(savedDiff))
+        curDifficulty = Math.round(Math.max(0, Difficulty.list.indexOf(savedDiff)));
+    else if(lastDiff > -1)
+        curDifficulty = lastDiff;
+    else if(Difficulty.list.contains(Difficulty.getDefault()))
+        curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
     else
-        diffText.text = displayDiff.toUpperCase();
+        curDifficulty = 0;
 
-    positionHighscore();
-    missingText.visible = false;
-    missingTextBG.visible = false;
-}
-	
-	function changeSelection(change:Int = 0, playSound:Bool = true)
-	{
-		if (player.playingMusic)
-			return;
-
-		curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
-		_updateSongLastDifficulty();
-		if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
-		var newColor:Int = songs[curSelected].color;
-		if(newColor != intendedColor)
-		{
-			intendedColor = newColor;
-			FlxTween.cancelTweensOf(bg);
-			FlxTween.color(bg, 1, bg.color, intendedColor);
-		}
-
-		for (num => item in grpSongs.members)
-		{
-			var icon:HealthIcon = iconArray[num];
-			item.alpha = 0.6;
-			icon.alpha = 0.6;
-			if (item.targetY == curSelected)
-			{
-				item.alpha = 1;
-				icon.alpha = 1;
-			}
-		}
-		
-		Mods.currentModDirectory = songs[curSelected].folder;
-		PlayState.storyWeek = songs[curSelected].week;
-		Difficulty.loadFromWeek();
-		
-		var savedDiff:String = songs[curSelected].lastDifficulty;
-		var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
-		if(savedDiff != null && !Difficulty.list.contains(savedDiff) && Difficulty.list.contains(savedDiff))
-			curDifficulty = Math.round(Math.max(0, Difficulty.list.indexOf(savedDiff)));
-		else if(lastDiff > -1)
-			curDifficulty = lastDiff;
-		else if(Difficulty.list.contains(Difficulty.getDefault()))
-			curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
-		else
-			curDifficulty = 0;
-
-		changeDiff();
-		_updateSongLastDifficulty();
-	}
-
-	inline private function _updateSongLastDifficulty()
-{
-    songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
+    changeDiff();
+    _updateSongLastDifficulty();
 }
 	
 	private function positionHighscore()
