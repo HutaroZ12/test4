@@ -55,19 +55,20 @@ class FreeplayState extends MusicBeatState
 
 	public function addSongFiltered(songName:String, weekNum:Int, songCharacter:String, color:Int)
 {
-    // Se estiver na dificuldade Erect → filtrar
+    // Se estivermos na dificuldade Erect → filtrar
     if (Difficulty.getString(curDifficulty) == "Erect")
     {
-        // Nome da pasta da música
         var folder:String = songName.toLowerCase();
 
-        // Caminho EXATO do arquivo erect
+        // Caminho EXATO do chart erect da sua engine:
         var erectPath:String = 'assets/shared/data/$folder/${folder}-erect.json';
 
         var exists:Bool = false;
 
         #if sys
         exists = sys.FileSystem.exists(erectPath);
+        #else
+        exists = Assets.exists(erectPath);
         #end
 
         // Música NÃO tem erect → NÃO adicionar
@@ -75,7 +76,7 @@ class FreeplayState extends MusicBeatState
             return;
     }
 
-    // Música tem erect OU não estamos na dificuldade erect → adicionar
+    // Música válida → adicionar à lista
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
