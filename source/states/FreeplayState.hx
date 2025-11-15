@@ -512,6 +512,7 @@ class FreeplayState extends MusicBeatState
 	}
 
 // --- Atualiza a lista de músicas do Freeplay, aplicando filtro Erect ---
+// --- Atualiza a lista de músicas do Freeplay, aplicando filtro Erect ---
 public function reloadFreeplaySongs(updateSelection:Bool = true)
 {
     songs = [];
@@ -540,6 +541,7 @@ public function reloadFreeplaySongs(updateSelection:Bool = true)
 
     grpSongs.clear();
     iconArray = [];
+    _lastVisibles = []; // resetar para evitar null reference
 
     for (i in 0...songs.length)
     {
@@ -569,75 +571,20 @@ public function reloadFreeplaySongs(updateSelection:Bool = true)
 
         lerpSelected = curSelected;
 
+        _lastVisibles = [];
+        for (i in 0...songs.length)
+            _lastVisibles.push(i);
+
         updateTexts(0);
 
         if (updateSelection)
-            changeSelection(0, false); // só chama se updateSelection=true
+            changeSelection(0, false);
     }
     else
     {
         curSelected = 0;
         lerpSelected = 0;
     }
-}
-	
-// --- Atualiza a dificuldade da música atual ---
-inline private function _updateSongLastDifficulty()
-{
-    songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
-}
-
-// --- Muda seleção de música ---
-function changeSelection(change:Int = 0, playSound:Bool = true)
-{
-    if (player.playingMusic || songs.length == 0)
-        return;
-
-    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
-
-    _updateSongLastDifficulty();
-
-    if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
-    var newColor:Int = songs[curSelected].color;
-    if(newColor != intendedColor)
-    {
-        intendedColor = newColor;
-        FlxTween.cancelTweensOf(bg);
-        FlxTween.color(bg, 1, bg.color, intendedColor);
-    }
-
-    // Atualiza visibilidade dos ícones e nomes
-    for (num => item in grpSongs.members)
-    {
-        var icon:HealthIcon = iconArray[num];
-        item.alpha = 0.6;
-        icon.alpha = 0.6;
-        if (item.targetY == curSelected)
-        {
-            item.alpha = 1;
-            icon.alpha = 1;
-        }
-    }
-
-    Mods.currentModDirectory = songs[curSelected].folder;
-    PlayState.storyWeek = songs[curSelected].week;
-    Difficulty.loadFromWeek();
-
-    // Determina dificuldade da música
-    var savedDiff:String = songs[curSelected].lastDifficulty;
-    var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
-    if(savedDiff != null && Difficulty.list.contains(savedDiff))
-        curDifficulty = Math.round(Math.max(0, Difficulty.list.indexOf(savedDiff)));
-    else if(lastDiff > -1)
-        curDifficulty = lastDiff;
-    else if(Difficulty.list.contains(Difficulty.getDefault()))
-        curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
-    else
-        curDifficulty = 0;
-
-    changeDiff();
-    _updateSongLastDifficulty();
 }
 
 // --- Muda dificuldade de música ---
