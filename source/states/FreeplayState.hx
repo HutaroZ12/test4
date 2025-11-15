@@ -511,8 +511,7 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-// --- Atualiza a lista de músicas do Freeplay, aplicando filtro Erect ---
-// --- Atualiza a lista de músicas do Freeplay, aplicando filtro Erect ---
+// --- Atualiza a lista de músicas do Freeplay, aplicando filtro // --- Atualiza a lista de músicas do Freeplay, aplicando filtro Erect ---
 public function reloadFreeplaySongs(updateSelection:Bool = true)
 {
     songs = [];
@@ -535,13 +534,12 @@ public function reloadFreeplaySongs(updateSelection:Bool = true)
                 i,
                 song[1],
                 FlxColor.fromRGB(colors[0],colors[1],colors[2])
-            );	
+            );  
         }
     }
 
     grpSongs.clear();
     iconArray = [];
-    _lastVisibles = []; // resetar para evitar null reference
 
     for (i in 0...songs.length)
     {
@@ -571,14 +569,10 @@ public function reloadFreeplaySongs(updateSelection:Bool = true)
 
         lerpSelected = curSelected;
 
-        _lastVisibles = [];
-        for (i in 0...songs.length)
-            _lastVisibles.push(i);
-
         updateTexts(0);
 
         if (updateSelection)
-            changeSelection(0, false);
+            changeSelection(0, false); // só chama se updateSelection=true
     }
     else
     {
@@ -587,11 +581,52 @@ public function reloadFreeplaySongs(updateSelection:Bool = true)
     }
 }
 
-// --- Muda dificuldade de música ---
-function changeDiff(change:Int = 0)
+// --- Atualiza a dificuldade da música atual ---
+inline private function _updateSongLastDifficulty()
 {
-    if (player.playingMusic || songs.length == 0)
-        return;
+    if(songs.length == 0) return;
+    songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
+}
+
+// --- Muda seleção de música ---
+public function changeSelection(change:Int = 0, playSound:Bool = true)
+{
+    if(songs.length == 0) return;
+
+    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
+
+    _updateSongLastDifficulty();
+
+    if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+    var newColor:Int = songs[curSelected].color;
+    if(newColor != intendedColor)
+    {
+        intendedColor = newColor;
+        FlxTween.cancelTweensOf(bg);
+        FlxTween.color(bg, 1, bg.color, intendedColor);
+    }
+
+    // Atualiza visibilidade dos ícones e nomes
+    for (num => item in grpSongs.members)
+    {
+        var icon:HealthIcon = iconArray[num];
+        item.alpha = 0.6;
+        icon.alpha = 0.6;
+        if(item.targetY == curSelected)
+        {
+            item.alpha = 1;
+            icon.alpha = 1;
+        }
+    }
+
+    Mods.currentModDirectory = songs[curSelected].folder;
+}
+
+// --- Muda dificuldade de música ---
+public function changeDiff(change:Int = 0)
+{
+    if(songs.length == 0) return;
 
     curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
 
