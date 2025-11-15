@@ -58,26 +58,23 @@ class FreeplayState extends MusicBeatState
 
     if (erectMode)
     {
-        // Usa o sistema natural do Psych para achar charts:
-        // Ele automaticamente procura em:
-        // - mods/data/<song>/
-        // - assets/data/<song>/
-        // - mods/<modname>/data/<song>/
-        var erectChart:String = Paths.chart(songName + "-erect");
+        // Caminho correto baseado no que você me mostrou:
+        // assets/shared/data/<song>/<song>-erect.json
+        var erectPath:String = "assets/shared/data/" 
+            + Paths.formatToSongPath(songName) + "/" 
+            + Paths.formatToSongPath(songName) + "-erect.json";
 
         #if MODS_ALLOWED
-        var exists:Bool = FileSystem.exists(erectChart);
+        var exists:Bool = FileSystem.exists(erectPath);
         #else
-        var exists:Bool = Assets.exists(erectChart);
+        var exists:Bool = Assets.exists(erectPath);
         #end
 
         if (!exists)
-        {
-            return; // Não adiciona a música na dificuldade Erect
-        }
+            return; // NÃO adiciona Clouding no modo Erect
     }
 
-    // Se não estiver no modo erect OU o chart erect existe → adiciona
+    // Adiciona normalmente
     songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 }
 	
