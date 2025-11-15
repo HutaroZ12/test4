@@ -519,16 +519,15 @@ class FreeplayState extends MusicBeatState
 
     public function reloadFreeplaySongs()
 {
-    // Limpa lista de músicas
     songs = [];
 
-    WeekData.reloadWeekFiles(false);
+    // REMOVER:
+    // WeekData.reloadWeekFiles(false);
 
-    // --- Recarrega músicas da week ---
     for (i in 0...WeekData.weeksList.length)
     {
         if (weekIsLocked(WeekData.weeksList[i])) continue;
-
+        
         var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
         WeekData.setDirectoryFromWeek(leWeek);
 
@@ -536,16 +535,19 @@ class FreeplayState extends MusicBeatState
         {
             var colors:Array<Int> = song[2];
             if (colors == null || colors.length < 3)
-                colors = [146, 113, 253];
+                colors = [146,113,253];
 
             addSongFiltered(
                 song[0],
                 i,
                 song[1],
-                FlxColor.fromRGB(colors[0], colors[1], colors[2])
+                FlxColor.fromRGB(colors[0],colors[1],colors[2])
             );
         }
     }
+
+    updateSongList();
+}
 
     // --- RECONSTRUIR LISTA VISUAL ---
 
