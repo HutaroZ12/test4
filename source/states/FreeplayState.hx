@@ -609,7 +609,7 @@ class FreeplayState extends MusicBeatState
             FlxTween.color(bg, 1, bg.color, intendedColor);
         }
 
-    inline private function _updateSongLastDifficulty():Void {
+    private function _updateSongLastDifficulty():Void {
         songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 
 }
