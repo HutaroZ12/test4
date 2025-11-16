@@ -59,7 +59,7 @@ class FreeplayState extends MusicBeatState
     // Função para checar se a música tem chart Erect
     private function songHasErect(song:SongMetadata):Bool {
     try {
-        var path = 'assets/shared/data/' + songName + '/' + songName + '-erect' + '.json';
+        var path = 'assets/shared/data/' + song.songName + '/' + song.songName + '-erect.json';
         return Assets.exists(path, null); // type null funciona
     } catch(e:Dynamic) {
         return false;
@@ -568,6 +568,7 @@ class FreeplayState extends MusicBeatState
 		positionHighscore();
 		missingText.visible = false;
 		missingTextBG.visible = false;
+		updateErectVisibility();
 	}
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
@@ -638,6 +639,29 @@ class FreeplayState extends MusicBeatState
     changeDiff();
     _updateSongLastDifficulty();
 }
+	
+	private function updateErectVisibility():Void {
+    if (!allowErect) return;
+
+    var found:Bool = false;
+    for (i in 0...songs.length) {
+        var item:Alphabet = grpSongs.members[i];
+        var icon:HealthIcon = iconArray[i];
+
+        if (!songs[i].hasErect) {
+            item.visible = item.active = false;
+            icon.visible = icon.active = false;
+        } else {
+            item.visible = item.active = true;
+            icon.visible = icon.active = true;
+            if (!found) {
+                curSelected = i; // seleciona a primeira música jogável
+                found = true;
+            }
+        }
+    }
+    lerpSelected = curSelected;
+	}
 	
 	inline private function _updateSongLastDifficulty()
 		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
