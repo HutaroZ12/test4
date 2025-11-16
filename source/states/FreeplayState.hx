@@ -57,7 +57,9 @@ class FreeplayState extends MusicBeatState
 
     // Função para checar se a música tem chart Erect
 private function songHasErect(song:SongMetadata):Bool {
-    var path = 'assets/shared/data/songName/' + song.folder + '-erect.json';
+    var path = 'assets/shared/data/' + song.songName + '/' + song.songName + '-erect.json';
+    return File.exists(path);
+}
     try {
         File.getContent(path);
         return true;
@@ -115,10 +117,16 @@ private function songHasErect(song:SongMetadata):Bool {
 
 				 // === FILTRO ERECT ===
                 if (allowErect && !songHasErect(song)) {
-                var meta:SongMetadata = new SongMetadata(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
-                meta.hasErect = false;
-                songs.push(meta); // adiciona mas ficará desativada
-                continue; // pula addSong normal
+                var folder = song[0]; // ou o nome da pasta real
+var meta:SongMetadata = new SongMetadata(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), folder);
+
+// Se a música não tem chart Erect e allowErect tá ativo
+if(allowErect && !songHasErect(meta)) {
+    meta.hasErect = false;
+}
+
+// Adiciona direto no array, sem chamar addSong depois
+songs.push(meta);
 				}
 				 addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
 			}
@@ -136,17 +144,17 @@ private function songHasErect(song:SongMetadata):Bool {
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-			songText.targetY = i;
-			grpSongs.add(songText);
+songText.targetY = i;
+grpSongs.add(songText);
 
-			// Se a música não tiver Erect, deixa transparente
-            if(allowErect && !songs[i].hasErect) {
-            songText.alpha = 0.3;  // Transparente
-            songText.active = false; // Não pode ser jogável
-            } else {
-            songText.alpha = 1;
-            songText.active = true;
-            }
+// Bloqueia música sem Erect
+if(allowErect && !songs[i].hasErect) {
+    songText.alpha = 0.3;
+    songText.active = false;
+} else {
+    songText.alpha = 1;
+    songText.active = true;
+}
 
 			songText.scaleX = Math.min(1, 980 / songText.width);
 			songText.snapToPosition();
@@ -684,8 +692,7 @@ class SongMetadata
     public var hasErect:Bool = true;
     public var folder:String;
 
-public function new(name:String, week:Int, character:String, color:Int, folder:String)
-{
+public function new(name:String, week:Int, character:String, color:Int, folder:String) {
     this.songName = name;
     this.week = week;
     this.songCharacter = character;
@@ -693,3 +700,4 @@ public function new(name:String, week:Int, character:String, color:Int, folder:S
     this.folder = folder;
     }
 }
+	
