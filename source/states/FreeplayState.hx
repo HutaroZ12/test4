@@ -469,6 +469,7 @@ if(allowErect && !songs[i].hasErect) {
         FlxG.sound.play(Paths.sound('cancelMenu'));
 		return;
 	}
+			
 	else 
 	{
 			persistentUpdate = false;
@@ -513,12 +514,13 @@ if(allowErect && !songs[i].hasErect) {
 			#if !SHOW_LOADING_SCREEN FlxG.sound.music.stop(); #end
 			stopMusicPlay = true;
 
-			destroyFreeplayVocals();
+			destroyFreeplayVocals();		
 			#if (MODS_ALLOWED && DISCORD_ALLOWED)
 			DiscordClient.loadModRPC();
 			#end
-	        }
+	}
 		}
+		
 		else if((controls.RESET || touchPad.buttonY.justPressed) && !player.playingMusic)
 		{
 			persistentUpdate = false;
