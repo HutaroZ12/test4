@@ -57,7 +57,7 @@ class FreeplayState extends MusicBeatState
 
     // Função para checar se a música tem chart Erect
 private function songHasErect(song:SongMetadata):Bool {
-    var path = 'assets/shared/data/song/' + song.folder + '/erect.json';
+    var path = 'assets/shared/data/songName/' + song.folder + '-erect.json';
     try {
         File.getContent(path);
         return true;
