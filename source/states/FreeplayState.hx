@@ -512,69 +512,6 @@ class FreeplayState extends MusicBeatState
 	}
 
 // --- Atualiza a lista de músicas do Freeplay, aplicando filtro // --- Atualiza a lista de músicas do Freeplay, aplicando filtro Erect ---
-public function reloadFreeplaySongs(updateSelection:Bool = true)
-{
-    songs = [];
-
-    for (i in 0...WeekData.weeksList.length)
-    {
-        if (weekIsLocked(WeekData.weeksList[i])) continue;
-        
-        var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
-        WeekData.setDirectoryFromWeek(leWeek);
-
-        for (song in leWeek.songs)
-        {
-            var colors:Array<Int> = song[2];
-            if (colors == null || colors.length < 3)
-                colors = [146,113,253];
-
-            addSongFiltered(
-                song[0],
-                i,
-                song[1],
-                FlxColor.fromRGB(colors[0],colors[1],colors[2])
-            );  
-        }
-    }
-
-    grpSongs.clear();
-    iconArray = [];
-
-    for (i in 0...songs.length)
-    {
-        var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-        songText.targetY = i;
-        grpSongs.add(songText);
-
-        songText.scaleX = Math.min(1, 980 / songText.width);
-        songText.snapToPosition();
-
-        Mods.currentModDirectory = songs[i].folder;
-
-        var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-        icon.sprTracker = songText;
-        icon.visible = true;
-
-        iconArray.push(icon);
-        add(icon);
-    }
-
-    if (songs.length > 0)
-    {
-        if (curSelected >= songs.length) curSelected = 0;
-
-        bg.color = songs[curSelected].color;
-        intendedColor = bg.color;
-
-        lerpSelected = curSelected;
-
-        updateTexts(0);
-
-        if (updateSelection)
-            changeSelection(0, false); // só chama se updateSelection=true
-    }
-    else
 public function reloadFreeplaySongs()
 {
     songs = [];
@@ -637,7 +574,7 @@ public function reloadFreeplaySongs()
     changeSelection(0, false);
 }
 
-public function rebuildDifficultyList():Void
+private function rebuildDifficultyList():Void
 {
     if (songs.length == 0) return;
 
@@ -664,7 +601,7 @@ public function rebuildDifficultyList():Void
     updateDiffText();
 }
 
-public function updateDiffText():Void
+private function updateDiffText():Void
 {
     if (difficultyText != null)
     {
@@ -681,7 +618,7 @@ inline private function _updateSongLastDifficulty():Void
     songs[curSelected].lastDifficulty = Difficulty.list[curDifficulty];
 }
 
-public function changeDiff(change:Int = 0)
+private function changeDiff(change:Int = 0)
 {
     if (Difficulty.list.length == 0)
         return;
@@ -692,7 +629,7 @@ public function changeDiff(change:Int = 0)
     _updateSongLastDifficulty();
 }
 
-public function changeSelection(change:Int = 0, playSound:Bool = true)
+private function changeSelection(change:Int = 0, playSound:Bool = true)
 {
     if (songs.length == 0) return;
 
