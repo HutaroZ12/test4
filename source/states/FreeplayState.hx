@@ -361,6 +361,7 @@ public static function destroyFreeplayVocals() {
 
     if(opponentVocals != null) opponentVocals.stop();
     opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
+     }
 }
 
 class SongMetadata
