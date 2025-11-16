@@ -578,33 +578,38 @@ public function reloadFreeplaySongs()
     changeSelection(0, false);
 }
 
-	private function freeplaySongList():Array<SongMetadata>
+	private function freeplaySongList():Void
 {
-    var list:Array<SongMetadata> = [];
+    songs = [];
 
     for (song in allSongs)
     {
         var name = song.songName.toLowerCase();
-        var base = 'assets/shared/data/' + name + '/' + name;
+        var diff = Difficulty.list[curDifficulty];
 
-        var easyChart = Assets.exists(base + '-easy.json');
-        var normalChart = Assets.exists(base + '.json');
-        var hardChart = Assets.exists(base + '-hard.json');
-        var erectChart = Assets.exists(base + '-erect.json');
-
-        var hasDiff = switch (curDifficulty) {
-            case 0: easyChart;
-            case 1: normalChart;
-            case 2: hardChart;
-            case 3: erectChart;
-            default: normalChart;
+        var path = 'assets/shared/data/' + name + '/' + name;
+        switch (diff)
+        {
+            case 'easy':  path += '-easy.json';
+            case 'hard':  path += '-hard.json';
+            case 'erect': path += '-erect.json';
+            default:      path += '.json';
         }
 
-        if (hasDiff)
-            list.push(song);
+        var exists:Bool = false;
+
+        #if sys
+        exists = sys.FileSystem.exists(path);
+        #else
+        exists = Assets.exists(path);
+        #end
+
+        if (exists)
+            songs.push(song);
     }
 
-    return list;
+    if (curSelected >= songs.length)
+        curSelected = 0;
 }
 	
 private function rebuildDifficultyList():Void
@@ -613,14 +618,13 @@ private function rebuildDifficultyList():Void
 
     var song = songs[curSelected];
     var name = song.songName.toLowerCase();
-    var base = 'assets/shared/data/' + name + '/' + name;
 
     var diffs:Array<String> = [];
 
-    if (Assets.exists(base + '-easy.json')) diffs.push('easy');
-    if (Assets.exists(base + '.json')) diffs.push('normal');
-    if (Assets.exists(base + '-hard.json')) diffs.push('hard');
-    if (Assets.exists(base + '-erect.json')) diffs.push('erect');
+    if (existsChart(name, 'easy'))   diffs.push('easy');
+    if (existsChart(name, 'normal')) diffs.push('normal');
+    if (existsChart(name, 'hard'))   diffs.push('hard');
+    if (existsChart(name, 'erect'))  diffs.push('erect');
 
     Difficulty.list = diffs;
     curDifficulty = 0;
@@ -628,6 +632,25 @@ private function rebuildDifficultyList():Void
     updateDiffText();
 }
 
+	private function existsChart(name:String, diff:String):Bool
+{
+    var path = 'assets/shared/data/' + name + '/' + name;
+
+    switch(diff)
+    {
+        case 'easy':   path += '-easy.json';
+        case 'hard':   path += '-hard.json';
+        case 'erect':  path += '-erect.json';
+        default:       path += '.json';
+    }
+
+    #if sys
+    return sys.FileSystem.exists(path);
+    #else
+    return Assets.exists(path);
+    #end
+}
+	
 private function updateDiffText():Void
 {
     if (diffText != null)
@@ -647,28 +670,25 @@ inline private function _updateSongLastDifficulty():Void
 
 private function changeDiff(change:Int = 0):Void
 {
-    if (Difficulty.list.length == 0)
-        return;
+    if (Difficulty.list.length == 0) return;
 
-    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
+    curDifficulty += change;
 
-    songs = freeplaySongList();
-    curSelected = 0;
+    curDifficulty = FlxMath.wrap(curDifficulty, 0, Difficulty.list.length);
 
+    freeplaySongList();
     rebuildDifficultyList();
-    updateTexts(0);
     updateDiffText();
 }
 	
 private function changeSelection(change:Int = 0, playSound:Bool = true):Void
 {
-    if (songs.length == 0)
-        return;
+    if (songs.length == 0) return;
 
-    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
+    curSelected += change;
+    curSelected = FlxMath.wrap(curSelected, 0, songs.length);
 
     rebuildDifficultyList();
-    updateTexts(0);
     updateDiffText();
 }
 	
