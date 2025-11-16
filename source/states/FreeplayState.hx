@@ -608,7 +608,6 @@ class FreeplayState extends MusicBeatState
             FlxTween.cancelTweensOf(bg);
             FlxTween.color(bg, 1, bg.color, intendedColor);
         }
-    }
 
     inline private function _updateSongLastDifficulty()
         songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
@@ -626,7 +625,7 @@ class FreeplayState extends MusicBeatState
 
 	var _drawDistance:Int = 4;
 	var _lastVisibles:Array<Int> = [];
-	public function updateTexts(elapsed:Float = 0.0)
+	function updateTexts(elapsed:Float = 0.0)
 	{
 		lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));
 		for (i in _lastVisibles)
