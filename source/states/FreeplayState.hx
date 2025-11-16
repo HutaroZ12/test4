@@ -575,148 +575,133 @@ public function reloadFreeplaySongs(updateSelection:Bool = true)
             changeSelection(0, false); // só chama se updateSelection=true
     }
     else
-    {
-        curSelected = 0;
-        lerpSelected = 0;
-    }
-}
-
-// --- Atualiza a dificuldade da música atual ---
-inline private function _updateSongLastDifficulty()
+public function reloadFreeplaySongs()
 {
-    if(songs.length == 0 || curSelected >= songs.length) return;
-    songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
-}
+    songs = [];
 
-// --- Muda seleção de música ---
-public function changeSelection(change:Int = 0, playSound:Bool = true)
-{
-    if(songs.length == 0) return;
-
-    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
-
-    _updateSongLastDifficulty();
-
-    if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
-    var newColor:Int = songs[curSelected].color;
-    if(newColor != intendedColor)
+    for (i in 0...WeekData.weeksList.length)
     {
-        intendedColor = newColor;
-        FlxTween.cancelTweensOf(bg);
-        FlxTween.color(bg, 1, bg.color, intendedColor);
-    }
+        if (weekIsLocked(WeekData.weeksList[i])) continue;
+        
+        var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
+        WeekData.setDirectoryFromWeek(leWeek);
 
-    // Atualiza visibilidade dos ícones e nomes
-    for (num => item in grpSongs.members)
-    {
-        var icon:HealthIcon = iconArray[num];
-        item.alpha = 0.6;
-        icon.alpha = 0.6;
-        if(item.targetY == curSelected)
+        for (song in leWeek.songs)
         {
-            item.alpha = 1;
-            icon.alpha = 1;
+            var colors:Array<Int> = song[2];
+            if (colors == null || colors.length < 3)
+                colors = [146,113,253];
+
+            addSongFiltered(
+                song[0],
+                i,
+                song[1],
+                FlxColor.fromRGB(colors[0], colors[1], colors[2])
+            );
         }
     }
 
-    Mods.currentModDirectory = songs[curSelected].folder;
+    grpSongs.clear();
+    iconArray = [];
+
+    for (i in 0...songs.length)
+    {
+        var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
+        songText.targetY = i;
+        grpSongs.add(songText);
+
+        songText.scaleX = Math.min(1, 980 / songText.width);
+        songText.snapToPosition();
+
+        Mods.currentModDirectory = songs[i].folder;
+
+        var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+        icon.sprTracker = songText;
+        icon.visible = true;
+
+        iconArray.push(icon);
+        add(icon);
+    }
+
+    if (curSelected >= songs.length) curSelected = 0;
+
+    if (songs.length > 0)
+    {
+        bg.color = songs[curSelected].color;
+        intendedColor = bg.color;
+    }
+
+    lerpSelected = curSelected;
+
+    updateTexts(0);
+    changeSelection(0, false);
 }
 
-private function changeSelection(change:Int = 0, playSound:Bool = true):Void
+public function rebuildDifficultyList():Void
 {
-    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
+    if (songs.length == 0) return;
 
-    // Atualiza a lista de dificuldades da música
-    Difficulty.list = Highscore.getSongDifficulties(songs[curSelected].songName);
+    var song = songs[curSelected];
+    var name = song.songName.toLowerCase();
 
-    // Se não existir nenhuma dificuldade na música, cria pelo menos 1
-    if (Difficulty.list == null || Difficulty.list.length == 0)
-        Difficulty.list = ["normal"];
+    var diffs:Array<String> = [];
 
-    // Sempre resetar a dificuldade para a primeira
+    if (Assets.exists('assets/data/' + name + '/' + name + '-easy.json'))
+        diffs.push('easy');
+
+    if (Assets.exists('assets/data/' + name + '/' + name + '.json'))
+        diffs.push('normal');
+
+    if (Assets.exists('assets/data/' + name + '/' + name + '-hard.json'))
+        diffs.push('hard');
+
+    if (Assets.exists('assets/data/' + name + '/' + name + '-erect.json'))
+        diffs.push('erect');
+
+    Difficulty.list = diffs;
     curDifficulty = 0;
 
-    // Atualiza o texto na tela
     updateDiffText();
-
-    // Atualiza título, ícone e notas da música (dependendo do seu código)
-    updateTexts();
 }
 
-// --- Muda dificuldade de música ---
+public function updateDiffText():Void
+{
+    if (difficultyText != null)
+    {
+        if (Difficulty.list.length > 0)
+            difficultyText.text = Difficulty.list[curDifficulty];
+        else
+            difficultyText.text = "";
+    }
+}
+
+inline private function _updateSongLastDifficulty():Void
+{
+    if (songs.length == 0) return;
+    songs[curSelected].lastDifficulty = Difficulty.list[curDifficulty];
+}
+
 public function changeDiff(change:Int = 0)
 {
-    if(songs.length == 0) return; // Se não tem música, sai
-
-    // Muda a dificuldade
-    var newDifficulty:Int = curDifficulty + change;
-
-    if(Difficulty.list.length == 0) 
-    {
-        curDifficulty = 0;
+    if (Difficulty.list.length == 0)
         return;
-    }
 
-    // Usa wrap com segurança
-    curDifficulty = FlxMath.wrap(newDifficulty, 0, Difficulty.list.length - 1);
-
-    // Atualiza lista filtrando músicas que têm essa dificuldade
-    reloadFreeplaySongs(false);
-
-    if(songs.length == 0)
-    {
-        // Não tem música nessa dificuldade, apenas mostra default ou esconde o diffText
-        diffText.text = "---";
-        return;
-    }
-
-    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-
-    lastDifficultyName = Difficulty.getString(curDifficulty, false);
-    var displayDiff:String = Difficulty.getString(curDifficulty);
-
-    if (Difficulty.list.length > 1)
-        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
-    else
-        diffText.text = displayDiff.toUpperCase();
-
-    positionHighscore();
-    missingText.visible = false;
-    missingTextBG.visible = false;
-}
-
-	private function changeDiff(change:Int = 0):Void
-{
-    if (Difficulty.list == null || Difficulty.list.length == 0)
-        return; // segurança extra
-
-    curDifficulty = FlxMath.wrap(
-        curDifficulty + change,
-        0,
-        Difficulty.list.length - 1
-    );
+    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length);
 
     updateDiffText();
+    _updateSongLastDifficulty();
 }
-	
-	private function updateDiffText():Void
-{
-    if (Difficulty.list == null || Difficulty.list.length == 0)
-    {
-        diffText.text = "< ??? >";
-        return;
-    }
 
-    diffText.text = "< " + Difficulty.list[curDifficulty].toUpperCase() + " >";
-}
-	
-    var displayDiff:String = Difficulty.getString(curDifficulty);
-    if(Difficulty.list.length > 1)
-        diffText.text = "< " + displayDiff.toUpperCase() + " >";
-    else
-        diffText.text = displayDiff.toUpperCase();
+public function changeSelection(change:Int = 0, playSound:Bool = true)
+{
+    if (songs.length == 0) return;
+
+    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length);
+
+    rebuildDifficultyList();
+    _updateSongLastDifficulty();
+    updateTexts(0);
+    updateDiffText();
 }
 	
 	private function positionHighscore()
