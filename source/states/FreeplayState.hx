@@ -58,7 +58,12 @@ class FreeplayState extends MusicBeatState
     // Função para checar se a música tem chart Erect
 private function songHasErect(song:SongMetadata):Bool {
     var path = 'assets/shared/data/song/' + song.folder + '/erect.json';
-    return File.exists(path);
+    try {
+        File.getContent(path);
+        return true;
+    } catch(e:Dynamic) {
+        return false;
+    }
 }
 
 	override function create()
@@ -110,7 +115,7 @@ private function songHasErect(song:SongMetadata):Bool {
 
 				 // === FILTRO ERECT ===
                 if (allowErect && !songHasErect(song)) {
-                var meta:SongMetadata = new SongMetadata(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+                var meta:SongMetadata = new SongMetadata(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
                 meta.hasErect = false;
                 songs.push(meta); // adiciona mas ficará desativada
                 continue; // pula addSong normal
@@ -677,12 +682,14 @@ class SongMetadata
     public var color:Int;
     public var lastDifficulty:String;
     public var hasErect:Bool = true;
+    public var folder:String;
 
-    public function new(name:String, week:Int, character:String, color:Int)
-    {
-        this.songName = name;
-        this.week = week;
-        this.songCharacter = character;
-        this.color = color;
+public function new(name:String, week:Int, character:String, color:Int, folder:String)
+{
+    this.songName = name;
+    this.week = week;
+    this.songCharacter = character;
+    this.color = color;
+    this.folder = folder;
     }
 }
