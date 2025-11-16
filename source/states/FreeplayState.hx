@@ -58,16 +58,13 @@ class FreeplayState extends MusicBeatState
     // Função para checar se a música tem chart Erect
 private function songHasErect(song:SongMetadata):Bool {
     var path = 'assets/shared/data/' + song.songName + '/' + song.songName + '-erect.json';
-    return File.exists(path);
-}
     try {
-        File.getContent(path);
+        Sys.FileSystem.readFile(path);
         return true;
     } catch(e:Dynamic) {
         return false;
     }
 }
-
 	override function create()
 	{
 		//Paths.clearStoredMemory();
@@ -116,17 +113,15 @@ private function songHasErect(song:SongMetadata):Bool {
                 if(colors == null || colors.length < 3) colors = [146,113,253];
 
 				 // === FILTRO ERECT ===
-                if (allowErect && !songHasErect(song)) {
-                var folder = song[0]; // ou o nome da pasta real
+                var folder = song[0];
 var meta:SongMetadata = new SongMetadata(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), folder);
 
-// Se a música não tem chart Erect e allowErect tá ativo
-if(allowErect && !songHasErect(meta)) {
+// Marca se tem Erect ou não
+if (allowErect && !songHasErect(meta)) {
     meta.hasErect = false;
 }
 
-// Adiciona direto no array, sem chamar addSong depois
-songs.push(meta);
+songs.push(meta); // Sempre adiciona, mas agora a flag controla se dá para tocar
 				}
 				 addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
 			}
@@ -328,6 +323,15 @@ if(allowErect && !songs[i].hasErect) {
 						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
 				}
 
+				if(allowErect && !songs[curSelected].hasErect)
+            {
+                for (i in 0...grpSongs.members.length)
+                {
+                    var songText:Alphabet = grpSongs.members[i];
+                    if(!songs[i].hasErect) { songText.alpha = 0.3; songText.active = false; }
+                }
+			}
+				
 				if(FlxG.mouse.wheel != 0)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'), 0.2);
@@ -378,6 +382,9 @@ if(allowErect && !songs[i].hasErect) {
 		}
 		else if(FlxG.keys.justPressed.SPACE || touchPad.buttonX.justPressed)
 		{
+			if(allowErect && !songs[curSelected].hasErect)
+    {
+        FlxG.sound.play(Paths.sound('cancelMenu'));
 			if(instPlaying != curSelected && !player.playingMusic)
 			{
 				destroyFreeplayVocals();
@@ -453,6 +460,10 @@ if(allowErect && !songs[i].hasErect) {
 		}
 		else if (controls.ACCEPT && !player.playingMusic)
 		{
+			if(allowErect && !songs[curSelected].hasErect)
+    {
+        FlxG.sound.play(Paths.sound('cancelMenu'));
+	} else {
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
