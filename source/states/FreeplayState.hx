@@ -14,6 +14,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxDestroyUtil;
 
 import openfl.utils.Assets;
+import sys.FileSystem;
 import sys.io.File;
 
 import haxe.Json;
@@ -58,7 +59,7 @@ class FreeplayState extends MusicBeatState
     // Função para checar se a música tem chart Erect
 private function songHasErect(song:SongMetadata):Bool {
     var path = 'assets/shared/data/' + song.songName + '/' + song.songName + '-erect.json';
-    return File.exists(path);
+    return FileSystem.existsPath(path);
 }
 	
 	override function create()
