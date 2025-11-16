@@ -58,8 +58,12 @@ class FreeplayState extends MusicBeatState
 
     // Função para checar se a música tem chart Erect
     private function songHasErect(song:SongMetadata):Bool {
-    var path = 'assets/shared/data/' + song.songName + '/' + song.songName + '-erect.json';
-    return Assets.exists(path, null);
+    try {
+        var path = 'assets/shared/data/' + song.songName + '/' + song.songName + '-erect.json';
+        return Assets.exists(path, null); // type null funciona
+    } catch(e:Dynamic) {
+        return false;
+    }
 }
 	
 	override function create()
@@ -123,7 +127,6 @@ class FreeplayState extends MusicBeatState
          songs.push(meta);
          addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
 		   }
-		}
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
