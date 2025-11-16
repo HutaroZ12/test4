@@ -665,18 +665,26 @@ class FreeplayState extends MusicBeatState
 		var min:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected - _drawDistance)));
 		var max:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected + _drawDistance)));
 		for (i in min...max)
-		{
-			var item:Alphabet = grpSongs.members[i];
-			item.visible = item.active = true;
-			item.x = ((item.targetY - lerpSelected) * item.distancePerItem.x) + item.startPosition.x;
-			item.y = ((item.targetY - lerpSelected) * 1.3 * item.distancePerItem.y) + item.startPosition.y;
+        {
+        var item:Alphabet = grpSongs.members[i];
+        var icon:HealthIcon = iconArray[i];
 
-			var icon:HealthIcon = iconArray[i];
-			icon.visible = icon.active = true;
-			_lastVisibles.push(i);
-		}
-	}
+        if(allowErect && !songs[i].hasErect)
+        {
+        item.visible = item.active = false;
+        icon.visible = icon.active = false;
+        }
+        else
+        {
+        item.visible = item.active = true;
+        icon.visible = icon.active = true;
+        item.x = ((item.targetY - lerpSelected) * item.distancePerItem.x) + item.startPosition.x;
+        item.y = ((item.targetY - lerpSelected) * 1.3 * item.distancePerItem.y) + item.startPosition.y;
+    }
 
+    _lastVisibles.push(i);
+}
+		
 	override function destroy():Void
 	{
 		super.destroy();
