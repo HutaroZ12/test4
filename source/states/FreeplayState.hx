@@ -127,6 +127,8 @@ class FreeplayState extends MusicBeatState
          songs.push(meta);
          addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
 		   }
+		  }
+		}
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
