@@ -623,6 +623,27 @@ public function changeSelection(change:Int = 0, playSound:Bool = true)
     Mods.currentModDirectory = songs[curSelected].folder;
 }
 
+private function changeSelection(change:Int = 0, playSound:Bool = true):Void
+{
+    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
+
+    // Atualiza a lista de dificuldades da música
+    Difficulty.list = Highscore.getSongDifficulties(songs[curSelected].songName);
+
+    // Se não existir nenhuma dificuldade na música, cria pelo menos 1
+    if (Difficulty.list == null || Difficulty.list.length == 0)
+        Difficulty.list = ["normal"];
+
+    // Sempre resetar a dificuldade para a primeira
+    curDifficulty = 0;
+
+    // Atualiza o texto na tela
+    updateDiffText();
+
+    // Atualiza título, ícone e notas da música (dependendo do seu código)
+    updateTexts();
+}
+
 // --- Muda dificuldade de música ---
 public function changeDiff(change:Int = 0)
 {
@@ -666,14 +687,31 @@ public function changeDiff(change:Int = 0)
     missingTextBG.visible = false;
 }
 
+	private function changeDiff(change:Int = 0):Void
+{
+    if (Difficulty.list == null || Difficulty.list.length == 0)
+        return; // segurança extra
+
+    curDifficulty = FlxMath.wrap(
+        curDifficulty + change,
+        0,
+        Difficulty.list.length - 1
+    );
+
+    updateDiffText();
+}
+	
 	private function updateDiffText():Void
 {
-    if(songs.length == 0 || Difficulty.list.length == 0)
+    if (Difficulty.list == null || Difficulty.list.length == 0)
     {
-        diffText.text = "---";
+        diffText.text = "< ??? >";
         return;
     }
 
+    diffText.text = "< " + Difficulty.list[curDifficulty].toUpperCase() + " >";
+}
+	
     var displayDiff:String = Difficulty.getString(curDifficulty);
     if(Difficulty.list.length > 1)
         diffText.text = "< " + displayDiff.toUpperCase() + " >";
