@@ -517,6 +517,7 @@ if(allowErect && !songs[i].hasErect) {
 			#if (MODS_ALLOWED && DISCORD_ALLOWED)
 			DiscordClient.loadModRPC();
 			#end
+	        }
 		}
 		else if((controls.RESET || touchPad.buttonY.justPressed) && !player.playingMusic)
 		{
