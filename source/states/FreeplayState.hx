@@ -59,6 +59,7 @@ class FreeplayState extends MusicBeatState
 private function songHasErect(song:SongMetadata):Bool {
     var path = 'assets/shared/data/' + song.songName + '/' + song.songName + '-erect.json';
     return File.exists(path);
+}
         return true;
     } catch(e:Dynamic) {
         return false;
