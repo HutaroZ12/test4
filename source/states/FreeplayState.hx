@@ -120,7 +120,7 @@ private function songHasErect(song:SongMetadata):Bool {
                 songs.push(meta); // adiciona mas ficará desativada
                 continue; // pula addSong normal
 				}
-				addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+				 addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
 			}
 		}
 		Mods.loadTopMod();
@@ -237,10 +237,10 @@ private function songHasErect(song:SongMetadata):Bool {
 		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
 	}
 
-	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
-	{
-		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
-	}
+	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int, folder:String)
+{
+    songs.push(new SongMetadata(songName, weekNum, songCharacter, color, folder));
+}
 
 	function weekIsLocked(name:String):Bool
 	{
