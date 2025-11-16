@@ -14,6 +14,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxDestroyUtil;
 
 import openfl.utils.Assets;
+import sys.io.File;
 
 import haxe.Json;
 
@@ -55,9 +56,10 @@ class FreeplayState extends MusicBeatState
     public static var allowErect:Bool = false;
 
     // Função para checar se a música tem chart Erect
-    private function songHasErect(song:SongMetadata):Bool {
-    return Paths.exists(Paths.chart(song.folder + "/erect.json"));
-    }
+private function songHasErect(song:SongMetadata):Bool {
+    var path = 'assets/shared/data/song/' + song.folder + '/erect.json';
+    return File.exists(path);
+}
 
 	override function create()
 	{
@@ -669,20 +671,21 @@ if (allowErect) {
 
 class SongMetadata
 {
-	public var songName:String = "";
-	public var week:Int = 0;
-	public var songCharacter:String = "";
-	public var color:Int = -7179779;
-	public var folder:String = "";
-	public var lastDifficulty:String = null;
+    public var songName:String = "";
+    public var week:Int = 0;
+    public var songCharacter:String = "";
+    public var color:Int = -7179779;
+    public var folder:String = "";
+    public var lastDifficulty:String = null;
+    public var hasErect:Bool = false; // ADICIONADO
 
-	public function new(song:String, week:Int, songCharacter:String, color:Int)
-	{
-		this.songName = song;
-		this.week = week;
-		this.songCharacter = songCharacter;
-		this.color = color;
-		this.folder = Mods.currentModDirectory;
-		if(this.folder == null) this.folder = '';
-	}
+    public function new(song:String, week:Int, songCharacter:String, color:Int)
+    {
+        this.songName = song;
+        this.week = week;
+        this.songCharacter = songCharacter;
+        this.color = color;
+        this.folder = Mods.currentModDirectory;
+        if(this.folder == null) this.folder = '';
+    }
 }
