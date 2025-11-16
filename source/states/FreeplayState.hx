@@ -113,14 +113,16 @@ class FreeplayState extends MusicBeatState
                 var folder = song[0];
          var meta:SongMetadata = new SongMetadata(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), folder);
 
-// Marca se tem Erect ou não
+         // Marca se tem Erect ou não
          if (allowErect && !songHasErect(meta)) {
          meta.hasErect = false;
          }
 
-         songs.push(meta); // Sempre adiciona, mas agora a flag controla se dá para tocar
-		 addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
-			}
+         // Só adiciona se a música for jogável
+         if (!allowErect || meta.hasErect) {
+         songs.push(meta);
+         addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
+            }
 		}
 		Mods.loadTopMod();
 
