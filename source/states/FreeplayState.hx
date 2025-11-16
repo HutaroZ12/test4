@@ -584,7 +584,8 @@ class FreeplayState extends MusicBeatState
 
         while(!songs[curSelected].hasErect && tries < songs.length)
         {
-            curSelected = FlxMath.wrap(curSelected + (change != 0 ? (change/Math.abs(change)) : 1), 0, songs.length - 1);
+            curSelected = FlxMath.wrap(
+            curSelected + (change != 0 ? Std.int(change / Math.abs(change)) : 1), 0, songs.length - 1);
             tries++;
         }
 
@@ -596,7 +597,7 @@ class FreeplayState extends MusicBeatState
     // Atualiza a dificuldade da música e ícones
     _updateSongLastDifficulty();
     if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-    updateSelectionVisuals();
+    updateTexts();
 
     // === Atualiza cor do fundo e ícones ===
     var newColor:Int = songs[curSelected].color;
