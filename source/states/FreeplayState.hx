@@ -597,8 +597,8 @@ class FreeplayState extends MusicBeatState
     _updateSongLastDifficulty();
     if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
     updateSelectionVisuals();
-}
 
+    // === Atualiza cor do fundo e ícones ===
     var newColor:Int = songs[curSelected].color;
     if(newColor != intendedColor)
     {
@@ -637,7 +637,7 @@ class FreeplayState extends MusicBeatState
     changeDiff();
     _updateSongLastDifficulty();
 }
-
+	
 	inline private function _updateSongLastDifficulty()
 		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 
