@@ -385,6 +385,9 @@ if(allowErect && !songs[i].hasErect) {
 			if(allowErect && !songs[curSelected].hasErect)
     {
         FlxG.sound.play(Paths.sound('cancelMenu'));
+		return;
+	}
+			
 			if(instPlaying != curSelected && !player.playingMusic)
 			{
 				destroyFreeplayVocals();
@@ -463,7 +466,10 @@ if(allowErect && !songs[i].hasErect) {
 			if(allowErect && !songs[curSelected].hasErect)
     {
         FlxG.sound.play(Paths.sound('cancelMenu'));
-	} else {
+		return;
+	}
+	else 
+	{
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
