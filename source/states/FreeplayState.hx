@@ -110,11 +110,11 @@ class FreeplayState extends MusicBeatState
 
             // Filtra Erect
             if (allowErect && !songHasErect(meta))
-                meta.hasErect = false;
+            meta.hasErect = false;
 
             // Adiciona apenas se for jogável
             if (!allowErect || meta.hasErect)
-                songs.push(meta);
+            songs.push(meta);
         }
     }
 
