@@ -572,38 +572,32 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 {
-    if (player.playingMusic)
-        return;
+    if (player.playingMusic) return;
 
-    // Atualiza a seleção
-    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
+    // Move seleção
+    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
 
     // === BLOCO ERECT: pula músicas não jogáveis ===
-if (allowErect) {
-    // Se a música atual não tem Erect, procura a próxima válida
-    if (!songs[curSelected].hasErect) {
-        var found:Bool = false;
+    if (allowErect) {
         var startIndex:Int = curSelected;
-        
-        // Percorre todas as músicas para encontrar uma jogável
-        for (i in 1...songs.length) {
-            curSelected = FlxMath.wrap(startIndex + i, 0, songs.length - 1);
-            if (songs[curSelected].hasErect) {
-                found = true;
-                break;
-            }
+        var tries:Int = 0;
+
+        while(!songs[curSelected].hasErect && tries < songs.length)
+        {
+            curSelected = FlxMath.wrap(curSelected + (change != 0 ? (change/Math.abs(change)) : 1), 0, songs.length - 1);
+            tries++;
         }
 
-        // Caso nenhuma música tenha Erect, volta para a primeira
-        if (!found) curSelected = 0;
+        // Se não encontrar nenhuma música jogável, volta para 0
+        if(!songs[curSelected].hasErect) curSelected = 0;
     }
-}
-// === FIM BLOCO ERECT ===
+    // === FIM BLOCO ERECT ===
 
-    // Atualiza a dificuldade da música
+    // Atualiza a dificuldade da música e ícones
     _updateSongLastDifficulty();
-
     if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+    updateSelectionVisuals();
+}
 
     var newColor:Int = songs[curSelected].color;
     if(newColor != intendedColor)
