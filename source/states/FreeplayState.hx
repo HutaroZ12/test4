@@ -683,6 +683,7 @@ class FreeplayState extends MusicBeatState
     }
 
     _lastVisibles.push(i);
+	}
 }
 		
 	override function destroy():Void
