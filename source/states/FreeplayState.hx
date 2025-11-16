@@ -67,108 +67,6 @@ class FreeplayState extends MusicBeatState
 }
 	
 	override function create()
-	{
-		//Paths.clearStoredMemory();
-		//Paths.clearUnusedMemory();
-		
-		persistentUpdate = true;
-		PlayState.isStoryMode = false;
-		WeekData.reloadWeekFiles(false);
-
-		#if DISCORD_ALLOWED
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
-		#end
-
-		final accept:String = (controls.mobileC) ? "A" : "ACCEPT";
-		final reject:String = (controls.mobileC) ? "B" : "BACK";
-
-		if(WeekData.weeksList.length < 1)
-		{
-			FlxTransitionableState.skipNextTransIn = true;
-			persistentUpdate = false;
-			MusicBeatState.switchState(new states.ErrorState("NO WEEKS ADDED FOR FREEPLAY\n\nPress " + accept + " to go to the Week Editor Menu.\nPress " + reject + " to return to Main Menu.",
-				function() MusicBeatState.switchState(new states.editors.WeekEditorState()),
-				function() MusicBeatState.switchState(new states.MainMenuState())));
-			return;
-		}
-
-		for (i in 0...WeekData.weeksList.length)
-		{
-			if(weekIsLocked(WeekData.weeksList[i])) continue;
-
-			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
-			var leSongs:Array<String> = [];
-			var leChars:Array<String> = [];
-
-			for (j in 0...leWeek.songs.length)
-			{
-				leSongs.push(leWeek.songs[j][0]);
-				leChars.push(leWeek.songs[j][1]);
-			}
-
-			WeekData.setDirectoryFromWeek(leWeek);
-			for (song in leWeek.songs)
-             {
-                var colors:Array<Int> = song[2];
-                if(colors == null || colors.length < 3) colors = [146,113,253];
-
-				 // === FILTRO ERECT ===
-                var folder = song[0];
-         var meta:SongMetadata = new SongMetadata(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), folder);
-
-         // Marca se tem Erect ou não
-         if (allowErect && !songHasErect(meta)) {
-         meta.hasErect = false;
-         }
-
-         // Só adiciona se a música for jogável
-         if (!allowErect || meta.hasErect) {
-         songs.push(meta);
-         addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), song[0]);
-		   }
-		  }
-		}
-
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
-		bg.screenCenter();
-
-		grpSongs = new FlxTypedGroup<Alphabet>();
-		add(grpSongs);
-
-		for (i in 0...songs.length)
-		{
-			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-songText.targetY = i;
-grpSongs.add(songText);
-
-// Bloqueia música sem Erect
-if(allowErect && !songs[i].hasErect) {
-    songText.alpha = 0.3;
-    songText.active = false;
-} else {
-    songText.alpha = 1;
-    songText.active = true;
-}
-
-			songText.scaleX = Math.min(1, 980 / songText.width);
-			songText.snapToPosition();
-
-			Mods.currentModDirectory = songs[i].folder;
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.sprTracker = songText;
-
-			
-			// too laggy with a lot of songs, so i had to recode the logic for it
-			songText.visible = songText.active = songText.isMenuItem = false;
-			icon.visible = icon.active = false;
-
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
-override function create()
 {
     persistentUpdate = true;
     PlayState.isStoryMode = false;
@@ -323,6 +221,15 @@ override function create()
     addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
     super.create();
 }
+
+	override function closeSubState()
+	{
+		changeSelection(0, false);
+		persistentUpdate = true;
+		super.closeSubState();
+		removeTouchPad();
+		addTouchPad('LEFT_FULL', 'A_B_C_X_Y_Z');
+	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int, folder:String)
 {
@@ -804,4 +711,3 @@ public function new(name:String, week:Int, character:String, color:Int, folder:S
     this.folder = folder;
     }
 }
-	
