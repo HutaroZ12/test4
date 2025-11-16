@@ -144,9 +144,11 @@ grpSongs.add(songText);
 // Bloqueia música sem Erect
 if(allowErect && !songs[i].hasErect) {
     songText.alpha = 0.3;
+	icon.alpha = 0.3;
     songText.active = false;
 } else {
     songText.alpha = 1;
+	icon.alpha = 1;
     songText.active = true;
 }
 
@@ -621,8 +623,8 @@ if (allowErect) {
     for (num => item in grpSongs.members)
     {
         var icon:HealthIcon = iconArray[num];
-        item.alpha = 0.6;
-        icon.alpha = 0.6;
+        item.alpha = 1;
+        icon.alpha = 1;
         if (item.targetY == curSelected)
         {
             item.alpha = 1;
