@@ -20,7 +20,10 @@ import haxe.Json;
 
 class FreeplayState extends MusicBeatState
 {
-	var songs:Array<SongMetadata> = [];
+    var allSongs:Array<SongMetadata> = [];
+    var songs:Array<SongMetadata> = [];
+    var diffText:FlxText;
+    var songs:Array<SongMetadata> = [];  // <-- duplicado (vai crashar)
 
 	var selector:FlxText;
 	private static var curSelected:Int = 0;
@@ -76,10 +79,6 @@ class FreeplayState extends MusicBeatState
 	
 	override function create()
 	{
-		allSongs = songs.copy();
-        songs = freeplaySongList();
-        rebuildDifficultyList();
-        updateDiffText();
 		//Paths.clearStoredMemory();
 		//Paths.clearUnusedMemory();
 		
@@ -578,9 +577,9 @@ public function reloadFreeplaySongs()
     changeSelection(0, false);
 }
 
-	private function freeplaySongList():Void
+	private function freeplaySongList():Array<SongMetadata>
 {
-    songs = [];
+    var newList:Array<SongMetadata> = [];
 
     for (song in allSongs)
     {
@@ -605,11 +604,13 @@ public function reloadFreeplaySongs()
         #end
 
         if (exists)
-            songs.push(song);
+            newList.push(song);
     }
 
-    if (curSelected >= songs.length)
+    if (curSelected >= newList.length)
         curSelected = 0;
+
+    return newList;
 }
 	
 private function rebuildDifficultyList():Void
@@ -676,7 +677,7 @@ private function changeDiff(change:Int = 0):Void
 
     curDifficulty = FlxMath.wrap(curDifficulty, 0, Difficulty.list.length);
 
-    freeplaySongList();
+    songs = freeplaySongList();
     rebuildDifficultyList();
     updateDiffText();
 }
