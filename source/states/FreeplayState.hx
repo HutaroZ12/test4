@@ -603,12 +603,12 @@ private function rebuildDifficultyList():Void
 
 private function updateDiffText():Void
 {
-    if (difficultyText != null)
+    if (diffText != null) // ← AGORA O NOME ESTÁ CERTO
     {
         if (Difficulty.list.length > 0)
-            difficultyText.text = Difficulty.list[curDifficulty];
+            diffText.text = Difficulty.list[curDifficulty];
         else
-            difficultyText.text = "";
+            diffText.text = "";
     }
 }
 
