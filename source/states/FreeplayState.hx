@@ -558,58 +558,60 @@ class FreeplayState extends MusicBeatState
 	}
 
 	private function updateErectVisibility():Void {
-        if (!allowErect) return;
+    if (!allowErect) return;
 
-        var found:Bool = false;
-        for (i in 0...songs.length) {
-            var item:Alphabet = grpSongs.members[i];
-            var icon:HealthIcon = iconArray[i];
+    var found:Bool = false;
+    for (i in 0...songs.length) {
+        var item:Alphabet = grpSongs.members[i];
+        var icon:HealthIcon = iconArray[i];
 
-            if (!songs[i].hasErect) {
-                item.visible = item.active = false;
-                icon.visible = icon.active = false;
-            } else {
-                item.visible = item.active = true;
-                icon.visible = icon.active = true;
-                if (!found) {
-                    curSelected = i;
-                    found = true;
-                }
+        if (!songs[i].hasErect) {
+            item.visible = item.active = false;
+            icon.visible = icon.active = false;
+        } else {
+            item.visible = item.active = true;
+            icon.visible = icon.active = true;
+            if (!found) {
+                curSelected = i;
+                found = true;
             }
         }
-        lerpSelected = curSelected;
-	}
+    }
+    // Se nenhuma música tiver Erect, seleciona 0
+    if(!found) curSelected = 0;
+
+    lerpSelected = curSelected;
+}
+
+function changeSelection(change:Int = 0, playSound:Bool = true) {
+    if (songs.length == 0) return; // evita crash se não houver músicas
+
+    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
+
+    if (allowErect) {
+        var startIndex:Int = curSelected;
+        var tries:Int = 0;
+
+        while(!songs[curSelected].hasErect && tries < songs.length) {
+            curSelected = FlxMath.wrap(curSelected + (change != 0 ? Std.int(change / Math.abs(change)) : 1), 0, songs.length - 1);
+            tries++;
+        }
+
+        if(!songs[curSelected].hasErect) curSelected = 0; // fallback se nenhuma música tiver Erect
+    }
+
+    _updateSongLastDifficulty();
+    if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+    updateTexts();
+
+    var newColor:Int = songs[curSelected].color;
+    if(newColor != intendedColor) {
+        intendedColor = newColor;
+        FlxTween.cancelTweensOf(bg);
+        FlxTween.color(bg, 1, bg.color, intendedColor);
+    }
+}
 	
-	function changeSelection(change:Int = 0, playSound:Bool = true)
-    {
-        if (player.playingMusic) return;
-
-        curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
-
-        if (allowErect) {
-            var startIndex:Int = curSelected;
-            var tries:Int = 0;
-
-            while(!songs[curSelected].hasErect && tries < songs.length) {
-                curSelected = FlxMath.wrap(curSelected + (change != 0 ? Std.int(change / Math.abs(change)) : 1), 0, songs.length - 1);
-                tries++;
-            }
-
-            if(!songs[curSelected].hasErect) curSelected = 0;
-        }
-
-        _updateSongLastDifficulty();
-        if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-        updateTexts();
-
-        var newColor:Int = songs[curSelected].color;
-        if(newColor != intendedColor) {
-            intendedColor = newColor;
-            FlxTween.cancelTweensOf(bg);
-            FlxTween.color(bg, 1, bg.color, intendedColor);
-		    }
-        }
-
     private function _updateSongLastDifficulty():Void {
         songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 
