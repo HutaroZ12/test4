@@ -581,18 +581,20 @@ private function rebuildDifficultyList():Void
     var song = songs[curSelected];
     var name = song.songName.toLowerCase();
 
+    var base = 'assets/shared/data/$songName/' + songName;
+
     var diffs:Array<String> = [];
 
-    if (Assets.exists('assets/data/' + name + '/' + name + '-easy.json'))
+    if (Assets.exists(base + '-easy.json'))
         diffs.push('easy');
 
-    if (Assets.exists('assets/data/' + name + '/' + name + '.json'))
+    if (Assets.exists(base + '.json'))
         diffs.push('normal');
 
-    if (Assets.exists('assets/data/' + name + '/' + name + '-hard.json'))
+    if (Assets.exists(base + '-hard.json'))
         diffs.push('hard');
 
-    if (Assets.exists('assets/data/' + name + '/' + name + '-erect.json'))
+    if (Assets.exists(base + '-erect.json'))
         diffs.push('erect');
 
     Difficulty.list = diffs;
@@ -603,7 +605,7 @@ private function rebuildDifficultyList():Void
 
 private function updateDiffText():Void
 {
-    if (diffText != null) // ← AGORA O NOME ESTÁ CERTO
+    if (diffText != null)
     {
         if (Difficulty.list.length > 0)
             diffText.text = Difficulty.list[curDifficulty];
@@ -620,8 +622,7 @@ inline private function _updateSongLastDifficulty():Void
 
 private function changeDiff(change:Int = 0)
 {
-    if (Difficulty.list.length == 0)
-        return;
+    if (Difficulty.list.length == 0) return;
 
     curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length);
 
