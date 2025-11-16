@@ -144,11 +144,9 @@ grpSongs.add(songText);
 // Bloqueia música sem Erect
 if(allowErect && !songs[i].hasErect) {
     songText.alpha = 0.3;
-	icon.alpha = 0.3;
     songText.active = false;
 } else {
     songText.alpha = 1;
-	icon.alpha = 1;
     songText.active = true;
 }
 
