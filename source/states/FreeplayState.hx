@@ -60,7 +60,7 @@ class FreeplayState extends MusicBeatState
     import openfl.utils.Assets;
 
 private function songHasErect(song:SongMetadata):Bool {
-    var path = 'shared/data/' + song.songName + '/' + song.songName + '-erect.json';
+    var path = 'assets/shared/data/' + song.songName + '/' + song.songName + '-erect.json';
     return Assets.exists(path, Assets.AssetType.TEXT);
 }
 	
