@@ -581,7 +581,7 @@ private function rebuildDifficultyList():Void
     var song = songs[curSelected];
     var name = song.songName.toLowerCase();
 
-    var base = 'assets/shared/data/$songName/' + songName;
+    var base = 'assets/shared/data/' + name + '/' + name;
 
     var diffs:Array<String> = [];
 
@@ -600,6 +600,45 @@ private function rebuildDifficultyList():Void
     Difficulty.list = diffs;
     curDifficulty = 0;
 
+    updateDiffText();
+}
+
+private function updateDiffText():Void
+{
+    if (diffText != null)
+    {
+        if (Difficulty.list.length > 0)
+            diffText.text = Difficulty.list[curDifficulty];
+        else
+            diffText.text = "";
+    }
+}
+
+inline private function _updateSongLastDifficulty():Void
+{
+    if (songs.length == 0) return;
+    songs[curSelected].lastDifficulty = Difficulty.list[curDifficulty];
+}
+
+private function changeDiff(change:Int = 0)
+{
+    if (Difficulty.list.length == 0) return;
+
+    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length);
+
+    updateDiffText();
+    _updateSongLastDifficulty();
+}
+
+private function changeSelection(change:Int = 0, playSound:Bool = true)
+{
+    if (songs.length == 0) return;
+
+    curSelected = FlxMath.wrap(curSelected + change, 0, songs.length);
+
+    rebuildDifficultyList();
+    _updateSongLastDifficulty();
+    updateTexts(0);
     updateDiffText();
 }
 
