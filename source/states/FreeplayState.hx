@@ -607,6 +607,7 @@ class FreeplayState extends MusicBeatState
             intendedColor = newColor;
             FlxTween.cancelTweensOf(bg);
             FlxTween.color(bg, 1, bg.color, intendedColor);
+		    }
         }
 
     private function _updateSongLastDifficulty():Void {
