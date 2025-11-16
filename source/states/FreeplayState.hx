@@ -553,17 +553,26 @@ class FreeplayState extends MusicBeatState
     curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
 
     // === BLOCO ERECT: pula músicas não jogáveis ===
-var anyErect:Bool = false;
-for(song in songs) if(song.hasErect) { anyErect = true; break; }
+if (allowErect) {
+    // Se a música atual não tem Erect, procura a próxima válida
+    if (!songs[curSelected].hasErect) {
+        var found:Bool = false;
+        var startIndex:Int = curSelected;
+        
+        // Percorre todas as músicas para encontrar uma jogável
+        for (i in 1...songs.length) {
+            curSelected = FlxMath.wrap(startIndex + i, 0, songs.length - 1);
+            if (songs[curSelected].hasErect) {
+                found = true;
+                break;
+            }
+        }
 
-if(anyErect && allowErect && !songs[curSelected].hasErect) {
-    var found:Bool = false;
-    for(i in 0...songs.length) {
-        curSelected = FlxMath.wrap(curSelected + 1, 0, songs.length - 1);
-        if(songs[curSelected].hasErect) { found = true; break; }
+        // Caso nenhuma música tenha Erect, volta para a primeira
+        if (!found) curSelected = 0;
     }
-    if(!found) curSelected = 0; // fallback caso nenhuma tenha Erect
 }
+// === FIM BLOCO ERECT ===
 
     // Atualiza a dificuldade da música
     _updateSongLastDifficulty();
