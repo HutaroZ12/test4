@@ -671,21 +671,18 @@ if (allowErect) {
 
 class SongMetadata
 {
-    public var songName:String = "";
-    public var week:Int = 0;
-    public var songCharacter:String = "";
-    public var color:Int = -7179779;
-    public var folder:String = "";
-    public var lastDifficulty:String = null;
-    public var hasErect:Bool = false; // ADICIONADO
+    public var songName:String;
+    public var week:Int;
+    public var songCharacter:String;
+    public var color:Int;
+    public var lastDifficulty:String;
+    public var hasErect:Bool = true;
 
-    public function new(song:String, week:Int, songCharacter:String, color:Int)
+    public function new(name:String, week:Int, character:String, color:Int)
     {
-        this.songName = song;
+        this.songName = name;
         this.week = week;
-        this.songCharacter = songCharacter;
+        this.songCharacter = character;
         this.color = color;
-        this.folder = Mods.currentModDirectory;
-        if(this.folder == null) this.folder = '';
     }
 }
