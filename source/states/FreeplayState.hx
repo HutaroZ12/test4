@@ -58,7 +58,7 @@ class FreeplayState extends MusicBeatState
     // Verifica se existe chart ERECT dentro de assets/shared/data/
     function hasErectChart(songName:String):Bool
     {
-    var name = songName.toLowerCase();
+    var name = songHasErect.set(s.toLowerCase(), hasErectChart(s));
     var base = 'assets/shared/data/' + name + '/' + name;
     return FileSystem.exists(base + '-erect.json');
     }
@@ -132,8 +132,8 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var s = songs[i].songName;
-            songHasErect.set(s, hasErectChart(s));		
+			var s = songs[i].songName.toLowerCase();
+            songHasErect.set(s, hasErectChart(s));
 
 			songText.scaleX = Math.min(1, 980 / songText.width);
 			songText.snapToPosition();
