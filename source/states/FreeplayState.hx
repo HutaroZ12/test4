@@ -51,7 +51,18 @@ class FreeplayState extends MusicBeatState
 	var bottomBG:FlxSprite;
 
 	var player:MusicPlayer;
+    // --- ERECT SYSTEM ---
+    public static var allowErect:Bool = true;
+    var songHasErect:Map<String, Bool> = new Map();
 
+    // Verifica se existe chart ERECT dentro de assets/shared/data/
+    function hasErectChart(songName:String):Bool
+    {
+    var name = songName.toLowerCase();
+    var base = 'assets/shared/data/' + name + '/' + name;
+    return FileSystem.exists(base + '-erect.json');
+    }
+	
 	override function create()
 	{
 		//Paths.clearStoredMemory();
@@ -60,6 +71,7 @@ class FreeplayState extends MusicBeatState
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
+		applyErectFilter();
 
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
@@ -127,44 +139,8 @@ class FreeplayState extends MusicBeatState
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
 
-		if (this.songDifficulties.length == 0)
-		{
-			if (NativeFileSystem.exists(sngDataPath))
-			{
-				var chartFiles = NativeFileSystem.readDirectory(sngDataPath).filter(s -> s.toLowerCase().startsWith(fileSngName)
-					&& s.endsWith(".json"));
-
-				var diffNames = chartFiles.map(s -> s.substring(fileSngName.length + 1, s.length - 5));
-				// Regrouping difficulties
-				if (diffNames.remove("."))
-					diffNames.insert(1, "normal");
-				if (diffNames.remove("easy"))
-					diffNames.insert(0, "easy");
-				if (diffNames.remove("hard"))
-					diffNames.insert(2, "hard");
-				this.songDifficulties = diffNames;
-			}
-			else
-			{
-				this.songDifficulties = ['normal'];
-				trace('Directory $sngDataPath does not exist! $songName has no charts (difficulties)!');
-				trace('Forcing "normal" difficulty. Expect issues!!');
-			}
-		}
-        var fileSngName = Paths.formatToSongPath(getNativeSongId());
-		var sngDataPath = Paths.getPath("data/" + fileSngName);
-		if (allowErect && !hasErectSong())
-		{
-			//? nvm. it clutters logs a lot for no reason
-			//trace('$songName is missing variant in $sngDataPath');
-			this.songDifficulties.remove("erect");
-			this.songDifficulties.remove("nightmare");
-		}
-		if (!this.songDifficulties.contains(currentDifficulty))
-		{
-			@:bypassAccessor
-			currentDifficulty = songDifficulties[0]; // TODO
-		}
+			var s = i.songName;
+            songHasErect.set(s, hasErectChart(s));					
 			
 			// too laggy with a lot of songs, so i had to recode the logic for it
 			songText.visible = songText.active = songText.isMenuItem = false;
@@ -264,6 +240,30 @@ class FreeplayState extends MusicBeatState
 	var holdTime:Float = 0;
 
 	var stopMusicPlay:Bool = false;
+
+	function applyErectFilter():Void
+{
+    if (!allowErect)
+        return;
+
+    var erectIndex = Difficulty.list.indexOf("Erect");
+    var isErect = (curDifficulty == erectIndex);
+
+    for (idx => meta in songs)
+    {
+        var item = grpSongs.members[idx];
+        var icon = iconArray[idx];
+
+        var visible = true;
+
+        if (isErect && !songHasErect.get(meta.songName))
+            visible = false;
+
+        if (item != null) item.visible = visible;
+        if (icon != null) icon.visible = visible;
+    }
+}
+	
 	override function update(elapsed:Float)
 	{
 		if(WeekData.weeksList.length < 1)
@@ -559,6 +559,7 @@ class FreeplayState extends MusicBeatState
 		positionHighscore();
 		missingText.visible = false;
 		missingTextBG.visible = false;
+		applyErectFilter();
 	}
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
@@ -567,6 +568,21 @@ class FreeplayState extends MusicBeatState
 			return;
 
 		curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
+
+		// Pular músicas sem ERECT caso esteja na dificuldade ERECT
+var erectIndex = Difficulty.list.indexOf("Erect");
+var isErect = (curDifficulty == erectIndex);
+
+if (isErect)
+{
+    var safety = 0;
+    while (!songHasErect.get(songs[curSelected].songName) && safety < 999)
+    {
+        curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
+        safety++;
+    }
+}
+		
 		_updateSongLastDifficulty();
 		if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
