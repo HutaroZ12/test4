@@ -132,15 +132,15 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
+			var s = songs[i].songName;
+            songHasErect.set(s, hasErectChart(s));		
+
 			songText.scaleX = Math.min(1, 980 / songText.width);
 			songText.snapToPosition();
 
 			Mods.currentModDirectory = songs[i].folder;
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.sprTracker = songText;
-
-			var s = i.songName;
-            songHasErect.set(s, hasErectChart(s));					
+			icon.sprTracker = songText;		
 			
 			// too laggy with a lot of songs, so i had to recode the logic for it
 			songText.visible = songText.active = songText.isMenuItem = false;
