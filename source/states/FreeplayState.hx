@@ -632,12 +632,6 @@ class FreeplayState extends MusicBeatState
             }
         }
     }
-	
-    // Se nenhuma música tiver Erect, seleciona 0
-    if(!found) curSelected = 0;
-
-    lerpSelected = curSelected;
-}
 
 function changeSelection(change:Int = 0, playSound:Bool = true) {
     if (songs.length == 0) return; // evita crash se não houver músicas
