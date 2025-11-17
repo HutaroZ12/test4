@@ -534,49 +534,105 @@ class FreeplayState extends MusicBeatState
 	}
 
 	function changeDiff(change:Int = 0)
-	{
-		if (player.playingMusic)
-			return;
+{
+    if (player.playingMusic)
+        return;
 
-		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
+    // --- CORREÇÃO ANTI-CRASH ---
+    // Garante que a lista de dificuldades está carregada corretamente
+    if (Difficulty.list == null || Difficulty.list.length == 0)
+    {
+        trace("ERRO: Difficulty.list está vazia!");
+        return;
+    }
+
+    // Garante que curDifficulty nunca sai do range
+    if (curDifficulty < 0) curDifficulty = 0;
+    if (curDifficulty >= Difficulty.list.length) curDifficulty = 0;
+
+    // Agora sim é seguro aplicar o wrap
+    curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length - 1);
 		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-		#end
+    intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+    intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
+    #end
 
-		lastDifficultyName = Difficulty.getString(curDifficulty, false);
-		var displayDiff:String = Difficulty.getString(curDifficulty);
-		if (Difficulty.list.length > 1)
-			diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
-		else
-			diffText.text = displayDiff.toUpperCase();
+    lastDifficultyName = Difficulty.getString(curDifficulty, false);
+    var displayDiff:String = Difficulty.getString(curDifficulty);
+    if (Difficulty.list.length > 1)
+        diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+    else
+        diffText.text = displayDiff.toUpperCase();
 
-		positionHighscore();
-		missingText.visible = false;
-		missingTextBG.visible = false;
-		updateErectVisibility();
-	}
+    positionHighscore();
+    missingText.visible = false;
+    missingTextBG.visible = false;
+    updateErectVisibility();
+}
 
-	private function updateErectVisibility():Void {
-    if (!allowErect) return;
+	private function updateErectVisibility():Void
+{
+    // Se a dificuldade atual NÃO é Erect, mostra tudo normalmente.
+    if (Difficulty.getString(curDifficulty, false).toLowerCase() != "erect")
+    {
+        for (i in 0...songs.length)
+        {
+            if (grpSongs.members[i] != null)
+            {
+                grpSongs.members[i].alpha = 1;
+                grpSongs.members[i].active = true;
+                grpSongs.members[i].visible = true;
+            }
 
-    var found:Bool = false;
-    for (i in 0...songs.length) {
-        var item:Alphabet = grpSongs.members[i];
-        var icon:HealthIcon = iconArray[i];
+            if (iconArray[i] != null)
+            {
+                iconArray[i].alpha = 1;
+                iconArray[i].active = true;
+                iconArray[i].visible = true;
+            }
+        }
+        return;
+    }
 
-        if (!songs[i].hasErect) {
-            item.visible = item.active = false;
-            icon.visible = icon.active = false;
-        } else {
-            item.visible = item.active = true;
-            icon.visible = icon.active = true;
-            if (!found) {
-                curSelected = i;
-                found = true;
+    // Se a dificuldade É Erect → aplicar filtro
+    for (i in 0...songs.length)
+    {
+        var meta = songs[i];
+
+        // Se a música NÃO tem chart Erect → fica transparente e desativada
+        if (!meta.hasErect)
+        {
+            if (grpSongs.members[i] != null)
+            {
+                grpSongs.members[i].alpha = 0.35;
+                grpSongs.members[i].active = false;
+            }
+
+            if (iconArray[i] != null)
+            {
+                iconArray[i].alpha = 0.35;
+                iconArray[i].active = false;
+            }
+        }
+        // Se a música TEM Erect → normal
+        else
+        {
+            if (grpSongs.members[i] != null)
+            {
+                grpSongs.members[i].alpha = 1;
+                grpSongs.members[i].active = true;
+                grpSongs.members[i].visible = true;
+            }
+
+            if (iconArray[i] != null)
+            {
+                iconArray[i].alpha = 1;
+                iconArray[i].active = true;
+                iconArray[i].visible = true;
             }
         }
     }
+	
     // Se nenhuma música tiver Erect, seleciona 0
     if(!found) curSelected = 0;
 
