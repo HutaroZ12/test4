@@ -367,5 +367,4 @@ override function update(elapsed:Float)
 
 			player.playingMusic = false;
 			player.switchPlayMusic();
-		}
-	}
+	
