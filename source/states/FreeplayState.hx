@@ -256,7 +256,7 @@ class FreeplayState extends MusicBeatState
 
         var visible = true;
 
-        if (isErect && !songHasErect.get(meta.songName))
+        if (isErect && !songHasErect.get(meta.songName.toLowerCase())
             visible = false;
 
         if (item != null) item.visible = visible;
