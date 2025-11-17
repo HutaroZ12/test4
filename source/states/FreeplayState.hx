@@ -51,17 +51,7 @@ class FreeplayState extends MusicBeatState
 	var bottomBG:FlxSprite;
 
 	var player:MusicPlayer;
-    // --- ERECT SYSTEM ---
-    public static var allowErect:Bool = true;
-    var songHasErect:Map<String, Bool> = new Map();
 
-function hasErectChart(songName:String):Bool
-{
-    var baseName = songName.toLowerCase();
-    var path = 'assets/shared/data/' + baseName + '/' + baseName + '-erect.json';
-    return FileSystem.exists(path);
-}
-	
 	override function create()
 	{
 		//Paths.clearStoredMemory();
@@ -70,7 +60,6 @@ function hasErectChart(songName:String):Bool
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
-		applyErectFilter();
 
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
@@ -130,16 +119,14 @@ function hasErectChart(songName:String):Bool
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
 			songText.targetY = i;
 			grpSongs.add(songText);
-			
-			var s = songs[i].songName.toLowerCase();
-            songHasErect.set(s, hasErectChart(s));
 
 			songText.scaleX = Math.min(1, 980 / songText.width);
 			songText.snapToPosition();
 
 			Mods.currentModDirectory = songs[i].folder;
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.sprTracker = songText;		
+			icon.sprTracker = songText;
+
 			
 			// too laggy with a lot of songs, so i had to recode the logic for it
 			songText.visible = songText.active = songText.isMenuItem = false;
@@ -239,30 +226,6 @@ function hasErectChart(songName:String):Bool
 	var holdTime:Float = 0;
 
 	var stopMusicPlay:Bool = false;
-
-	function applyErectFilter():Void
-{
-    if (!allowErect)
-        return;
-
-    var erectIndex = Difficulty.list.indexOf("Erect");
-    var isErect = (curDifficulty == erectIndex);
-
-    for (idx => meta in songs)
-    {
-        var item = grpSongs.members[idx];
-        var icon = iconArray[idx];
-
-        var visible = true;
-
-        if (isErect && !songHasErect.get(meta.songName.toLowerCase()))
-            visible = false;
-
-        if (item != null) item.visible = visible;
-        if (icon != null) icon.visible = visible;
-    }
-}
-	
 	override function update(elapsed:Float)
 	{
 		if(WeekData.weeksList.length < 1)
@@ -558,7 +521,6 @@ function hasErectChart(songName:String):Bool
 		positionHighscore();
 		missingText.visible = false;
 		missingTextBG.visible = false;
-		applyErectFilter();
 	}
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
@@ -567,21 +529,6 @@ function hasErectChart(songName:String):Bool
 			return;
 
 		curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
-
-		// Pular músicas sem ERECT caso esteja na dificuldade ERECT
-var erectIndex = Difficulty.list.indexOf("Erect");
-var isErect = (curDifficulty == erectIndex);
-
-if (isErect)
-{
-    var safety = 0;
-    while (!songHasErect.get(songs[curSelected].songName) && safety < 999)
-    {
-        curSelected = FlxMath.wrap(curSelected + change, 0, songs.length - 1);
-        safety++;
-    }
-}
-		
 		_updateSongLastDifficulty();
 		if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
