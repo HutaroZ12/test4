@@ -55,7 +55,12 @@ class FreeplayState extends MusicBeatState
     public static var allowErect:Bool = true;
     var songHasErect:Map<String, Bool> = new Map();
 
-    // Verifica se existe chart ERECT dentro de assets/shared/data/
+function hasErectChart(songName:String):Bool
+{
+    var baseName = songName.toLowerCase();
+    var path = 'assets/shared/data/' + baseName + '/' + baseName + '-erect.json';
+    return FileSystem.exists(path);
+}
 	
 	override function create()
 	{
@@ -125,12 +130,6 @@ class FreeplayState extends MusicBeatState
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
 			songText.targetY = i;
 			grpSongs.add(songText);
-
-			function hasErectChart(songName:String):Bool
-{
-    var base = 'assets/shared/data/' + songName.toLowerCase() + '/' + songName.toLowerCase();
-    return FileSystem.exists(base + '-erect.json');
-}
 			
 			var s = songs[i].songName.toLowerCase();
             songHasErect.set(s, hasErectChart(s));
