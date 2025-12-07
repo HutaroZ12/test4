@@ -12,7 +12,7 @@ class Difficulty
 		'Easy',
 		'Normal',
 		'Hard',
-		'HyperStyle'
+		'popStyle'
 	];
 	
 	private static final defaultDifficulty:String = 'Normal'; //The chart that has no postfix and starting difficulty on Freeplay/Story Mode
