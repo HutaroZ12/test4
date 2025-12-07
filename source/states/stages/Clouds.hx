@@ -225,7 +225,7 @@ class Clouds extends BaseStage
         }
     }
 }
-
+}
 	
 override function createPost()
 {
@@ -344,3 +344,4 @@ override function createPost()
         }
     }
 }
+
