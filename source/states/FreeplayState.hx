@@ -644,4 +644,12 @@ class SongMetadata
 		this.folder = Mods.currentModDirectory;
 		if(this.folder == null) this.folder = '';
 	}
+	
+    public function getDisplayName(difficultyIndex:Int):String
+	{
+		var diffName:String = Difficulty.getString(difficultyIndex, false);
+		if (diffName != null && diffName.toLowerCase() == 'popstyle')
+			return this.songName + "-PopStyle";
+		return this.songName;
+	}
 }
