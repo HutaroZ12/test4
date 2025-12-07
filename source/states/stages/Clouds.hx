@@ -188,13 +188,26 @@ class Clouds extends BaseStage
             layer5.alpha = 0;
                 }
         }
-	
+
+      if (songName == 'radiant-popstyle')
+
+    {
+      	if (curStep == 128) {    
+            FlxTween.tween(songinfo, {x: 0}, 2.6, {ease: FlxEase.expoOut});
+
+		{	
+        if (curStep == 156) {    
+            FlxTween.tween(songinfo, {x: -500}, 2.6, {
+				ease: FlxEase.expoIn});
+		    }
+	}
+
 	  if (songName == 'radiant')
 	  {
 		if (curStep == 10) {    
             FlxTween.tween(songinfo, {x: 0}, 2.6, {ease: FlxEase.expoOut});
 
-        }
+		{	
         if (curStep == 44) {    
             FlxTween.tween(songinfo, {x: -500}, 2.6, {
 				ease: FlxEase.expoIn});
@@ -332,6 +345,7 @@ override function createPost()
         }
     }
 }
+
 
 
 
