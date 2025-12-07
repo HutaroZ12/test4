@@ -7,6 +7,15 @@ class Difficulty
 		'Normal',
 		'Hard'
 	];
+
+	public static final defaultListFull:Array<String> = [
+		'Easy',
+		'Normal',
+		'Hard',
+		'Erect',
+		'Nightmare'
+	];
+	
 	private static final defaultDifficulty:String = 'Normal'; //The chart that has no postfix and starting difficulty on Freeplay/Story Mode
 
 	public static var list:Array<String> = [];
