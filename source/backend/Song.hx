@@ -155,6 +155,23 @@ class Song
 		return rawData != null ? parseJSON(rawData, jsonInput) : null;
 	}
 
+	// Add this inside the Song class
+    public static function hasDifficulty(songName:String, diff:String):Bool {
+    var chart:SwagSong = getChart(songName, songName);
+    // Psych engine charts typically list difficulties as folder or keys; adjust as necessary for your format
+    if (chart != null && Reflect.hasField(chart, "difficulties")) {
+        var difficulties:Array<String> = Reflect.field(chart, "difficulties");
+        return difficulties.indexOf(diff) != -1;
+    }
+    // If not stored like that, check if the JSON filename exists
+    var diffPath:String = Paths.json('${songName}/${songName}-${diff}');
+    #if MODS_ALLOWED
+    return FileSystem.exists(diffPath);
+    #else
+    return Assets.exists(diffPath);
+    #end
+    }
+	
 	public static function parseJSON(rawData:String, ?nameForError:String = null, ?convertTo:String = 'psych_v1'):SwagSong
 	{
 		var songJson:SwagSong = cast Json.parse(rawData);
