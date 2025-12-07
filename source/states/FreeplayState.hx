@@ -642,8 +642,7 @@ class SongMetadata
 			return this.songName + "-PopStyle";
 		return this.songName;
 	}
-}
-
+	
 	public function new(song:String, week:Int, songCharacter:String, color:Int)
 	{
 		this.songName = song;
