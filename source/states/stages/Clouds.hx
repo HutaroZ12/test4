@@ -223,9 +223,6 @@ class Clouds extends BaseStage
                 onComplete: function(twn:FlxTween) {
 				                }
             });
-        }
-    }
-}
 }
 	
 override function createPost()
@@ -345,5 +342,6 @@ override function createPost()
         }
     }
 }
+
 
 
