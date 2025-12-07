@@ -635,6 +635,15 @@ class SongMetadata
 	public var folder:String = "";
 	public var lastDifficulty:String = null;
 
+	public function getDisplayName(difficultyIndex:Int):String
+	{
+		var diffName:String = Difficulty.getString(difficultyIndex, false);
+		if (diffName != null && diffName.toLowerCase() == 'popstyle')
+			return this.songName + "-PopStyle";
+		return this.songName;
+	}
+}
+
 	public function new(song:String, week:Int, songCharacter:String, color:Int)
 	{
 		this.songName = song;
@@ -643,13 +652,5 @@ class SongMetadata
 		this.color = color;
 		this.folder = Mods.currentModDirectory;
 		if(this.folder == null) this.folder = '';
+	    }
 	}
-	
-    public function getDisplayName(difficultyIndex:Int):String
-	{
-		var diffName:String = Difficulty.getString(difficultyIndex, false);
-		if (diffName != null && diffName.toLowerCase() == 'popstyle')
-			return this.songName + "-PopStyle";
-		return this.songName;
-	}
-}
