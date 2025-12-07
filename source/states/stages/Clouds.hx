@@ -200,8 +200,7 @@ class Clouds extends BaseStage
             FlxTween.tween(songinfo, {x: -500}, 2.6, {
 				ease: FlxEase.expoIn});
 		    }
-	}
-
+	
 	  if (songName == 'radiant')
 	  {
 		if (curStep == 10) {    
@@ -342,6 +341,7 @@ override function createPost()
         }
     }
 }
+
 
 
 
