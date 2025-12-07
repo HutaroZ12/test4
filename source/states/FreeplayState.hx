@@ -580,6 +580,14 @@ class FreeplayState extends MusicBeatState
 	inline private function _updateSongLastDifficulty()
 		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 
+	public function getDisplayName(difficultyIndex:Int):String
+	{
+		var diffName:String = Difficulty.getString(difficultyIndex, false);
+		if (diffName != null && diffName.toLowerCase() == 'popstyle')
+			return this.songName + "-PopStyle";
+		return this.songName;
+	}
+	
 	private function positionHighscore()
 	{
 		scoreText.x = FlxG.width - scoreText.width - 6;
@@ -634,14 +642,6 @@ class SongMetadata
 	public var color:Int = -7179779;
 	public var folder:String = "";
 	public var lastDifficulty:String = null;
-
-	public function getDisplayName(difficultyIndex:Int):String
-	{
-		var diffName:String = Difficulty.getString(difficultyIndex, false);
-		if (diffName != null && diffName.toLowerCase() == 'popstyle')
-			return this.songName + "-PopStyle";
-		return this.songName;
-	}
 	
 	public function new(song:String, week:Int, songCharacter:String, color:Int)
 	{
