@@ -569,7 +569,7 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 		}
 
-		if (songs[curSelected].songName.toLowerCase()) && Song.hasDifficulty(songs[curSelected].songName.toLowerCase()), 'erect'))
+		if (songs[curSelected].songName.toLowerCase()) && Song.hasDifficulty(songs[curSelected].songName.toLowerCase()), 'erect')
 		{
 			Difficulty.difficulties.push('erect');
 			Difficulty.difficulties.push('nightmare');
