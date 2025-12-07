@@ -565,7 +565,15 @@ class FreeplayState extends MusicBeatState
 		else if(Difficulty.list.contains(Difficulty.getDefault()))
 			curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
 		else
+		{
 			curDifficulty = 0;
+		}
+
+		if (songs[curSelected].songName.toLowerCase()) && Song.hasDifficulty(songs[curSelected].songName.toLowerCase(), 'erect'))
+		{
+			Difficulty.difficulties.push('erect');
+			Difficulty.difficulties.push('nightmare');
+		}
 
 		changeDiff();
 		_updateSongLastDifficulty();
