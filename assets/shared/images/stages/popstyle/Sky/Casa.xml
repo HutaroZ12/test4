@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Casa.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="Casa0000" x="3738" y="0" width="1246" height="1329" frameX="-1564" frameY="-401" frameWidth="3020" frameHeight="2280"/>
+	<SubTexture name="Casa0001" x="0" y="0" width="1246" height="1732" frameX="-1564" frameY="2" frameWidth="3020" frameHeight="2280"/>
+	<SubTexture name="Casa0002" x="1246" y="0" width="1246" height="1732" frameX="-1564" frameY="2" frameWidth="3020" frameHeight="2280"/>
+	<SubTexture name="Casa0003" x="0" y="1732" width="1246" height="1732" frameX="-1564" frameY="2" frameWidth="3020" frameHeight="2280"/>
+	<SubTexture name="Casa0004" x="2492" y="0" width="1246" height="1732" frameX="-1564" frameY="2" frameWidth="3020" frameHeight="2280"/>
+	<SubTexture name="Casa0005" x="2492" y="1732" width="1246" height="1721" frameX="-1564" frameY="-9" frameWidth="3020" frameHeight="2280"/>
+	<SubTexture name="Casa0006" x="1246" y="1732" width="1246" height="1732" frameX="-1564" frameY="2" frameWidth="3020" frameHeight="2280"/>
+</TextureAtlas>
