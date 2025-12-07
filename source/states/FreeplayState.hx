@@ -569,10 +569,9 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 		}
 
-		if (songs[curSelected].songName.toLowerCase() != "" && Song.hasDifficulty(songs[curSelected].songName.toLowerCase(), 'erect'))
+		if (songs[curSelected].songName.toLowerCase() != "" && Song.hasDifficulty(songs[curSelected].songName.toLowerCase(), 'freestyle'))
         {
-        Difficulty.list.push('erect');
-        Difficulty.list.push('nightmare');
+        Difficulty.list.push('freestyle');
         }
 		changeDiff();
 		_updateSongLastDifficulty();
