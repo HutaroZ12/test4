@@ -229,6 +229,8 @@ class CloudsPop extends BaseStage
 	
 override function createPost()
 {
+	resetAviao()
+		
 	layer4 = new BGSprite('stages/sky/layer4', -500, -300);
     layer4.scrollFactor.set(1, 1);
     add(layer4);
@@ -331,7 +333,7 @@ override function createPost()
 		}
 
     if (FlxG.random.bool(20) && aviaoVoando)
-			aviaoVoando();
+			aviaoVoa();
 	}
 
     override function closeSubState()
@@ -359,7 +361,7 @@ override function createPost()
 	}
 	
 	var aviaoTimer:FlxTimer;
-	function aviaoVoando()
+	function aviaoVoa()
 	{
 		aviao.velocity.x = FlxG.random.int(52, 52);
 		aviaoVoando = false;
