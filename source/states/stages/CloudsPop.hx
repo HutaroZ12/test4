@@ -236,7 +236,6 @@ class CloudsPop extends BaseStage
 				                }
             });
 		}
-	  }
     }
 }
 	
