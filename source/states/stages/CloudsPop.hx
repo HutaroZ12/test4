@@ -186,32 +186,20 @@ class CloudsPop extends BaseStage
             FlxTween.tween(layer5, {alpha: 0.7}, 0.6, {
 				ease: FlxEase.expoIn});
 
-		}
+			{
 	    if (curStep == 768) {    
             layer5.alpha = 0;
 
-		}
+			{
 	    if (curStep == 1280) {    
             FlxTween.tween(layer5, {alpha: 0.7}, 0.6, {
 				ease: FlxEase.expoIn});
 
-		}
+			{
 	    if (curStep == 1535) {    
             layer5.alpha = 0;
-                }
-		
-      if (songName == 'radiant-popstyle')
+                }    
 
-    {
-      	if (curStep == 128) {    
-            FlxTween.tween(songinfo, {x: 0}, 2.6, {ease: FlxEase.expoOut});
-
-		}	
-        if (curStep == 156) {    
-            FlxTween.tween(songinfo, {x: -500}, 2.6, {
-				ease: FlxEase.expoIn});
-			
-		}
 	  if (songName == 'radiant')
 	  {
 		if (curStep == 10) {    
@@ -234,13 +222,12 @@ class CloudsPop extends BaseStage
 				                }
             });
 		}
-    }
+	  }
+}
 }
 	
 override function createPost()
-{
-	resetAviao();
-	
+{	
 	layer4 = new BGSprite('stages/sky/popstyle/sky/layer4', -500, -300);
     layer4.scrollFactor.set(1, 1);
     add(layer4);
