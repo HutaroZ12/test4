@@ -229,7 +229,7 @@ class CloudsPop extends BaseStage
 	
 override function createPost()
 {
-	resetAviao()
+	resetAviao();
 		
 	layer4 = new BGSprite('stages/sky/layer4', -500, -300);
     layer4.scrollFactor.set(1, 1);
