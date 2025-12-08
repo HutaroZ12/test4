@@ -199,26 +199,14 @@ class CloudsPop extends BaseStage
 	    if (curStep == 1535) {    
             layer5.alpha = 0;
                 }
-
-      if (songName == 'radiant-popstyle')
-
-    {
-      	if (curStep == 128) {    
-            FlxTween.tween(songinfo, {x: 0}, 2.6, {ease: FlxEase.expoOut});
-
-		}	
-        if (curStep == 156) {    
-            FlxTween.tween(songinfo, {x: -500}, 2.6, {
-				ease: FlxEase.expoIn});
-		    }
-	}
-
+        }
+	
 	  if (songName == 'radiant')
 	  {
 		if (curStep == 10) {    
             FlxTween.tween(songinfo, {x: 0}, 2.6, {ease: FlxEase.expoOut});
 
-		}	
+        }
         if (curStep == 44) {    
             FlxTween.tween(songinfo, {x: -500}, 2.6, {
 				ease: FlxEase.expoIn});
@@ -238,6 +226,7 @@ class CloudsPop extends BaseStage
     }
 }
 
+	
 override function createPost()
 {
 	layer4 = new BGSprite('stages/sky/layer4', -500, -300);
@@ -330,57 +319,6 @@ override function createPost()
     if (layer4.x + layer4.width <= 0) layer4.x = layer4b.x + layer4b.width;
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
-
-    override function beatHit()
-    {
-    if (curBeat % 4 == 0)
-		{
-		lights0.alpha = 0.9;
-		
-	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {
-				ease: FlxEase.expoIn});
-		}
-		
-    if (FlxG.random.bool(20) && aviaoVoando)
-			aviaoVoando();
-          }
-	
-
-    override function closeSubState()
-	{
-		if(paused)
-		{
-			if(aviaoTimer != null) aviao.active = true;
-		}
-	}
-	
-	override function openSubState(SubState:flixel.FlxSubState)
-	{
-		if(paused)
-		{
-			if(aviaoTimer != null) aviaoTimer.active = false;
-		}
-	}
-	
-	function resetAviao():Void
-	{
-		aviao.x = 12600;
-		aviao.y = FlxG.random.int(140, 250);
-		aviao.velocity.x = 0;
-		aviaoVoando = true;
-	}
-	
-	var aviaoTimer:FlxTimer;
-	function aviaoVoando()
-	{
-		aviao.velocity.x = FlxG.random.int(52, 52);
-		aviaoVoando = false;
-		aviaoTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
-		{
-			resetAviao();
-			aviaoTimer = null;
-		});
-	}
 
     override function countdownTick(count:Countdown, num:Int)
 {
