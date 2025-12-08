@@ -156,7 +156,7 @@ class CloudsPop extends BaseStage
                 add(blackScreen);
 		}
 	}
-
+	
     override function stepHit()
 {
     if (songName == 'clouding')
@@ -186,19 +186,32 @@ class CloudsPop extends BaseStage
             FlxTween.tween(layer5, {alpha: 0.7}, 0.6, {
 				ease: FlxEase.expoIn});
 
-			{
+		}
 	    if (curStep == 768) {    
             layer5.alpha = 0;
 
-			{
+		}
 	    if (curStep == 1280) {    
             FlxTween.tween(layer5, {alpha: 0.7}, 0.6, {
 				ease: FlxEase.expoIn});
 
-			{
+		}
 	    if (curStep == 1535) {    
             layer5.alpha = 0;
-                }    
+                }
+
+      if (songName == 'radiant-popstyle')
+
+    {
+      	if (curStep == 128) {    
+            FlxTween.tween(songinfo, {x: 0}, 2.6, {ease: FlxEase.expoOut});
+
+		}	
+        if (curStep == 156) {    
+            FlxTween.tween(songinfo, {x: -500}, 2.6, {
+				ease: FlxEase.expoIn});
+		    }
+	}
 
 	  if (songName == 'radiant')
 	  {
@@ -221,35 +234,41 @@ class CloudsPop extends BaseStage
                 onComplete: function(twn:FlxTween) {
 				                }
             });
-		}
-	  }
-}
+        }
+    }
 }
 	
 override function createPost()
-{	
-	layer4 = new BGSprite('stages/sky/popstyle/sky/layer4', -500, -300);
+{
+	layer4 = new BGSprite('stages/sky/layer4', -500, -300);
     layer4.scrollFactor.set(1, 1);
     add(layer4);
 
-	layer4b = new BGSprite('stages/sky/popstyle/sky/layer4', layer4.x + layer4.width, layer4.y);
+	layer4b = new BGSprite('stages/sky/layer4', layer4.x + layer4.width, layer4.y);
     layer4b.scrollFactor.set(1, 1);
     add(layer4b);
 	
-    layer3 = new BGSprite('stages/sky/popstyle/sky/layer3', -500, -300);
+    layer3 = new BGSprite('stages/sky/layer3', -500, -300);
     layer3.scrollFactor.set(1, 1);
+    layer3.alpha = 0.55;
     layer3.blend = ADD;
     add(layer3);
 
+	layer5 = new BGSprite('stages/sky/layer5', -500, -300);
+    layer5.scrollFactor.set(1, 1);
+    layer5.alpha = 0;
+    layer5.blend = ADD;
+    add(layer5);
+
         if (ClientPrefs.data.shaders)
 {
-    gf.shader = makeCoolShader(0,-21,-5,-1);
-    dad.shader = makeCoolShader(0,-21,-5,-1);
-    boyfriend.shader = makeCoolShader(0,-21,-5,-1);
-	songinfo.shader = makeCoolShader(0,-21,-5,-1);
+    gf.shader = makeCoolShader(0,16,0,0);
+    dad.shader = makeCoolShader(0,16,0,0);
+    boyfriend.shader = makeCoolShader(0,16,0,0);
+	songinfo.shader = makeCoolShader(0,16,0,0);
 }
-}
-				
+    }
+
     function makeCoolShader(hue:Float,sat:Float,bright:Float,contrast:Float) {
     var coolShader = new AdjustColorShader();
     coolShader.hue = hue;
@@ -257,7 +276,7 @@ override function createPost()
     coolShader.brightness = bright;
     coolShader.contrast = contrast;
     return coolShader;
-	}
+}
 
     override function update(elapsed:Float)
 {
@@ -311,10 +330,8 @@ override function createPost()
     if (layer4.x + layer4.width <= 0) layer4.x = layer4b.x + layer4b.width;
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
-			}
-		}
 
-override function beatHit()
+    override function beatHit()
     {
     if (curBeat % 4 == 0)
 		{
@@ -325,7 +342,7 @@ override function beatHit()
 		}
 		
     if (FlxG.random.bool(20) && aviaoVoando)
-			fastCarDrive();
+			aviaoVoando();
           }
 	
 
@@ -364,7 +381,7 @@ override function beatHit()
 			aviaoTimer = null;
 		});
 	}
-	
+
     override function countdownTick(count:Countdown, num:Int)
 {
     switch(count)
