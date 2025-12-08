@@ -211,7 +211,7 @@ class CloudsPop extends BaseStage
             FlxTween.tween(songinfo, {x: -500}, 2.6, {
 				ease: FlxEase.expoIn});
 		    }
-	
+	}
 
 	  if (songName == 'radiant')
 	  {
