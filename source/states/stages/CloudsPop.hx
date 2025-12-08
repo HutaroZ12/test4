@@ -73,8 +73,6 @@ class CloudsPop extends BaseStage
         aviao.active = true;
         add(aviao);
         
-        resetAviao();
-        
         nuvem0 = new BGSprite('stages/sky/popstyle/sky/nuvem0', -500, -300);
         nuvem0.scrollFactor.set(0.88, 1);
         add(nuvem0);
@@ -212,8 +210,8 @@ class CloudsPop extends BaseStage
         if (curStep == 156) {    
             FlxTween.tween(songinfo, {x: -500}, 2.6, {
 				ease: FlxEase.expoIn});
-		    }
-	
+			
+		}
 	  if (songName == 'radiant')
 	  {
 		if (curStep == 10) {    
@@ -241,6 +239,8 @@ class CloudsPop extends BaseStage
 	
 override function createPost()
 {
+	resetAviao();
+	
 	layer4 = new BGSprite('stages/sky/popstyle/sky/layer4', -500, -300);
     layer4.scrollFactor.set(1, 1);
     add(layer4);
