@@ -159,20 +159,6 @@ class CloudsPop extends BaseStage
 		}
 	}
 
-    override function beatHit()
-    {
-    if (curBeat % 4 == 0)
-		{
-		lights0.alpha = 0.9;
-		
-	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {
-				ease: FlxEase.expoIn});
-		}
-		
-    if (FlxG.random.bool(20) && aviaoVoando)
-			fastCarDrive();
-	}
-	
     override function stepHit()
 {
     if (songName == 'clouding')
@@ -339,6 +325,21 @@ override function createPost()
     if (layer4.x + layer4.width <= 0) layer4.x = layer4b.x + layer4b.width;
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
+
+override function beatHit()
+    {
+    if (curBeat % 4 == 0)
+		{
+		lights0.alpha = 0.9;
+		
+	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {
+				ease: FlxEase.expoIn});
+		}
+		
+    if (FlxG.random.bool(20) && aviaoVoando)
+			fastCarDrive();
+          }
+	
 
     override function closeSubState()
 	{
