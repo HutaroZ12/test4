@@ -68,7 +68,7 @@ class CloudsPop extends BaseStage
         nuvem4b.scrollFactor.set(0.87, 1);
         add(nuvem4b);
 		
-		aviao = new FlxSprite('stages/sky/popstyle/sky/aviao', -500, -300);
+		aviao = new FlxSprite('stages/sky/popstyle/sky/aviao', -5000, -300);
         aviao.scrollFactor.set(0.88, 1);
         aviao.active = true;
         add(aviao);
@@ -156,10 +156,10 @@ class CloudsPop extends BaseStage
 				blackScreen.alpha = 1;
                 blackScreen.scrollFactor.set();
                 add(blackScreen);
-        }
-    }
+		}
+	}
 
-    override funcion beatHit()
+    override function beatHit()
     {
     if (curBeat % 4 == 0)
 		{
