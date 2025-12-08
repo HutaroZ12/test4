@@ -68,10 +68,11 @@ class CloudsPop extends BaseStage
         nuvem4b.scrollFactor.set(0.87, 1);
         add(nuvem4b);
 		
-		aviao = new BGSprite('stages/sky/popstyle/sky/aviao', 5000, -300);
+		aviao = new BGSprite('stages/sky/popstyle/sky/aviao', -300, -300);
         aviao.scrollFactor.set(0.88, 1);
         aviao.active = true;
         add(aviao);
+		resetAviao();
         
         nuvem0 = new BGSprite('stages/sky/popstyle/sky/nuvem0', -500, -300);
         nuvem0.scrollFactor.set(0.88, 1);
@@ -241,8 +242,6 @@ class CloudsPop extends BaseStage
 	
 override function createPost()
 {
-	resetAviao();
-		
 	layer4 = new BGSprite('stages/sky/popstyle/sky/layer4', -500, -300);
     layer4.scrollFactor.set(1, 1);
     add(layer4);
@@ -256,12 +255,6 @@ override function createPost()
     layer3.alpha = 0.55;
     layer3.blend = ADD;
     add(layer3);
-
-	layer5 = new BGSprite('stages/sky/popstyle/sky/layer5', -500, -300);
-    layer5.scrollFactor.set(1, 1);
-    layer5.alpha = 0;
-    layer5.blend = ADD;
-    add(layer5);
 
         if (ClientPrefs.data.shaders)
 {
@@ -338,7 +331,8 @@ override function createPost()
     {
     if (curBeat % 2 == 0)
 		{
-		lights0.alpha = 1;		
+		lights0.alpha = 1;
+		}
 			
 	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.linear});
 		}
