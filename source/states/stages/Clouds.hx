@@ -187,8 +187,7 @@ class Clouds extends BaseStage
 	    if (curStep == 1535) {    
             layer5.alpha = 0;
                 }
-       }
-
+    
       if (songName == 'radiant-popstyle')
 
     {
@@ -223,6 +222,7 @@ class Clouds extends BaseStage
 				                }
             });
 		}
+    }
 }
 	
 override function createPost()
@@ -342,6 +342,7 @@ override function createPost()
         }
     }
 }
+
 
 
 
