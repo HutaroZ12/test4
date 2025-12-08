@@ -330,8 +330,6 @@ override function createPost()
 	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.expoIn});
 		}
 
-		}
-		
     if (FlxG.random.bool(20) && aviaoVoando)
 			aviaoVoando();
 	}
