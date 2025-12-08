@@ -68,7 +68,7 @@ class CloudsPop extends BaseStage
         nuvem4b.scrollFactor.set(0.87, 1);
         add(nuvem4b);
 		
-		aviao = new BGSprite('stages/sky/popstyle/sky/aviao', -5000, -300);
+		aviao = new BGSprite('stages/sky/popstyle/sky/aviao', 5000, -300);
         aviao.scrollFactor.set(0.88, 1);
         aviao.active = true;
         add(aviao);
@@ -200,7 +200,19 @@ class CloudsPop extends BaseStage
             layer5.alpha = 0;
                 }
         }
-	
+
+      if (songName == 'radiant-popstyle')
+	  {
+		if (curStep == 128) {    
+            FlxTween.tween(songinfo, {x: 0}, 2.6, {ease: FlxEase.expoOut});
+
+        }
+        if (curStep == 156) {    
+            FlxTween.tween(songinfo, {x: -500}, 2.6, {
+				ease: FlxEase.expoIn});
+		        }
+	  }
+
 	  if (songName == 'radiant')
 	  {
 		if (curStep == 10) {    
@@ -231,21 +243,21 @@ override function createPost()
 {
 	resetAviao();
 		
-	layer4 = new BGSprite('stages/sky/layer4', -500, -300);
+	layer4 = new BGSprite('stages/sky/popstyle/sky/layer4', -500, -300);
     layer4.scrollFactor.set(1, 1);
     add(layer4);
 
-	layer4b = new BGSprite('stages/sky/layer4', layer4.x + layer4.width, layer4.y);
+	layer4b = new BGSprite('stages/sky/popstyle/sky/layer4', layer4.x + layer4.width, layer4.y);
     layer4b.scrollFactor.set(1, 1);
     add(layer4b);
 	
-    layer3 = new BGSprite('stages/sky/layer3', -500, -300);
+    layer3 = new BGSprite('stages/sky/popstyle/sky/layer3', -500, -300);
     layer3.scrollFactor.set(1, 1);
     layer3.alpha = 0.55;
     layer3.blend = ADD;
     add(layer3);
 
-	layer5 = new BGSprite('stages/sky/layer5', -500, -300);
+	layer5 = new BGSprite('stages/sky/popstyle/sky/layer5', -500, -300);
     layer5.scrollFactor.set(1, 1);
     layer5.alpha = 0;
     layer5.blend = ADD;
@@ -253,10 +265,10 @@ override function createPost()
 
         if (ClientPrefs.data.shaders)
 {
-    gf.shader = makeCoolShader(0,16,0,0);
-    dad.shader = makeCoolShader(0,16,0,0);
-    boyfriend.shader = makeCoolShader(0,16,0,0);
-	songinfo.shader = makeCoolShader(0,16,0,0);
+    gf.shader = makeCoolShader(0,-21,-5,-1);
+    dad.shader = makeCoolShader(0,-21,-5,-1);
+    boyfriend.shader = makeCoolShader(0,-21,-5,-1);
+	songinfo.shader = makeCoolShader(0,-21,-5,-1);
 }
     }
 
@@ -324,9 +336,9 @@ override function createPost()
 
     override function beatHit()
     {
-    if (curBeat % 4 == 0)
+    if (curBeat % 2 == 0)
 		{
-		lights0.alpha = 0.9;
+		lights0.alpha = 1;
 
 		
 	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.expoIn});
