@@ -250,6 +250,8 @@ class CloudsPop extends BaseStage
                 onComplete: function(twn:FlxTween) {
 				                }
             });
+		}
+    }
 }
 	
 override function createPost()
