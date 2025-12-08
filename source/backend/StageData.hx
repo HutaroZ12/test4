@@ -113,6 +113,8 @@ class StageData {
 			case 'clouding' | 'radiant':
 				return 'sky';
 		}
+				return 'skypop';
+		}
 		return 'stage';
 	}
 
