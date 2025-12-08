@@ -40,7 +40,7 @@ class CloudsPop extends BaseStage
 	
     override function create()
     {       
-        layer0 = new BGSprite('stages/sky/popstyle/sky/popstyle/sky/layer0', -500, -300);
+        layer0 = new BGSprite('stages/sky/popstyle/sky/layer0', -500, -300);
         layer0.scrollFactor.set(0.84, 1);
         add(layer0);
 
