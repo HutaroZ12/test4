@@ -391,6 +391,7 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
+			case 'skypop': new CloudsPop();                    //WeekEyz
 			case 'sky': new Clouds();                    //WeekEyz
 			case 'stage': new StageWeek1(); 			//Week 1
 			case 'spooky': new Spooky();				//Week 2
