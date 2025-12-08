@@ -327,6 +327,7 @@ override function createPost()
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
 
+    var beatTween:FlxTween;
     override function beatHit()
     {
     if (curBeat % 2 == 0)
