@@ -331,10 +331,14 @@ override function createPost()
     {
     if (curBeat % 2 == 0)
 		{
-		lights0.alpha = 1;
-		}
+		lights0.alpha = 1;			
 			
-	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.linear});
+	    if(beatTween != null) beatTween.cancel();
+			beatTween = FlxTween.tween(beatText, {alpha: 0.6}, 1, {ease: FlxEase.sineIn, onComplete: function(twn:FlxTween)
+				{
+					beatTween = null;
+				}
+			});
 		}
 
     if (FlxG.random.bool(10) && aviaoVoando)
