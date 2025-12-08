@@ -257,6 +257,7 @@ override function createPost()
     coolShader.brightness = bright;
     coolShader.contrast = contrast;
     return coolShader;
+	}
 }
 
     override function update(elapsed:Float)
