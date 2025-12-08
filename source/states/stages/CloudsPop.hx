@@ -14,7 +14,7 @@ class CloudsPop extends BaseStage
     var layer3:BGSprite;
 	var layer5:BGSprite;
 	var lights0:BGSprite;
-	var aviao:FlxSprite;
+	var aviao:BGSprite;
 	var aviaoVoando:Bool = true;
     var casa:FlxSprite;
     var nuvem0:BGSprite;
@@ -68,7 +68,7 @@ class CloudsPop extends BaseStage
         nuvem4b.scrollFactor.set(0.87, 1);
         add(nuvem4b);
 		
-		aviao = new FlxSprite('stages/sky/popstyle/sky/aviao', -5000, -300);
+		aviao = new BGSprite('stages/sky/popstyle/sky/aviao', -5000, -300);
         aviao.scrollFactor.set(0.88, 1);
         aviao.active = true;
         add(aviao);
@@ -156,7 +156,7 @@ class CloudsPop extends BaseStage
                 add(blackScreen);
 		}
 	}
-	
+
     override function stepHit()
 {
     if (songName == 'clouding')
@@ -319,6 +319,58 @@ override function createPost()
     if (layer4.x + layer4.width <= 0) layer4.x = layer4b.x + layer4b.width;
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
+
+    override function beatHit()
+    {
+    if (curBeat % 4 == 0)
+		{
+		lights0.alpha = 0.9;
+
+		
+	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.expoIn});
+		}
+
+		}
+		
+    if (FlxG.random.bool(20) && aviaoVoando)
+			aviaoVoando();
+	}
+
+    override function closeSubState()
+	{
+		if(paused)
+		{
+			if(aviaoTimer != null) aviao.active = true;
+		}
+	}
+	
+	override function openSubState(SubState:flixel.FlxSubState)
+	{
+		if(paused)
+		{
+			if(aviaoTimer != null) aviaoTimer.active = false;
+		}
+	}
+	
+	function resetAviao():Void
+	{
+		aviao.x = 12600;
+		aviao.y = FlxG.random.int(140, 250);
+		aviao.velocity.x = 0;
+		aviaoVoando = true;
+	}
+	
+	var aviaoTimer:FlxTimer;
+	function aviaoVoando()
+	{
+		aviao.velocity.x = FlxG.random.int(52, 52);
+		aviaoVoando = false;
+		aviaoTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			resetAviao();
+			aviaoTimer = null;
+		});
+	}
 
     override function countdownTick(count:Countdown, num:Int)
 {
