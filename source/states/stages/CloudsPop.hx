@@ -335,7 +335,7 @@ override function createPost()
 		lights0.alpha = 1;			
 			
 	    if(beatTween != null) beatTween.cancel();
-			beatTween = FlxTween.tween(beatText, {alpha: 0.6}, 1, {ease: FlxEase.sineIn, onComplete: function(twn:FlxTween)
+			beatTween = FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.sineIn, onComplete: function(twn:FlxTween)
 				{
 					beatTween = null;
 				}
