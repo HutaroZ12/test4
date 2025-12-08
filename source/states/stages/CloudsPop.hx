@@ -265,10 +265,10 @@ override function createPost()
 
         if (ClientPrefs.data.shaders)
 {
-    gf.shader = makeCoolShader(0,-21,-5,-1);
-    dad.shader = makeCoolShader(0,-21,-5,-1);
-    boyfriend.shader = makeCoolShader(0,-21,-5,-1);
-	songinfo.shader = makeCoolShader(0,-21,-5,-1);
+    gf.shader = makeCoolShader(-21,-5,-1,0);
+    dad.shader = makeCoolShader(-21,-5,-1,0);
+    boyfriend.shader = makeCoolShader(-21,-5,-1,0);
+	songinfo.shader = makeCoolShader(-21,-5,-1,0);
 }
     }
 
@@ -338,13 +338,12 @@ override function createPost()
     {
     if (curBeat % 2 == 0)
 		{
-		lights0.alpha = 1;
-
-		
-	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.expoIn});
+		lights0.alpha = 1;		
+			
+	    FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.linear});
 		}
 
-    if (FlxG.random.bool(20) && aviaoVoando)
+    if (FlxG.random.bool(10) && aviaoVoando)
 			aviaoVoa();
 	}
 
@@ -366,7 +365,7 @@ override function createPost()
 	
 	function resetAviao():Void
 	{
-		aviao.x = 12600;
+		aviao.x = -12600;
 		aviao.y = FlxG.random.int(140, 250);
 		aviao.velocity.x = 0;
 		aviaoVoando = true;
