@@ -248,8 +248,8 @@ override function createPost()
     boyfriend.shader = makeCoolShader(0,-21,-5,-1);
 	songinfo.shader = makeCoolShader(0,-21,-5,-1);
 }
-    }
-
+}
+				
     function makeCoolShader(hue:Float,sat:Float,bright:Float,contrast:Float) {
     var coolShader = new AdjustColorShader();
     coolShader.hue = hue;
@@ -258,7 +258,6 @@ override function createPost()
     coolShader.contrast = contrast;
     return coolShader;
 	}
-}
 
     override function update(elapsed:Float)
 {
@@ -312,6 +311,8 @@ override function createPost()
     if (layer4.x + layer4.width <= 0) layer4.x = layer4b.x + layer4b.width;
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
+			}
+		}
 
 override function beatHit()
     {
