@@ -15,7 +15,7 @@ class CloudsPop extends BaseStage
 	var layer5:BGSprite;
 	var lights0:BGSprite;
 	var aviao:FlxSprite;
-	var aviaoVoando:Bool true;
+	var aviaoVoando:Bool = true;
     var casa:FlxSprite;
     var nuvem0:BGSprite;
     var nuvem0b:BGSprite; // Segunda instância
