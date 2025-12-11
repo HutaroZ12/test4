@@ -419,7 +419,6 @@ class FreeplayState extends MusicBeatState
 		else if (controls.ACCEPT && !player.playingMusic)
 		{
 			FlxG.sound.play(Paths.sound('confirmMenu'));
-				selectedSomethin = true;
 				FlxG.mouse.visible = false;
 						   
 			persistentUpdate = false;
