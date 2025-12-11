@@ -121,7 +121,7 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			songText.scaleX = Math.min(1, 980 / songText.width);
+			songText.scaleX = Math.min(0.7, 980 / songText.width);
 			songText.snapToPosition();
 
 			Mods.currentModDirectory = songs[i].folder;
@@ -421,10 +421,9 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'));
 				selectedSomethin = true;
 				FlxG.mouse.visible = false;
-		}
 
-		FlxFlicker.flicker(songLowercase, 1, 0.06, false, false, function(flick:FlxFlicker))
-	    				   				   
+		FlxFlicker.flicker(songText, 1, 0.06, false, false, function(flick:FlxFlicker)
+	    {				   				   
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
