@@ -1,7 +1,7 @@
 {
 	"directory": "",
 	"defaultZoom": 0.6,
-	"isPixelStage": false,
+	"stageUI": "",
 
 	"boyfriend": [1280, 700],
 	"girlfriend": [690, 679],
@@ -14,28 +14,23 @@
 	"camera_speed": 1,
 
 	"preload": {
-		"images":
-		[
-			"stages/sky/layer0",
-			"stages/sky/nuvem0",
-			"stages/sky/nuvem1",
-			"stages/sky/nuvem2",
-			"stages/sky/nuvem3",
-			"stages/sky/nuvem4",
-			"stages/sky/nuvem5",
-			"stages/sky/nuvem6",
-         "stages/sky/casa",
-			"stages/sky/layer1",
-			"stages/sky/layer2",
-			"stages/sky/layer3",
-		],
-		"images_low":
-		[
-			"stages/sky/layer0",
-         "stages/sky/casa",
-			"stages/sky/layer1",
-			"stages/sky/layer2",
-			"stages/sky/layer3",
-		]
+			"images/stages/sky/layer0": 3,
+			"images/stages/sky/nuvem0": 2,
+			"images/stages/sky/nuvem1": 2,
+			"images/stages/sky/nuvem2": 2,
+			"images/stages/sky/nuvem3": 2,
+			"images/stages/sky/nuvem4": 2,
+			"images/stages/sky/nuvem5": 2,
+			"images/stages/sky/nuvem6": 2,
+			"images/stages/sky/casa": 2,
+			"images/stages/sky/layer1": 2,
+			"images/stages/sky/layer2": 2,
+			"images/stages/sky/layer3": 2
+	},
+
+	"_editorMeta": {
+		"dad": "eyz",
+		"boyfriend": "bf",
+		"gf": "gf"
 	}
 }
