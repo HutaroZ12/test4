@@ -595,7 +595,7 @@ class TitleState extends MusicBeatState
 				case 5:
 					addMoreText('Neverminds', 40);
 				case 6:
-					addMoreText('synthary', 40);
+					addMoreText('saria', 40);
 				case 7:
 					addMoreText('Mikki', 40);
 				case 8:
