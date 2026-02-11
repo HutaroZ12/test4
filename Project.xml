@@ -209,6 +209,6 @@
 	<icon path="art/icons/icon64.png" size='64'/>
 	<icon path="art/icons/iconOG.png" />
 
-	<icon path="art/icons/icon-background.png" if="mobile" />
+	<icon path="art/icons/icon-background.png" if="mobile" background="true" />
     <icon path="art/icons/icon-foreground.png" if="mobile" foreground="true" />
 </project>
