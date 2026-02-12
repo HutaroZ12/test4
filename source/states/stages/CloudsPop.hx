@@ -6,7 +6,7 @@ import shaders.flixel.system.FlxShader;
 import shaders.AdjustColorShader;
 import openfl.display.BlendMode;
 
-class Clouds extends BaseStage
+class CloudsPop extends BaseStage
 {
     var layer0:BGSprite;
     var layer1:BGSprite;
