@@ -16,25 +16,35 @@ class Clouds extends BaseStage
 	var layer6:BGSprite;
     var casa:FlxSprite;
     var nuvem0:BGSprite;
-    var nuvem0b:BGSprite; // Segunda instância
+    var nuvem0b:BGSprite; 
     var nuvem1:BGSprite;
-    var nuvem1b:BGSprite; // Segunda instância
+    var nuvem1b:BGSprite;
     var nuvem2:BGSprite;
-    var nuvem2b:BGSprite; // Segunda instância
+    var nuvem2b:BGSprite; 
     var nuvem3:BGSprite;
-    var nuvem3b:BGSprite; // Segunda instância
+    var nuvem3b:BGSprite; 
     var nuvem4:BGSprite;
-    var nuvem4b:BGSprite; // Segunda instância
+    var nuvem4b:BGSprite;
     var nuvem5:BGSprite;
-    var nuvem5b:BGSprite; // Segunda instância
+    var nuvem5b:BGSprite;
     var nuvem6:BGSprite;
-    var nuvem6b:BGSprite; // Segunda instância
+    var nuvem6b:BGSprite;
+	var nuvem7:BGSprite;
+    var nuvem7b:BGSprite;
+	var nuvem8:BGSprite;
+    var nuvem8b:BGSprite;
+	var nuvem9:BGSprite;
+    var nuvem9b:BGSprite;
+	var nuvem10:BGSprite;
+    var nuvem10b:BGSprite;
+	var nuvem11:BGSprite;
+    var nuvem11b:BGSprite;
 	var layer4:BGSprite;
-    var layer4b:BGSprite; // Segunda instância
+    var layer4b:BGSprite; 
     var movieBars:FlxSprite;
     var songinfo:FlxSprite;
-    var blackScreen:FlxSprite; // Declare blackScreen at the class level
-    var songStarted:Bool = false; // Flag to check if the song has started
+    var blackScreen:FlxSprite; 
+    var songStarted:Bool = false; 
 	
     override function create()
     {       
