@@ -6,16 +6,14 @@ import shaders.flixel.system.FlxShader;
 import shaders.AdjustColorShader;
 import openfl.display.BlendMode;
 
-class CloudsPop extends BaseStage
+class Clouds extends BaseStage
 {
     var layer0:BGSprite;
     var layer1:BGSprite;
     var layer2:BGSprite;
     var layer3:BGSprite;
 	var layer5:BGSprite;
-	var lights0:BGSprite;
-	var aviao:BGSprite;
-	var aviaoVoando:Bool = true;
+	var layer6:BGSprite;
     var casa:FlxSprite;
     var nuvem0:BGSprite;
     var nuvem0b:BGSprite; // Segunda instância
@@ -55,10 +53,18 @@ class CloudsPop extends BaseStage
         nuvem3 = new BGSprite('stages/sky/popstyle/sky/nuvem3', -500, -300);
         nuvem3.scrollFactor.set(0.86, 1);
         add(nuvem3);
+        
+        nuvem2b = new BGSprite('stages/sky/popstyle/sky/nuvem2', nuvem2.x + nuvem2.width, nuvem2.y);
+        nuvem2b.scrollFactor.set(0.85, 1);
+        add(nuvem2b);
+        
+        nuvem7 = new BGSprite('stages/sky/popstyle/sky/nuvem7', -500, -300);
+        nuvem7.scrollFactor.set(0.86, 1);
+        add(nuvem7);
 
-        nuvem3b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem3.x + nuvem3.width, nuvem3.y);
-        nuvem3b.scrollFactor.set(0.86, 1);
-        add(nuvem3b);
+        nuvem7b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem7.x + nuvem3.width, nuvem7.y);
+        nuvem7b.scrollFactor.set(0.86, 1);
+        add(nuvem7b);
         
         nuvem4 = new BGSprite('stages/sky/popstyle/sky/nuvem4', -500, -300);
         nuvem4.scrollFactor.set(0.87, 1);
@@ -68,11 +74,21 @@ class CloudsPop extends BaseStage
         nuvem4b.scrollFactor.set(0.87, 1);
         add(nuvem4b);
 		
-		aviao = new BGSprite('stages/sky/popstyle/sky/aviao', -300, -300);
-        aviao.scrollFactor.set(0.88, 1);
-        aviao.active = true;
-        add(aviao);
-		resetAviao();
+		nuvem8 = new BGSprite('stages/sky/popstyle/sky/nuvem8', -500, -300);
+        nuvem8.scrollFactor.set(0.88, 1);
+        add(nuvem8);
+
+        nuvem8b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem8.x + nuvem3.width, nuvem8.y);
+        nuvem8b.scrollFactor.set(0.88, 1);
+        add(nuvem8b);
+        
+        nuvem9 = new BGSprite('stages/sky/popstyle/sky/nuvem9', -500, -300);
+        nuvem9.scrollFactor.set(0.88, 1);
+        add(nuvem9);
+
+        nuvem9b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem9.x + nuvem3.width, nuvem9.y);
+        nuvem9b.scrollFactor.set(0.88, 1);
+        add(nuvem9b);
         
         nuvem0 = new BGSprite('stages/sky/popstyle/sky/nuvem0', -500, -300);
         nuvem0.scrollFactor.set(0.88, 1);
@@ -80,7 +96,7 @@ class CloudsPop extends BaseStage
 
         nuvem0b = new BGSprite('stages/sky/popstyle/sky/nuvem0', nuvem0.x + nuvem0.width, nuvem0.y);
         nuvem0b.scrollFactor.set(0.88, 1);
-        add(nuvem0b);
+        add(nuvem0b);        
         
         nuvem1 = new BGSprite('stages/sky/popstyle/sky/nuvem1', -500, -300);
         nuvem1.scrollFactor.set(0.89, 1);
@@ -106,24 +122,34 @@ class CloudsPop extends BaseStage
         nuvem6b.scrollFactor.set(0.93, 1);
         add(nuvem6b);
         
+        nuvem10 = new BGSprite('stages/sky/popstyle/sky/nuvem10', -500, -300);
+        nuvem10.scrollFactor.set(0.88, 1);
+        add(nuvem10);
+
+        nuvem10b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem10.x + nuvem3.width, nuvem10.y);
+        nuvem10b.scrollFactor.set(0.88, 1);
+        add(nuvem10b);
+        
+        nuvem11 = new BGSprite('stages/sky/popstyle/sky/nuvem11', -500, -300);
+        nuvem11.scrollFactor.set(0.88, 1);
+        add(nuvem11);
+
+        nuvem11b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem11.x + nuvem3.width, nuvem11.y);
+        nuvem11b.scrollFactor.set(0.88, 1);
+        add(nuvem11b);
+        
         casa = new FlxSprite(-500, -300);
-		casa.frames = Paths.getSparrowAtlas('stages/sky/popstyle/sky/Casa');
-		casa.animation.addByPrefix("idle", "Casa", 5, true);
+		casa.frames = Paths.getSparrowAtlas('stages/sky/popstyle/sky/casa');
+		casa.animation.addByPrefix("idle", "casa", 5, true);
 		casa.animation.play('idle');
 		casa.scale.set(0.99, 0.99);
 		add(casa);
 
-        lights0 = new BGSprite('stages/sky/popstyle/sky/lights0', -500, -300);
-        lights0.scrollFactor.set(0.84, 1);
-		lights0.alpha = 0.6;
-		lights0.blend = ADD;
-        add(lights0);
-        
-		layer5 = new BGSprite('stages/sky/popstyle/sky/layer5', -500, -300);
-        layer5.scrollFactor.set(0.84, 1);
-		layer5.alpha = 0.9;
-		layer5.blend = ADD;
-        add(layer5);
+		layer6 = new BGSprite('stages/sky/popstyle/sky/layer6', -500, -300);
+        layer6.scrollFactor.set(0.84, 1);
+		layer6.alpha = 0.9;
+		layer6.blend = ADD;
+        add(layer6);
 		
         layer1 = new BGSprite('stages/sky/popstyle/sky/layer1', -500, -300);
         layer1.scrollFactor.set(0.99, 0.99);
@@ -155,9 +181,10 @@ class CloudsPop extends BaseStage
 				blackScreen.alpha = 1;
                 blackScreen.scrollFactor.set();
                 add(blackScreen);
-		}
-	}
+        }
+    }
 
+    
     override function stepHit()
 {
     if (songName == 'clouding')
@@ -249,12 +276,12 @@ override function createPost()
 	layer4b = new BGSprite('stages/sky/popstyle/sky/layer4', layer4.x + layer4.width, layer4.y);
     layer4b.scrollFactor.set(1, 1);
     add(layer4b);
-	
-    layer3 = new BGSprite('stages/sky/popstyle/sky/layer3', -500, -300);
-    layer3.scrollFactor.set(1, 1);
-    layer3.alpha = 0.55;
-    layer3.blend = ADD;
-    add(layer3);
+
+	layer5 = new BGSprite('stages/sky/popstyle/sky/layer5', -500, -300);
+    layer5.scrollFactor.set(1, 1);
+    layer5.alpha = 0;
+    layer5.blend = OVERLAY;
+    add(layer5);
 
         if (ClientPrefs.data.shaders)
 {
@@ -299,8 +326,23 @@ override function createPost()
     nuvem6.x -= 50 * elapsed;
     nuvem6b.x -= 50 * elapsed;
 
-    layer4.x -= 35 * elapsed;
-    layer4b.x -= 35 * elapsed;
+    layer7.x -= 35 * elapsed;
+    layer7b.x -= 35 * elapsed;
+    
+    layer8.x -= 35 * elapsed;
+    layer8b.x -= 35 * elapsed;
+    
+    nuvem9.x -= 28 * elapsed;
+    nuvem9b.x -= 28 * elapsed;
+    
+    nuvem10.x -= 45 * elapsed;
+    nuvem10b.x -= 45 * elapsed;
+
+    nuvem11.x -= 50 * elapsed;
+    nuvem11b.x -= 50 * elapsed;
+    
+    layer4.x -= 50 * elapsed;
+    layer4b.x -= 50 * elapsed;
 
     if (nuvem0.x + nuvem0.width <= 0) nuvem0.x = nuvem0b.x + nuvem0b.width;
     if (nuvem0b.x + nuvem0b.width <= 0) nuvem0b.x = nuvem0.x + nuvem0.width;
@@ -323,64 +365,24 @@ override function createPost()
     if (nuvem6.x + nuvem6.width <= 0) nuvem6.x = nuvem6b.x + nuvem6b.width;
     if (nuvem6b.x + nuvem6b.width <= 0) nuvem6b.x = nuvem6.x + nuvem6.width;
 
+    if (nuvem7.x + nuvem7.width <= 0) nuvem7.x = nuvem7b.x + nuvem7b.width;
+    if (nuvem7b.x + nuvem7b.width <= 0) nuvem7b.x = nuvem7.x + nuvem7.width;
+    
+    if (nuvem8.x + nuvem8.width <= 0) nuvem8.x = nuvem8b.x + nuvem8b.width;
+    if (nuvem8b.x + nuvem8b.width <= 0) nuvem8b.x = nuvem8.x + nuvem8.width;
+    
+    if (nuvem9.x + nuvem9.width <= 0) nuvem9.x = nuvem9b.x + nuvem9b.width;
+    if (nuvem9b.x + nuvem9b.width <= 0) nuvem9b.x = nuvem9.x + nuvem9.width;
+    
+    if (nuvem10.x + nuvem10.width <= 0) nuvem10.x = nuvem10b.x + nuvem10b.width;
+    if (nuvem10b.x + nuvem10b.width <= 0) nuvem10b.x = nuvem10.x + nuvem10.width;
+    
+    if (nuvem11.x + nuvem11.width <= 0) nuvem11.x = nuvem11b.x + nuvem11b.width;
+    if (nuvem11b.x + nuvem11b.width <= 0) nuvem11b.x = nuvem11.x + nuvem11.width;
+    
     if (layer4.x + layer4.width <= 0) layer4.x = layer4b.x + layer4b.width;
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
-
-    var beatTween:FlxTween;
-    override function beatHit()
-    {
-    if (curBeat % 2 == 0)
-		{
-		lights0.alpha = 1;			
-			
-	    if(beatTween != null) beatTween.cancel();
-			beatTween = FlxTween.tween(lights0, {alpha: 0.6}, 1, {ease: FlxEase.sineIn, onComplete: function(twn:FlxTween)
-				{
-					beatTween = null;
-				}
-			});
-		}
-
-    if (FlxG.random.bool(10) && aviaoVoando)
-			aviaoVoa();
-	}
-
-    override function closeSubState()
-	{
-		if(paused)
-		{
-			if(aviaoTimer != null) aviao.active = true;
-		}
-	}
-	
-	override function openSubState(SubState:flixel.FlxSubState)
-	{
-		if(paused)
-		{
-			if(aviaoTimer != null) aviaoTimer.active = false;
-		}
-	}
-	
-	function resetAviao():Void
-	{
-		aviao.x = -12600;
-		aviao.y = FlxG.random.int(140, 250);
-		aviao.velocity.x = 0;
-		aviaoVoando = true;
-	}
-	
-	var aviaoTimer:FlxTimer;
-	function aviaoVoa()
-	{
-		aviao.velocity.x = FlxG.random.int(52, 52);
-		aviaoVoando = false;
-		aviaoTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
-		{
-			resetAviao();
-			aviaoTimer = null;
-		});
-	}
 
     override function countdownTick(count:Countdown, num:Int)
 {
@@ -405,4 +407,4 @@ override function createPost()
             }
         }
     }
- }
+}
