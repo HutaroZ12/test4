@@ -359,11 +359,11 @@ override function createPost()
     nuvem6.x -= 50 * elapsed;
     nuvem6b.x -= 50 * elapsed;
 
-    layer7.x -= 35 * elapsed;
-    layer7b.x -= 35 * elapsed;
+    nuvem7.x -= 35 * elapsed;
+    nuvem7b.x -= 35 * elapsed;
     
-    layer8.x -= 35 * elapsed;
-    layer8b.x -= 35 * elapsed;
+    nuvem8.x -= 35 * elapsed;
+    nuvem8b.x -= 35 * elapsed;
     
     nuvem9.x -= 28 * elapsed;
     nuvem9b.x -= 28 * elapsed;
