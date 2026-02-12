@@ -54,120 +54,143 @@ class Clouds extends BaseStage
 
 		nuvem2 = new BGSprite('stages/sky/popstyle/sky/nuvem2', -500, -300);
         nuvem2.scrollFactor.set(0.85, 1);
+		nuvem2.blend = OVERLAY;
         add(nuvem2);
 
         nuvem2b = new BGSprite('stages/sky/popstyle/sky/nuvem2', nuvem2.x + nuvem2.width, nuvem2.y);
         nuvem2b.scrollFactor.set(0.85, 1);
+		nuvem2b.blend = OVERLAY;
         add(nuvem2b);
         
         nuvem3 = new BGSprite('stages/sky/popstyle/sky/nuvem3', -500, -300);
         nuvem3.scrollFactor.set(0.86, 1);
+		nuvem3.blend = OVERLAY;
         add(nuvem3);
         
-        nuvem2b = new BGSprite('stages/sky/popstyle/sky/nuvem2', nuvem2.x + nuvem2.width, nuvem2.y);
-        nuvem2b.scrollFactor.set(0.85, 1);
+        nuvem3b = new BGSprite('stages/sky/popstyle/sky/nuvem2', nuvem2.x + nuvem2.width, nuvem2.y);
+        nuvem3b.scrollFactor.set(0.85, 1);
+		nuvem3b.blend = OVERLAY;
         add(nuvem2b);
         
         nuvem7 = new BGSprite('stages/sky/popstyle/sky/nuvem7', -500, -300);
         nuvem7.scrollFactor.set(0.86, 1);
+		nuvem7.blend = OVERLAY;
         add(nuvem7);
 
         nuvem7b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem7.x + nuvem3.width, nuvem7.y);
         nuvem7b.scrollFactor.set(0.86, 1);
+		nuvem7b.blend = OVERLAY;
         add(nuvem7b);
         
         nuvem4 = new BGSprite('stages/sky/popstyle/sky/nuvem4', -500, -300);
         nuvem4.scrollFactor.set(0.87, 1);
+		nuvem4.blend = OVERLAY;
         add(nuvem4);
 
         nuvem4b = new BGSprite('stages/sky/popstyle/sky/nuvem4', nuvem4.x + nuvem4.width, nuvem4.y);
         nuvem4b.scrollFactor.set(0.87, 1);
+		nuvem4b.blend = OVERLAY;
         add(nuvem4b);
 		
 		nuvem8 = new BGSprite('stages/sky/popstyle/sky/nuvem8', -500, -300);
         nuvem8.scrollFactor.set(0.88, 1);
+		nuvem8.blend = OVERLAY;
         add(nuvem8);
 
         nuvem8b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem8.x + nuvem3.width, nuvem8.y);
         nuvem8b.scrollFactor.set(0.88, 1);
+		nuvem8b.blend = OVERLAY;
         add(nuvem8b);
         
         nuvem9 = new BGSprite('stages/sky/popstyle/sky/nuvem9', -500, -300);
         nuvem9.scrollFactor.set(0.88, 1);
+		nuvem9.blend = OVERLAY;
         add(nuvem9);
 
         nuvem9b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem9.x + nuvem3.width, nuvem9.y);
         nuvem9b.scrollFactor.set(0.88, 1);
+		nuvem9b.blend = OVERLAY;
         add(nuvem9b);
         
         nuvem0 = new BGSprite('stages/sky/popstyle/sky/nuvem0', -500, -300);
         nuvem0.scrollFactor.set(0.88, 1);
+		nuvem0.blend = OVERLAY;
         add(nuvem0);
 
         nuvem0b = new BGSprite('stages/sky/popstyle/sky/nuvem0', nuvem0.x + nuvem0.width, nuvem0.y);
         nuvem0b.scrollFactor.set(0.88, 1);
+		nuvem0b.blend = OVERLAY;
         add(nuvem0b);        
         
         nuvem1 = new BGSprite('stages/sky/popstyle/sky/nuvem1', -500, -300);
         nuvem1.scrollFactor.set(0.89, 1);
+		nuvem1.blend = OVERLAY;
         add(nuvem1);
 
         nuvem1b = new BGSprite('stages/sky/popstyle/sky/nuvem1', nuvem1.x + nuvem1.width, nuvem1.y);
         nuvem1b.scrollFactor.set(0.89, 1);
+		nuvem1b.blend = OVERLAY;
         add(nuvem1b);
              
         nuvem5 = new BGSprite('stages/sky/popstyle/sky/nuvem5', -500, -300);
         nuvem5.scrollFactor.set(0.91, 1);
+		nuvem5.blend = OVERLAY;
         add(nuvem5);
 
         nuvem5b = new BGSprite('stages/sky/popstyle/sky/nuvem5', nuvem5.x + nuvem5.width, nuvem5.y);
         nuvem5b.scrollFactor.set(0.91, 1);
+		nuvem5b.blend = OVERLAY;
         add(nuvem5b);
 
         nuvem6 = new BGSprite('stages/sky/popstyle/sky/nuvem6', -500, -300);
         nuvem6.scrollFactor.set(0.93, 1);
+		nuvem6.blend = OVERLAY;
         add(nuvem6);
 
         nuvem6b = new BGSprite('stages/sky/popstyle/sky/nuvem6', nuvem6.x + nuvem6.width, nuvem6.y);
         nuvem6b.scrollFactor.set(0.93, 1);
+		nuvem6b.blend = OVERLAY;
         add(nuvem6b);
         
         nuvem10 = new BGSprite('stages/sky/popstyle/sky/nuvem10', -500, -300);
         nuvem10.scrollFactor.set(0.88, 1);
+		nuvem10.blend = OVERLAY;
         add(nuvem10);
 
         nuvem10b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem10.x + nuvem3.width, nuvem10.y);
         nuvem10b.scrollFactor.set(0.88, 1);
+		nuvem10b.blend = OVERLAY;
         add(nuvem10b);
         
         nuvem11 = new BGSprite('stages/sky/popstyle/sky/nuvem11', -500, -300);
         nuvem11.scrollFactor.set(0.88, 1);
+		nuvem11.blend = OVERLAY;
         add(nuvem11);
 
         nuvem11b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem11.x + nuvem3.width, nuvem11.y);
         nuvem11b.scrollFactor.set(0.88, 1);
+		nuvem11b.blend = OVERLAY;
         add(nuvem11b);
+
+		layer1 = new BGSprite('stages/sky/popstyle/sky/layer1', -500, -300);
+        layer1.scrollFactor.set(0.99, 0.99);
+        add(layer1);
         
         casa = new FlxSprite(-500, -300);
 		casa.frames = Paths.getSparrowAtlas('stages/sky/popstyle/sky/casa');
 		casa.animation.addByPrefix("idle", "casa", 5, true);
 		casa.animation.play('idle');
-		casa.scale.set(0.99, 0.99);
+		casa.scrollFactor.set(0.98, 0.98);
+		casa.scale.set(1, 1);
 		add(casa);
-
-		layer6 = new BGSprite('stages/sky/popstyle/sky/layer6', -500, -300);
-        layer6.scrollFactor.set(0.84, 1);
-		layer6.alpha = 0.9;
-		layer6.blend = ADD;
-        add(layer6);
-		
-        layer1 = new BGSprite('stages/sky/popstyle/sky/layer1', -500, -300);
-        layer1.scrollFactor.set(0.99, 0.99);
-        add(layer1);
         
         layer2 = new BGSprite('stages/sky/popstyle/sky/layer2', -500, -300);
-        layer2.scrollFactor.set(1, 1);
+        layer2.scrollFactor.set(0.99, 0.99);
         add(layer2);
+
+		layer3 = new BGSprite('stages/sky/popstyle/sky/layer2', -500, -300);
+        layer3.scrollFactor.set(1, 1);
+        add(layer3);
 		
         movieBars = new BGSprite('movieBars', 0, 0);
         movieBars.cameras = [camHUD];
@@ -295,10 +318,10 @@ override function createPost()
 
         if (ClientPrefs.data.shaders)
 {
-    gf.shader = makeCoolShader(-21,-5,-1,0);
-    dad.shader = makeCoolShader(-21,-5,-1,0);
-    boyfriend.shader = makeCoolShader(-21,-5,-1,0);
-	songinfo.shader = makeCoolShader(-21,-5,-1,0);
+    gf.shader = makeCoolShader(-12,-19,-11,0);
+    dad.shader = makeCoolShader(-12,-19,-11,0);
+    boyfriend.shader = makeCoolShader(-12,-19,-11,0);
+	songinfo.shader = makeCoolShader(-12,-19,-11,0);
 }
     }
 
