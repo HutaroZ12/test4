@@ -76,7 +76,7 @@ class CloudsPop extends BaseStage
 		nuvem7.blend = OVERLAY;
         add(nuvem7);
 
-        nuvem7b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem7.x + nuvem3.width, nuvem7.y);
+        nuvem7b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem7.x + nuvem7.width, nuvem7.y);
         nuvem7b.scrollFactor.set(0.845, 1);
 		nuvem7b.blend = OVERLAY;
         add(nuvem7b);
@@ -96,7 +96,7 @@ class CloudsPop extends BaseStage
 		nuvem8.blend = OVERLAY;
         add(nuvem8);
 
-        nuvem8b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem8.x + nuvem3.width, nuvem8.y);
+        nuvem8b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem8.x + nuvem8.width, nuvem8.y);
         nuvem8b.scrollFactor.set(0.849, 1);
 		nuvem8b.blend = OVERLAY;
         add(nuvem8b);
@@ -106,7 +106,7 @@ class CloudsPop extends BaseStage
 		nuvem9.blend = OVERLAY;
         add(nuvem9);
 
-        nuvem9b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem9.x + nuvem3.width, nuvem9.y);
+        nuvem9b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem9.x + nuvem9.width, nuvem9.y);
         nuvem9b.scrollFactor.set(0.851, 1);
 		nuvem9b.blend = OVERLAY;
         add(nuvem9b);
@@ -156,7 +156,7 @@ class CloudsPop extends BaseStage
 		nuvem10.blend = OVERLAY;
         add(nuvem10);
 
-        nuvem10b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem10.x + nuvem3.width, nuvem10.y);
+        nuvem10b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem10.x + nuvem10.width, nuvem10.y);
         nuvem10b.scrollFactor.set(0.861, 1);
 		nuvem10b.blend = OVERLAY;
         add(nuvem10b);
@@ -166,7 +166,7 @@ class CloudsPop extends BaseStage
 		nuvem11.blend = OVERLAY;
         add(nuvem11);
 
-        nuvem11b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem11.x + nuvem3.width, nuvem11.y);
+        nuvem11b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem11.x + nuvem11.width, nuvem11.y);
         nuvem11b.scrollFactor.set(0.863, 1);
 		nuvem11b.blend = OVERLAY;
         add(nuvem11b);
@@ -174,6 +174,10 @@ class CloudsPop extends BaseStage
 		layer1 = new BGSprite('stages/sky/popstyle/sky/layer1', -500, -300);
         layer1.scrollFactor.set(0.99, 0.99);
         add(layer1);
+
+		layer1b = new BGSprite('stages/sky/popstyle/sky/layer1', layer1.x + layer1.width, layer1.y);
+        layer1b.scrollFactor.set(0.863, 1);
+        add(layer1b);
         
         casa = new FlxSprite(-500, -300);
 		casa.frames = Paths.getSparrowAtlas('stages/sky/popstyle/sky/casa');
@@ -336,41 +340,41 @@ override function createPost()
 {
     super.update(elapsed);
 
-    nuvem0.x -= 46 * elapsed;
-    nuvem0b.x -= 46 * elapsed;
+    nuvem0.x -= 4 * elapsed;
+    nuvem0b.x -= 4 * elapsed;
 
-    nuvem1.x -= 48 * elapsed;
-    nuvem1b.x -= 48 * elapsed;
+    nuvem1.x -= 4.5 * elapsed;
+    nuvem1b.x -= 4.5 * elapsed;
 
-    nuvem2.x -= 26 * elapsed;
-    nuvem2b.x -= 26 * elapsed;
+    nuvem2.x -= 2 * elapsed;
+    nuvem2b.x -= 2 * elapsed;
 
-    nuvem3.x -= 28 * elapsed;
-    nuvem3b.x -= 28 * elapsed;
+    nuvem3.x -= 2.5 * elapsed;
+    nuvem3b.x -= 2.5 * elapsed;
 
-    nuvem4.x -= 30 * elapsed;
-    nuvem4b.x -= 30 * elapsed;
+    nuvem4.x -= 3 * elapsed;
+    nuvem4b.x -= 3 * elapsed;
 
-    nuvem5.x -= 45 * elapsed;
-    nuvem5b.x -= 45 * elapsed;
+    nuvem5.x -= 4.2 * elapsed;
+    nuvem5b.x -= 4.2 * elapsed;
 
-    nuvem6.x -= 50 * elapsed;
-    nuvem6b.x -= 50 * elapsed;
+    nuvem6.x -= 5 * elapsed;
+    nuvem6b.x -= 5 * elapsed;
 
-    nuvem7.x -= 35 * elapsed;
-    nuvem7b.x -= 35 * elapsed;
+    nuvem7.x -= 3.5 * elapsed;
+    nuvem7b.x -= 3.5 * elapsed;
     
-    nuvem8.x -= 35 * elapsed;
-    nuvem8b.x -= 35 * elapsed;
+    nuvem8.x -= 3.5 * elapsed;
+    nuvem8b.x -= 3.5 * elapsed;
     
-    nuvem9.x -= 28 * elapsed;
-    nuvem9b.x -= 28 * elapsed;
+    nuvem9.x -= 2.8 * elapsed;
+    nuvem9b.x -= 2.8 * elapsed;
     
-    nuvem10.x -= 45 * elapsed;
-    nuvem10b.x -= 45 * elapsed;
+    nuvem10.x -= 4.7 * elapsed;
+    nuvem10b.x -= 4.7 * elapsed;
 
-    nuvem11.x -= 50 * elapsed;
-    nuvem11b.x -= 50 * elapsed;
+    nuvem11.x -= 5 * elapsed;
+    nuvem11b.x -= 5 * elapsed;
     
     layer4.x -= 50 * elapsed;
     layer4b.x -= 50 * elapsed;
