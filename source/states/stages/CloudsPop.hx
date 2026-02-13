@@ -10,6 +10,7 @@ class CloudsPop extends BaseStage
 {
     var layer0:BGSprite;
     var layer1:BGSprite;
+	var layer1b:BGSprite;
     var layer2:BGSprite;
     var layer3:BGSprite;
 	var layer5:BGSprite;
