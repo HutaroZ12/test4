@@ -36,9 +36,7 @@ class CloudsPop extends BaseStage
 	var nuvem9:BGSprite;
     var nuvem9b:BGSprite;
 	var nuvem10:BGSprite;
-    var nuvem10b:BGSprite;
-	var nuvem11:BGSprite;
-    var nuvem11b:BGSprite;
+	var nuvem10b:BGSprite;
 	var layer4:BGSprite;
     var layer4b:BGSprite; 
     var movieBars:FlxSprite;
@@ -53,138 +51,129 @@ class CloudsPop extends BaseStage
         add(layer0);
 
 		nuvem2 = new BGSprite('stages/sky/popstyle/sky/nuvem2', -500, -300);
-        nuvem2.scrollFactor.set(0.84, 1);
-		nuvem2.blend = SCREEN;
+        nuvem2.scrollFactor.set(0.89, 0.9);
+		nuvem2.blend = DARKEN;
         add(nuvem2);
 
         nuvem2b = new BGSprite('stages/sky/popstyle/sky/nuvem2', nuvem2.x + nuvem2.width, nuvem2.y);
-        nuvem2b.scrollFactor.set(0.841, 1);
-		nuvem2b.blend = SCREEN;
+        nuvem2b.scrollFactor.set(0.892, 0.9);
+		nuvem2b.blend = DARKEN;
         add(nuvem2b);
         
         nuvem3 = new BGSprite('stages/sky/popstyle/sky/nuvem3', -500, -300);
-        nuvem3.scrollFactor.set(0.842, 1);
-		nuvem3.blend = SCREEN;
+        nuvem3.scrollFactor.set(0.894, 0.9);
+		nuvem3.blend = DARKEN;
         add(nuvem3);
         
-        nuvem3b = new BGSprite('stages/sky/popstyle/sky/nuvem2', nuvem2.x + nuvem2.width, nuvem2.y);
-        nuvem3b.scrollFactor.set(0.843, 1);
-		nuvem3b.blend = SCREEN;
+        nuvem3b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem2.x + nuvem2.width, nuvem2.y);
+        nuvem3b.scrollFactor.set(0.896, 0.9);
+		nuvem3b.blend = DARKEN;
         add(nuvem2b);
         
         nuvem7 = new BGSprite('stages/sky/popstyle/sky/nuvem7', -500, -300);
-        nuvem7.scrollFactor.set(0.844, 1);
-		nuvem7.blend = SCREEN;
+        nuvem7.scrollFactor.set(0.898, 0.9);
+		nuvem7.blend = DARKEN;
         add(nuvem7);
 
-        nuvem7b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem7.x + nuvem7.width, nuvem7.y);
-        nuvem7b.scrollFactor.set(0.845, 1);
-		nuvem7b.blend = SCREEN;
+        nuvem7b = new BGSprite('stages/sky/popstyle/sky/nuvem7', nuvem7.x + nuvem7.width, nuvem7.y);
+        nuvem7b.scrollFactor.set(0.900, 0.9);
+		nuvem7b.blend = DARKEN;
         add(nuvem7b);
         
         nuvem4 = new BGSprite('stages/sky/popstyle/sky/nuvem4', -500, -300);
-        nuvem4.scrollFactor.set(0.846, 1);
-		nuvem4.blend = SCREEN;
+        nuvem4.scrollFactor.set(0.902, 0.9);
+		nuvem4.blend = DARKEN;
         add(nuvem4);
 
         nuvem4b = new BGSprite('stages/sky/popstyle/sky/nuvem4', nuvem4.x + nuvem4.width, nuvem4.y);
-        nuvem4b.scrollFactor.set(0.847, 1);
-		nuvem4b.blend = SCREEN;
+        nuvem4b.scrollFactor.set(0.904, 0.9);
+		nuvem4b.blend = DARKEN;
         add(nuvem4b);
 		
 		nuvem8 = new BGSprite('stages/sky/popstyle/sky/nuvem8', -500, -300);
-        nuvem8.scrollFactor.set(0.848, 1);
-		nuvem8.blend = SCREEN;
+        nuvem8.scrollFactor.set(0.848, 0.9);
+		nuvem8.blend = DARKEN;
         add(nuvem8);
 
-        nuvem8b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem8.x + nuvem8.width, nuvem8.y);
-        nuvem8b.scrollFactor.set(0.849, 1);
-		nuvem8b.blend = SCREEN;
+        nuvem8b = new BGSprite('stages/sky/popstyle/sky/nuvem8', nuvem8.x + nuvem8.width, nuvem8.y);
+        nuvem8b.scrollFactor.set(0.849, 0.9);
+		nuvem8b.blend = DARKEN;
         add(nuvem8b);
         
         nuvem9 = new BGSprite('stages/sky/popstyle/sky/nuvem9', -500, -300);
-        nuvem9.scrollFactor.set(0.85, 1);
-		nuvem9.blend = SCREEN;
+        nuvem9.scrollFactor.set(0.85, 0.9);
+		nuvem9.blend = DARKEN;
         add(nuvem9);
 
-        nuvem9b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem9.x + nuvem9.width, nuvem9.y);
-        nuvem9b.scrollFactor.set(0.851, 1);
-		nuvem9b.blend = SCREEN;
+        nuvem9b = new BGSprite('stages/sky/popstyle/sky/nuvem9', nuvem9.x + nuvem9.width, nuvem9.y);
+        nuvem9b.scrollFactor.set(0.851, 0.9);
+		nuvem9b.blend = DARKEN;
         add(nuvem9b);
         
         nuvem0 = new BGSprite('stages/sky/popstyle/sky/nuvem0', -500, -300);
-        nuvem0.scrollFactor.set(0.852, 1);
-		nuvem0.blend = SCREEN;
+        nuvem0.scrollFactor.set(0.852, 0.9);
+		nuvem0.blend = DARKEN;
         add(nuvem0);
 
         nuvem0b = new BGSprite('stages/sky/popstyle/sky/nuvem0', nuvem0.x + nuvem0.width, nuvem0.y);
-        nuvem0b.scrollFactor.set(0.853, 1);
-		nuvem0b.blend = SCREEN;
+        nuvem0b.scrollFactor.set(0.853, 0.9);
+		nuvem0b.blend = DARKEN;
         add(nuvem0b);        
         
         nuvem1 = new BGSprite('stages/sky/popstyle/sky/nuvem1', -500, -300);
-        nuvem1.scrollFactor.set(0.854, 1);
-		nuvem1.blend = SCREEN;
+        nuvem1.scrollFactor.set(0.854, 0.9);
+		nuvem1.blend = DARKEN;
         add(nuvem1);
 
         nuvem1b = new BGSprite('stages/sky/popstyle/sky/nuvem1', nuvem1.x + nuvem1.width, nuvem1.y);
-        nuvem1b.scrollFactor.set(0.855, 1);
-		nuvem1b.blend = SCREEN;
+        nuvem1b.scrollFactor.set(0.855, 0.9);
+		nuvem1b.blend = DARKEN;
         add(nuvem1b);
              
         nuvem5 = new BGSprite('stages/sky/popstyle/sky/nuvem5', -500, -300);
-        nuvem5.scrollFactor.set(0.856, 1);
-		nuvem5.blend = SCREEN;
+        nuvem5.scrollFactor.set(0.856, 0.9);
+		nuvem5.blend = DARKEN;
         add(nuvem5);
 
         nuvem5b = new BGSprite('stages/sky/popstyle/sky/nuvem5', nuvem5.x + nuvem5.width, nuvem5.y);
-        nuvem5b.scrollFactor.set(0.857, 1);
-		nuvem5b.blend = SCREEN;
+        nuvem5b.scrollFactor.set(0.857, 0.9);
+		nuvem5b.blend = DARKEN;
         add(nuvem5b);
 
         nuvem6 = new BGSprite('stages/sky/popstyle/sky/nuvem6', -500, -300);
-        nuvem6.scrollFactor.set(0.858, 1);
-		nuvem6.blend = SCREEN;
+        nuvem6.scrollFactor.set(0.858, 0.9);
+		nuvem6.blend = DARKEN;
         add(nuvem6);
 
         nuvem6b = new BGSprite('stages/sky/popstyle/sky/nuvem6', nuvem6.x + nuvem6.width, nuvem6.y);
-        nuvem6b.scrollFactor.set(0.859, 1);
-		nuvem6b.blend = SCREEN;
+        nuvem6b.scrollFactor.set(0.859, 0.9);
+		nuvem6b.blend = DARKEN;
         add(nuvem6b);
         
         nuvem10 = new BGSprite('stages/sky/popstyle/sky/nuvem10', -500, -300);
-        nuvem10.scrollFactor.set(0.86, 1);
-		nuvem10.blend = SCREEN;
+        nuvem10.scrollFactor.set(0.86, 0.9);
+		nuvem10.blend = DARKEN;
         add(nuvem10);
 
-        nuvem10b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem10.x + nuvem10.width, nuvem10.y);
-        nuvem10b.scrollFactor.set(0.861, 1);
-		nuvem10b.blend = SCREEN;
+        nuvem10b = new BGSprite('stages/sky/popstyle/sky/nuvem10', nuvem10.x + nuvem10.width, nuvem10.y);
+        nuvem10b.scrollFactor.set(0.861, 0.9);
+		nuvem10b.blend = DARKEN;
         add(nuvem10b);
-        
-        nuvem11 = new BGSprite('stages/sky/popstyle/sky/nuvem11', -500, -300);
-        nuvem11.scrollFactor.set(0.862, 1);
-		nuvem11.blend = SCREEN;
-        add(nuvem11);
-
-        nuvem11b = new BGSprite('stages/sky/popstyle/sky/nuvem3', nuvem11.x + nuvem11.width, nuvem11.y);
-        nuvem11b.scrollFactor.set(0.863, 1);
-		nuvem11b.blend = SCREEN;
-        add(nuvem11b);
+    
 
 		layer1 = new BGSprite('stages/sky/popstyle/sky/layer1', -500, -300);
-        layer1.scrollFactor.set(0.99, 0.99);
+        layer1.scrollFactor.set(0.90, 0.90);
         add(layer1);
 
 		layer1b = new BGSprite('stages/sky/popstyle/sky/layer1', layer1.x + layer1.width, layer1.y);
-        layer1b.scrollFactor.set(0.863, 1);
+        layer1b.scrollFactor.set(0.87, 0.87);
         add(layer1b);
         
         casa = new FlxSprite(-500, -300);
 		casa.frames = Paths.getSparrowAtlas('stages/sky/popstyle/sky/casa');
 		casa.animation.addByPrefix("idle", "casa", 5, true);
 		casa.animation.play('idle');
-		casa.scrollFactor.set(0.98, 0.98);
+		casa.scrollFactor.set(0.95, 0.95);
 		casa.scale.set(1, 1);
 		add(casa);
         
@@ -341,41 +330,41 @@ override function createPost()
 {
     super.update(elapsed);
 
-    nuvem0.x -= 4 * elapsed;
-    nuvem0b.x -= 4 * elapsed;
+    nuvem0.x -= 20 * elapsed;
+    nuvem0b.x -= 20 * elapsed;
 
-    nuvem1.x -= 4.5 * elapsed;
-    nuvem1b.x -= 4.5 * elapsed;
+    nuvem1.x -= 17 * elapsed;
+    nuvem1b.x -= 17 * elapsed;
 
-    nuvem2.x -= 2 * elapsed;
-    nuvem2b.x -= 2 * elapsed;
+    nuvem2.x -= 19 * elapsed;
+    nuvem2b.x -= 19 * elapsed;
 
-    nuvem3.x -= 2.5 * elapsed;
-    nuvem3b.x -= 2.5 * elapsed;
+    nuvem3.x -= 22 * elapsed;
+    nuvem3b.x -= 22 * elapsed;
 
-    nuvem4.x -= 3 * elapsed;
-    nuvem4b.x -= 3 * elapsed;
+    nuvem4.x -= 13 * elapsed;
+    nuvem4b.x -= 13 * elapsed;
 
-    nuvem5.x -= 4.2 * elapsed;
-    nuvem5b.x -= 4.2 * elapsed;
+    nuvem5.x -= 15 * elapsed;
+    nuvem5b.x -= 15 * elapsed;
 
-    nuvem6.x -= 5 * elapsed;
-    nuvem6b.x -= 5 * elapsed;
+    nuvem6.x -= 16 * elapsed;
+    nuvem6b.x -= 16 * elapsed;
 
-    nuvem7.x -= 3.5 * elapsed;
-    nuvem7b.x -= 3.5 * elapsed;
+    nuvem7.x -= 21.5 * elapsed;
+    nuvem7b.x -= 21.5 * elapsed;
     
-    nuvem8.x -= 3.5 * elapsed;
-    nuvem8b.x -= 3.5 * elapsed;
+    nuvem8.x -= 14.5 * elapsed;
+    nuvem8b.x -= 14.5 * elapsed;
     
-    nuvem9.x -= 2.8 * elapsed;
-    nuvem9b.x -= 2.8 * elapsed;
+    nuvem9.x -= 23 * elapsed;
+    nuvem9b.x -= 23 * elapsed;
     
-    nuvem10.x -= 4.7 * elapsed;
-    nuvem10b.x -= 4.7 * elapsed;
+    nuvem10.x -= 24 * elapsed;
+    nuvem10b.x -= 24 * elapsed;
 
-    nuvem11.x -= 5 * elapsed;
-    nuvem11b.x -= 5 * elapsed;
+	layer1.x -= 40 * elapsed;
+    layer1b.x -= 40 * elapsed;
     
     layer4.x -= 50 * elapsed;
     layer4b.x -= 50 * elapsed;
@@ -415,7 +404,10 @@ override function createPost()
     
     if (nuvem11.x + nuvem11.width <= 0) nuvem11.x = nuvem11b.x + nuvem11b.width;
     if (nuvem11b.x + nuvem11b.width <= 0) nuvem11b.x = nuvem11.x + nuvem11.width;
-    
+
+	if (layer1.x + layer1.width <= 0) layer1.x = layer1b.x + layer1b.width;
+    if (layer1b.x + layer1b.width <= 0) layer1b.x = layer1.x + layer1.width;
+	
     if (layer4.x + layer4.width <= 0) layer4.x = layer4b.x + layer4b.width;
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
