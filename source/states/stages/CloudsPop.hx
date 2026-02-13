@@ -401,9 +401,6 @@ override function createPost()
     
     if (nuvem10.x + nuvem10.width <= 0) nuvem10.x = nuvem10b.x + nuvem10b.width;
     if (nuvem10b.x + nuvem10b.width <= 0) nuvem10b.x = nuvem10.x + nuvem10.width;
-    
-    if (nuvem11.x + nuvem11.width <= 0) nuvem11.x = nuvem11b.x + nuvem11b.width;
-    if (nuvem11b.x + nuvem11b.width <= 0) nuvem11b.x = nuvem11.x + nuvem11.width;
 
 	if (layer1.x + layer1.width <= 0) layer1.x = layer1b.x + layer1b.width;
     if (layer1b.x + layer1b.width <= 0) layer1b.x = layer1.x + layer1.width;
