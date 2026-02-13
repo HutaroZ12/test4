@@ -13,7 +13,6 @@ class CloudsPop extends BaseStage
     var layer2:BGSprite;
     var layer3:BGSprite;
 	var layer5:BGSprite;
-	var layer6:BGSprite;
     var casa:FlxSprite;
     var nuvem0:BGSprite;
     var nuvem0b:BGSprite; 
@@ -188,7 +187,7 @@ class CloudsPop extends BaseStage
         layer2.scrollFactor.set(0.99, 0.99);
         add(layer2);
 
-		layer3 = new BGSprite('stages/sky/popstyle/sky/layer2', -500, -300);
+		layer3 = new BGSprite('stages/sky/popstyle/sky/layer3', -500, -300);
         layer3.scrollFactor.set(1, 1);
         add(layer3);
 		
