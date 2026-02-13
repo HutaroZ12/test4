@@ -305,7 +305,7 @@ override function createPost()
 
 	layer5 = new BGSprite('stages/sky/popstyle/sky/layer5', -500, -300);
     layer5.scrollFactor.set(1, 1);
-    layer5.blend = OVERLAY;
+    layer5.blend = DARKEN;
     add(layer5);
 
         if (ClientPrefs.data.shaders)
