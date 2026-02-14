@@ -450,7 +450,7 @@ override function createPost()
 	{
 		aviao.velocity.x = FlxG.random.int(52, 52);
 		aviaoViajando = false;
-		aviaoTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
+		aviaoTimer = new FlxTimer().start(40, function(tmr:FlxTimer)
 		{
 			resetAviao();
 			aviaoTimer = null;
