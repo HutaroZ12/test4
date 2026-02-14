@@ -43,6 +43,8 @@ class CloudsPop extends BaseStage
     var songinfo:FlxSprite;
     var blackScreen:FlxSprite; 
     var songStarted:Bool = false; 
+	var aviao:BGSprite
+	var aviaoViajando:Bool = true;
 	
     override function create()
     {       
