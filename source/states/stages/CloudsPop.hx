@@ -414,6 +414,49 @@ override function createPost()
     if (layer4b.x + layer4b.width <= 0) layer4b.x = layer4.x + layer4.width;
 }
 
+    var beatTween:FlxTween;
+    override function beatHit()
+    {
+    if (FlxG.random.bool(10) && aviaoViajando)
+			aviaoViaja();
+	}
+
+    override function closeSubState()
+	{
+		if(paused)
+		{
+			if(aviaoTimer != null) aviao.active = true;
+		}
+	}
+	
+	override function openSubState(SubState:flixel.FlxSubState)
+	{
+		if(paused)
+		{
+			if(aviaoTimer != null) aviaoTimer.active = false;
+		}
+	}
+	
+	function resetAviao():Void
+	{
+		aviao.x = -12600;
+		aviao.y = FlxG.random.int(140, 250);
+		aviao.velocity.x = 0;
+		aviaoViajando = true;
+	}
+	
+	var aviaoTimer:FlxTimer;
+	function aviaoViaja()
+	{
+		aviao.velocity.x = FlxG.random.int(52, 52);
+		aviaoViajando = false;
+		aviaoTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			resetAviao();
+			aviaoTimer = null;
+		});
+	}
+
     override function countdownTick(count:Countdown, num:Int)
 {
     switch(count)
