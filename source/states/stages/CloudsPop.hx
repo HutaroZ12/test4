@@ -12,8 +12,6 @@ class CloudsPop extends BaseStage
     var layer2:BGSprite;
     var layer3:BGSprite;
 	var layer5:BGSprite;
-	var aviao:BGSprite
-	var aviaoViajando:Bool = true;
     var casa:FlxSprite;
     var nuvem0:BGSprite;
     var nuvem0b:BGSprite; 
@@ -45,6 +43,8 @@ class CloudsPop extends BaseStage
     var songinfo:FlxSprite;
     var blackScreen:FlxSprite; 
     var songStarted:Bool = false; 
+	var aviao:BGSprite;
+	var aviaoViajando:Bool = true;
 	
     override function create()
     {       
