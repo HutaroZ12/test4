@@ -9,8 +9,6 @@ import openfl.display.BlendMode;
 class CloudsPop extends BaseStage
 {
     var layer0:BGSprite;
-    var layer1:BGSprite;
-	var layer1b:BGSprite;
     var layer2:BGSprite;
     var layer3:BGSprite;
 	var layer5:BGSprite;
@@ -37,6 +35,8 @@ class CloudsPop extends BaseStage
     var nuvem9b:BGSprite;
 	var nuvem10:BGSprite;
 	var nuvem10b:BGSprite;
+	var layer1:BGSprite;
+    var layer1b:BGSprite; 
 	var layer4:BGSprite;
     var layer4b:BGSprite; 
     var movieBars:FlxSprite;
