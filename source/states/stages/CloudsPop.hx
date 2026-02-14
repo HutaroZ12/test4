@@ -155,6 +155,7 @@ class CloudsPop extends BaseStage
 		aviao = new BGSprite('stages/sky/popstyle/sky/aviao', 2000, -300);
         aviao.scrollFactor.set(0.86, 0.90);
 		aviao.active = true;
+		add(aviao);
 		
         nuvem10 = new BGSprite('stages/sky/popstyle/sky/nuvem10', -500, -300);
         nuvem10.scrollFactor.set(0.86, 0.9);
