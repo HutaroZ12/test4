@@ -151,7 +151,11 @@ class CloudsPop extends BaseStage
         nuvem6b.scrollFactor.set(0.859, 0.9);
 		nuvem6b.blend = DARKEN;
         add(nuvem6b);
-        
+
+		aviao = new BGSprite('stages/sky/popstyle/sky/aviao', 2000, -300);
+        aviao.scrollFactor.set(0.86, 0.90);
+		aviao.active = true;
+		
         nuvem10 = new BGSprite('stages/sky/popstyle/sky/nuvem10', -500, -300);
         nuvem10.scrollFactor.set(0.86, 0.9);
 		nuvem10.blend = DARKEN;
@@ -161,7 +165,6 @@ class CloudsPop extends BaseStage
         nuvem10b.scrollFactor.set(0.861, 0.9);
 		nuvem10b.blend = DARKEN;
         add(nuvem10b);
-    
 
 		layer1 = new BGSprite('stages/sky/popstyle/sky/layer1', -500, -300);
         layer1.scrollFactor.set(0.90, 0.90);
