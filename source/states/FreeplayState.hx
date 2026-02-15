@@ -425,11 +425,14 @@ class FreeplayState extends MusicBeatState
 						   
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
-			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
+            var diffName:String = Difficulty.getString(curDifficulty, false).toLowerCase();
+            var jsonName:String = songLowercase; 
+            if(diffName != 'normal')
+            jsonName += '-' + diffName;
 
 			try
 			{
-				Song.loadFromJson(poop, songLowercase);
+				Song.loadFromJson(jsonName, songLowercase);
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = curDifficulty;
 
