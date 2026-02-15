@@ -59,11 +59,13 @@ class Difficulty
 		list = diffs.copy();
 	}
 
-	inline public static function getString(num:Null<Int> = null):String
+	inline public static function getString(?num:Null<Int> = null, ?canTranslate:Bool = true):String
 	{
-		return list[num == null ? PlayState.storyDifficulty : num];
+		var diffName:String = list[num == null ? PlayState.storyDifficulty : num];
+		if(diffName == null) diffName = defaultDifficulty;
+		return canTranslate ? Language.getPhrase('difficulty_$diffName', diffName) : diffName;
 	}
-
+	
 	inline public static function getSongPrefix(num:Null<Int> = null, ?includeDash:Bool = true):Null<String>
 	{
 		final idx:Int = num ?? PlayState.storyDifficulty;
