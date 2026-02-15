@@ -575,8 +575,6 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 		}
 
-		if (songs[curSelected].songName.toLowerCase() != "" && Song.hasDifficulty(songs[curSelected].songName.toLowerCase(), 'popstyle'))
-        {
         if (Song.hasDifficulty(songs[curSelected].songName.toLowerCase(), 'popstyle'))
 {
     if(!Difficulty.list.contains('popstyle'))
