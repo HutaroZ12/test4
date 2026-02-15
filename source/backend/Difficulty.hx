@@ -7,13 +7,6 @@ class Difficulty
 		'Normal',
 		'Hard'
 	];
-
-	public static final defaultListFull:Array<String> = [
-		'Easy',
-		'Normal',
-		'Hard',
-		'popStyle'
-	];
 	
 	private static final defaultDifficulty:String = 'Normal'; //The chart that has no postfix and starting difficulty on Freeplay/Story Mode
 
@@ -66,11 +59,21 @@ class Difficulty
 		list = diffs.copy();
 	}
 
-	inline public static function getString(?num:Null<Int> = null, ?canTranslate:Bool = true):String
+	inline public static function getString(num:Null<Int> = null):String
 	{
-		var diffName:String = list[num == null ? PlayState.storyDifficulty : num];
-		if(diffName == null) diffName = defaultDifficulty;
-		return canTranslate ? Language.getPhrase('difficulty_$diffName', diffName) : diffName;
+		return list[num == null ? PlayState.storyDifficulty : num];
+	}
+
+	inline public static function getSongPrefix(num:Null<Int> = null, ?includeDash:Bool = true):Null<String>
+	{
+		final idx:Int = num ?? PlayState.storyDifficulty;
+		final raw:String = list[idx];
+		final dash:String = includeDash ? "-" : "";
+
+		if (raw.toLowerCase() == "popstyle")
+			return dash + "PopStyle";
+
+		return includeDash ? "" : null;
 	}
 
 	inline public static function getDefault():String
