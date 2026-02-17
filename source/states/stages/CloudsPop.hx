@@ -152,7 +152,7 @@ class CloudsPop extends BaseStage
 		nuvem6b.blend = DARKEN;
         add(nuvem6b);
 
-		aviao = new BGSprite('stages/popstyle/sky/aviao', -80, -300);
+		aviao = new BGSprite('stages/popstyle/sky/aviao', 80, -300);
         aviao.scrollFactor.set(0.86, 0.90);
 		aviao.active = true;
 		add(aviao);
@@ -440,7 +440,7 @@ override function createPost()
 	
 	function resetAviao():Void
 	{
-		aviao.x = -2700;
+		aviao.x = -12600;
 		aviao.velocity.x = 0;
 		aviaoViajando = true;
 	}
